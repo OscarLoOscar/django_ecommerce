@@ -1,9 +1,8 @@
 from django.db import models
-from categorys.models import Category
+from categories.models import Category
 # Create your models here.
 class Product(models.Model):
-  category = models.ForeignKey(Category,
-  on_model=models.CASCADE,related_name='product')
+  category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE)
   title=models.CharField(max_length=200)
   description=models.TextField()
   policy_info=models.TextField()

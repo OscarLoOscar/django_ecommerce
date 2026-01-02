@@ -38,9 +38,16 @@ DJANGO_APPS = [
     'django.contrib.humanize'
 ]
 
-APPLICATION_APPS = ['pages.apps.PagesConfig']
+APPLICATION_APPS = ['pages.apps.PagesConfig',
+                    'cartitems.apps.CartitemsConfig',
+                    'carts.apps.CartsConfig',
+                    'orderitems.apps.OrderitemsConfig',
+                    'orders.apps.OrdersConfig',
+                    'products.apps.ProductsConfig',
+                    'categories.apps.CategoriesConfig',
+                    'users.apps.UsersConfig']
 
-THIRD_PARTY_APPS = ["debug_toolbar"]
+THIRD_PARTY_APPS = ['debug_toolbar']
 
 INSTALLED_APPS = DJANGO_APPS + APPLICATION_APPS+THIRD_PARTY_APPS
 
@@ -53,6 +60,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1'
 ]
 
 ROOT_URLCONF = 'config.urls' # from config folder 然後入面既urls，第一次分流 ： Domain name -> DNS IP -> SERVER IP 
@@ -133,7 +144,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
-
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
