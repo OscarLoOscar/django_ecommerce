@@ -29,4 +29,4 @@ urlpatterns = [
 
 admin.site.site_header = 'OnlyK Administration'
 admin.site.site_title = 'OnlyK Admin Portal'
-admin.site.index_template = 'Welcome to OnlyK Portal'
+admin.site.index_title = 'Welcome to OnlyK Portal'

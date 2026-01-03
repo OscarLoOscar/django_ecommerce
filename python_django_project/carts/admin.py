@@ -5,20 +5,15 @@ from cartitems.models import CartItem
 class CartItemInline(admin.TabularInline):
   model = CartItem
   extra = 0
-  readonly_fields = ('get_price')
-
-  def get_price(self,obj):
-    return f"${obj.product.price}"
-  get_price.short_description = '單價'
+  autocomplete_fields = ['product']
 
 class CartAdmin(admin.ModelAdmin):
-  list_display = 'id','user','created_at','item_count'
-  search_fields = 'user__name','user__email'
-  list_filter = 'created_at'
+  list_display = 'id','user','created_at','total_items'
+  search_fields = ('user__username', 'user__email', 'id')
   inlines = [CartItemInline]
 
-  def item_count(self,obj):
+  def total_items(self,obj):
     return obj.products.count()
-  item_count.short_description = '產品種類'
+  total_items.short_description = '產品種類'
 
 admin.site.register(Cart,CartAdmin)

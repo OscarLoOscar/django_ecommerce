@@ -3,16 +3,13 @@ from cartitems.models import CartItem
 from .models import Cart
 
 # Register your models here.
-class CartItemInline(admin.TabularInline):
-  model = CartItem
-  extra = 1
-  autocomplete_field='product'
+class CartItemAdmin(admin.ModelAdmin):
+  list_display = ('id', 'get_user', 'product', 'quantity')
+  search_fields = ('product__title', 'cart__user__username')
+  # 呢兩行會去 check ProductAdmin 同 CartAdmin 有冇 search_fields
+  autocomplete_fields = ['product', 'cart']
+  def get_user(self, obj):
+    return obj.cart.user.username
+  get_user.short_description = 'Customer'
 
-class CartAdmin(admin.ModelAdmin):
-  list_display = 'id','user','created_at','total_items'
-  inlines = [CartItemInline]
-  def total_items(self,obj):
-    return obj.products.count()
-  total_items.short_description = '種類數量'
-
-admin.site.register(Cart,CartAdmin)
+admin.site.register(CartItem,CartItemAdmin)
