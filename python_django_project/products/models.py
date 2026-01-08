@@ -6,8 +6,9 @@ class Product(models.Model):
     ('戒指','戒指'),
     ('手鏈', '手鏈'),
     ('頸鏈', '頸鏈'),
+    ('媽媽勾織','媽媽勾織')
   )
-  category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE)
+  category = models.ForeignKey(Category,related_name='products',on_delete=models.PROTECT)
   title=models.CharField(max_length=200)
   description=models.TextField()
   policy_info=models.TextField()
