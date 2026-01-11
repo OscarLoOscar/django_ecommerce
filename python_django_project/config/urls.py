@@ -23,7 +23,10 @@ from django.conf import settings
 from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
-#   path('include()'),
+    path('',include('products.urls',namespace='index')),
+    path('carts/',include('carts.urls',namespace='carts')),
+    path('products/',include('products.urls',namespace='listings')),
+    path('orders/',include('orders.urls',namespace='orders')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+ debug_toolbar_urls()
 

@@ -158,6 +158,6 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = "users.User"
 
 AUTHENTICATION_BACKENDS =[
-    'accounts.backends.EmailOrUsernameModelBackend',
+    'users.backends.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]

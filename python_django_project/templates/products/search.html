@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+<!-- load humanize -->
+{% load humanize%}
+<!-- load static -->
+{% load static%}
+<!-- tab title-->
+{% block title %} | Search {% endblock %}
+<!-- index main content-->
+{% block content %}
+<!-- search_form -->
+{% include 'partials/_search_form.html' %}
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="index.html"> <i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="listings.html">Browse Listings</a>
+        </li>
+        <li class="breadcrumb-item active">Search Results</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section id="listings" class="py-4">
+  <div class="container">
+    <div class="row">
+      {% if listings %}
+      <!-- for loop -->
+      {% for listing in listings %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card listing-preview">
+          <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="" />
+          <div class="card-body">
+            <div class="listing-heading text-center">
+              <h4 class="text-primary">{{ listing.title | title}}</h4>
+              <p>
+                <i class="fas fa-map-marker text-secondary"></i>
+                {{ listing.district }}
+              </p>
+            </div>
+            <hr />
+            <a
+              href="{% url 'listings:listing' listing.id %}"
+              class="btn btn-primary btn-block"
+              >More Info</a
+            >
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="col-md-12">
+        <p>No Results Found.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

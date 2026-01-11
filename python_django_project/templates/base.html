@@ -1,0 +1,45 @@
+{% load static %}
+<!-- Template Tag : need to find static image or css-->
+<!DOCTYPE html>
+<html lang="en">
+  <!-- 中文： zh-Hant -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static "css/all.css" %}" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static "css/bootstrap.css"%} "/>
+    <!-- lightbox -->
+    <link rel="stylesheet" href="{% static "css/lightbox.min.css"%}" />
+    <!-- Custom -->
+    <link rel="stylesheet" href="{% static "css/style.css"%}" />
+
+    <title>BC Health Care {% block title %}{% endblock %} </title>
+
+  </head>
+  <body>
+    <!--  topbar -->
+    {% comment %} Django command {% endcomment %}
+    <!--   -->
+    {% include 'partials/_topbar.html' %}
+    <!--  navbar -->
+    {% include 'partials/_navbar.html' %}
+    <div class="container mt-2">
+      {% include 'partials/_alert.html'%}
+    </div>
+    <!--  content -->
+    <main>
+      {% block content %} {% endblock %}
+    </main>
+    <!--  footer -->
+    {% include 'partials/_footer.html' %}
+
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/modal.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/lightbox.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

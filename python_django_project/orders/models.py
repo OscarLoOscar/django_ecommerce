@@ -32,3 +32,8 @@ class Order(models.Model):
 
   def __str__(self):
       return f"Order {self.id} - {self.user.username}"
+  
+def update_total_price(self):
+    total=sum(item.price * item.quantity for item in self.items.all())
+    self.total_price=total
+    self.save()

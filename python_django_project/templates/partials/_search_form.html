@@ -1,0 +1,85 @@
+<section id="showcase">
+  <div class="container text-center">
+    <div class="home-search p-5">
+      <div class="overlay p-5">
+        <h1 class="display-4 mb-4">Clinic Search</h1>
+        <div class="search">
+          <form action="{% url 'listings:search' %}">
+            <div class="form-row">
+              <div class="col-md-12 mb-3">
+                <input
+                  type="text"
+                  name="keywords"
+                  class="form-control"
+                  placeholder="Keyword (Clinic, Doctor, etc)"
+                  value="{{ values.keywords}}"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <select name="district" class="form-control">
+                  {% comment %} <option selected="true" disabled="disabled"> {% endcomment %}
+                  <option {% if not values.district %}selected="true" value="" {% endif%}> <!-- 如果無選擇>>empty value>>Not True>>著左做True>>出value="" -->
+                    District (All)
+                  </option>
+                  {% comment %} {% for key, value in  %}
+                  <option value="{{ key }}" {% if key == values.district %} selected = "true" {% endif %}>
+                  {{ value }}
+                  </option>
+                  {% endfor %}
+                </select> {% endcomment %}
+                {% for region,districts in district_groups_choices %}
+                <optgroup label="{{region}}"> 
+                  {% for key,value in districts %}
+                  {% comment %} <option value="{{value}}" {%if value == values.district%} selected = "true" {%endif%}>
+                    {{value}}
+                  </option> {% endcomment %}
+                  <option value="{{value}}" {%if value == values.district%} selected = "true" {%endif%}>
+                    {{ value }}
+                  </option>
+                  {% endfor%}
+                </optgroup>
+                {%endfor%}
+              </select>
+            </div>
+
+              <div class="col-md-4 mb-3">
+                <select name="rooms" class="form-control">
+                  {% comment %} <option selected="true" disabled="disabled"> {% endcomment %}
+                  <option {% if not values.rooms %}selected="true" value="" {% endif%}> <!--Result : 出番Rooms (All)-->
+                    Rooms (All)
+                  </option>
+                  {% for key, value in bedroom_choices.items %}
+                  <option value="{{ key }}"
+                    {% if key == values.rooms %} selected {% endif%}>
+                    {{ value }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <select name="room_type" class="form-control">
+                  {% comment %} <option selected="true" disabled="disabled"> {% endcomment %}
+                  <option {% if not values.room_type %}selected="true" value="" {% endif%}>
+                    Room Type (All)
+                  </option>
+                  {% for key, value in room_type_choices.items %}
+                  <option value="{{ key }}"
+                    {% if key == values.room_type %}selected{% endif%}> {{value}}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-block mt-4" type="submit">
+              Submit form
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,78 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <!-- <a class="navbar-brand" href="index.html"> -->
+    <a class="navbar-brand" href={% url 'pages:index' %}>
+    <img src={% static 'img/logo.png' %} class="logo" alt="" />
+  </a>
+    <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNavAltMarkup"
+    >
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav">
+        <!-- <li class="nav-item active mr-3"> -->
+          <!-- hard 左active -->
+          <!-- 加statement , python only-->
+        {% comment %} <li {% if '/' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> {% endcomment %}
+        <li class="nav-item mr-3 {% if request.path == '/' %}active{% endif %}">
+          <!-- <a class="nav-link" href="index.html">Home</a> -->
+          <!-- pages 係跟app_name="something" -->
+          <a class="nav-link" href={% url 'pages:index' %}>Home</a>
+        </li>
+          <!--  <li class="nav-item mr-3"> -->
+          {% comment %} <!--  將 {% if '/' == request.path %} 改番做目標page:/about就做到click入個page,變active --> {% endcomment %}
+        {% comment %} <li {% if '/about' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> {% endcomment %}
+        <li class="nav-item mr-3 {% if '/about' in request.path %}active{% endif %}">
+          <a class="nav-link" href={% url 'pages:about' %}>About</a>
+        </li>
+        {% comment %} <li {% if '/listings' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> {% endcomment %}
+        <li class="nav-item mr-3 {% if 'listings' in request.path %}active{% endif %}">
+          <a class="nav-link" href={% url 'listings:index' %}>
+            Inpatient medical services</a
+          >
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto">
+      {% if user.is_authenticated %}
+        <li class="nav-item mr-3 {% if 'dashboard' in request.path %}active{% endif %}">
+          <a class="nav-link" href="{% url 'accounts:dashboard' %}">
+          <i class="fas fa-user"></i> Welcome {{ user.username }}
+          </a>
+        </li>
+        <!-- logout-->
+        <li class="nav-item mr-3">
+            <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
+              <!-- click 條 a-link , 有post有token番backend-->
+              <i class="fas fa-sign-out-alt" aria-hidden="true"></i>logout
+            </a>
+
+            <form action="{% url 'accounts:logout' %}" method="POST" id="logout">
+              <!-- 用form reason：backend 要delete token , 比番backend , 但_navbar.html not a pure html , 普通html唔可以咁打  -->
+              {% csrf_token %}
+              <input type="hidden"/> <!-- 收埋input，變hidden-->
+            </form>
+        </li>
+
+        {% else %}
+          <li {% if 'register' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item mr-3" {% endif %}> 
+            <a class="nav-link" href="{% url 'accounts:register' %}">
+            <i class="fas fa-user-plus"></i> Register
+            </a>
+          </li>
+          <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> 
+            <a class="nav-link" href="{% url 'accounts:login'%}">
+            <i class="fas fa-sign-in-alt"></i>Login</a
+          >
+          </li>
+
+          {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
