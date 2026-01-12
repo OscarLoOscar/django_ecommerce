@@ -18,8 +18,9 @@ class User(AbstractUser):
 class PurchaseHistory(models.Model):
   user = models.ForeignKey(User,on_delete=models.CASCADE)
   product = models.ForeignKey(Product,on_delete=models.CASCADE)
-  purchased_at = models.DateTimeField(auto_now_add=True)
+  created_at = models.DateTimeField(auto_now_add=True)
 
   class Meta:
     verbose_name_plural = "Purchase Histories"
-    ordering = ['-purchased_at']
+    ordering = ['-created_at']
+    indexes = [models.Index(fields=['created_at'])]

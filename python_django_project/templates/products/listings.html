@@ -4,7 +4,7 @@
 <!-- load humanize-->
 {% load static %}
 <!-- block title-->
-{% block title %} | Browser Listings {% endblock %}
+{% block title %} | Browser products {% endblock %}
 <!--load static -->
 {% block content %}
     <section id="showcase-inner" class="py-5 text-white">
@@ -27,59 +27,59 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              {% comment %} 去個home，所以pages，not listings {% endcomment %}
+              {% comment %} 去個home，所以pages，not products {% endcomment %}
               <a href={% url 'pages:index'%}><i class="fas fa-home"></i> Home</a>
             </li>
-            <li class="breadcrumb-item active">Browse Listings</li>
+            <li class="breadcrumb-item active">Browse products</li>
           </ol>
         </nav>
       </div>
     </section>
-    <!-- Listings -->
-    <section id="listings" class="py-4">
+    <!-- products -->
+    <section id="products" class="py-4">
   <div class="container">
     <div class="row">
-      {% if listings %}
-        {% for listing in listings %}
+      {% if products %}
+        {% for product in products %}
           <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card listing-preview">
-              <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="" />
+            <div class="card product-preview">
+              <img class="card-img-top" src="{{ product.photo_main.url }}" alt="" />
               <div class="card-img-overlay"></div>
               <div class="card-body">
-                <div class="listing-heading text-center">
-                  <h4 class="text-primary">{{ listing.title | title }}</h4>
+                <div class="product-heading text-center">
+                  <h4 class="text-primary">{{ product.title | title }}</h4>
                   <p>
                     <i class="fas fa-map-marker text-secondary"></i>
-                    {{listing.district | title}}
+                    {{product.district | title}}
                   </p>
                 </div>
 
                 <div class="row py-2 text-secondary">
                   <div class="col-6">
                     <i class="fas fa-th-large"></i>
-                    Services {{listing.service|apnumber | capfirst}}
+                    Services {{product.service|apnumber | capfirst}}
                   </div>
                   <div class="col-6"><i class="fas fa-dumbbell"></i> Treatment</div>
                 </div>
                 <div class="row py-2 text-secondary">
                   <div class="col-6">
-                    <i class="fas fa-bed"></i> rooms {{listing.rooms}}
+                    <i class="fas fa-bed"></i> rooms {{product.rooms}}
                   </div>
                   <div class="col-6"><i class="fas fa-bath"></i> Bathrooms</div>
                 </div>
 
                 <div class="row py-2 text-secondary">
                   <div class="col-12">
-                    <i class="fas fa-user"></i> {{listing.doctor.name}}
+                    <i class="fas fa-user"></i> {{product.doctor.name}}
                   </div>
                 </div>
                 <div class="row text-secondary pb-2">
                   <div class="col-12">
-                    <i class="fas fa-clock"></i> {{listing.list_date | timesince}}
+                    <i class="fas fa-clock"></i> {{product.list_date | timesince}}
                   </div>
                 </div>
 
-                <a href="{% url 'listings:listing' listing.id %}" class="btn btn-primary btn-block">
+                <a href="{% url 'products:product' product.id %}" class="btn btn-primary btn-block">
                   More Info
                 </a>
               </div>
@@ -89,11 +89,11 @@
         {% endif %}
     </div> <div class="row">
       <div class="col-md-12">
-        {% if listings.has_other_pages %}
+        {% if products.has_other_pages %}
         <ul class="pagination">
-          {% if listings.has_previous %}
+          {% if products.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ listings.previous_page_number }}">&laquo;</a>
+              <a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a>
             </li>
           {% else %}
             <li class="page-item disabled">
@@ -101,8 +101,8 @@
             </li>
           {% endif %}
 
-          {% for i in listings.paginator.page_range %}
-            {% if listings.number == i %}
+          {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
               <li class="page-item active">
                 <a class="page-link">{{i}}</a>
               </li>
@@ -113,9 +113,9 @@
             {% endif %}
           {% endfor %}
 
-          {% if listings.has_next %}
+          {% if products.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ listings.next_page_number }}">&raquo;</a>
+              <a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a>
             </li>
           {% else %}
             <li class="page-item disabled">

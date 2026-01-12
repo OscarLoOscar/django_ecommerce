@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+<!-- load humanize-->
+{% load humanize %}
+<!-- tab title-->
+<!-- block content外面加，唔好入面加-->
+{% block title %} | Welcome {% endblock %}
+<!-- index main content-->
+{% block content %} {% include 'partials/_search_form.html' %}
+<section id="products" class="py-5">
+  <div class="container">
+    <h3 class="text-center mb-3">Inpatient medical services</h3>
+    <div class="row">
+      {% if products %} {% for product in product_list %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card product-preview">
+          <img
+            class="card-img-top"
+            src="{{ product.photo_main.url }}"
+            alt="{{ product.title }}"
+          />
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <div class="product-heading text-center">
+              <h4 class="text-primary">{{ product.title | title }}</h4>
+              <p>
+                <i class="fas fa-map-marker text-secondary"></i>
+                {{ product.district }}
+              </p>
+            </div>
+            <hr />
+            <div class="row py-2 text-secondary">
+              <div class="col-6">
+                <i class="fas fa-th-large"></i>
+                Fee : {{product.service|apnumber| capfirst}}
+              </div>
+              <div class="col-6">
+                {% comment %} <i class="fas fa-dumbbell"></i> {{ product.services }} {% endcomment %}
+                <i class="fas fa-dumbbell"></i> {{ product.tag_list }}
+              </div>
+            </div>
+            <div class="row py-2 text-secondary">
+              <div class="col-6">
+                <i class="fas fa-bed"></i> Room : {{ product.rooms }}
+              </div>
+              <div class="col-6">
+                <i class="fas fa-bath"></i> {{ product.room_type }}
+              </div>
+            </div>
+            <hr />
+            <div class="row py-2 text-secondary">
+              <div class="col-12">
+                <i class="fas fa-user"></i> {{ product.doctor }}
+              </div>
+            </div>
+            <div class="row text-secondary pb-2">
+              <div class="col-12">
+                <i class="fas fa-clock"></i> {{ product.list_date | timesince}}
+              </div>
+            </div>
+            <hr />
+            <!-- when click this button : 要加products id 入去-->
+            <a
+              href="{% url 'products:product' product.id %}"
+              class="btn btn-primary btn-block"
+            >
+              More Info
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="col-12 text-center">
+        <h2>No Client Available</h2>
+      </div>
+      {% endif %}
+    </div>
+
+    {% comment %}
+    <div class="row">
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card product-preview">
+          <img
+            class="card-img-top"
+            src="assets/img/clinics/clinic-3.jpg"
+            alt=""
+          />
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <div class="product-heading text-center">
+              <h4 class="text-primary">VitalPath Wellness Clinic</h4>
+              <p>
+                <i class="fas fa-map-marker text-secondary"></i> Sham Shui Po
+              </p>
+            </div>
+            <hr />
+            <div class="row py-2 text-secondary">
+              <div class="col-6"><i class="fas fa-th-large"></i> Restrooms</div>
+              <div class="col-6"><i class="fas fa-dumbbell"></i> Treatment</div>
+            </div>
+            <div class="row py-2 text-secondary">
+              <div class="col-6"><i class="fas fa-bed"></i> Bedrooms</div>
+              <div class="col-6"><i class="fas fa-bath"></i> Bathrooms</div>
+            </div>
+            <hr />
+            <div class="row py-2 text-secondary">
+              <div class="col-12"><i class="fas fa-user"></i> Ms. Chan</div>
+            </div>
+            <div class="row text-secondary pb-2">
+              <div class="col-12">
+                <i class="fas fa-clock"></i> Reservation required
+              </div>
+            </div>
+            <hr />
+            <a href="product.html" class="btn btn-primary btn-block"
+              >More Info</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</section>
+
+<section id="services" class="py-5 bg-secondary text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="fas fa-comment fa-4x mr-4"></i>
+        <hr />
+        <h3>Consulting Services</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt,
+          debitis nam! Repudiandae, provident iste consequatur hic dignissimos
+          ratione ea quae.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-home fa-4x mr-4"></i>
+        <hr />
+        <h3>Inpatient Services</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt,
+          debitis nam! Repudiandae, provident iste consequatur hic dignissimos
+          ratione ea quae.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-suitcase fa-4x mr-4"></i>
+        <hr />
+        <h3>Primary Care Package</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt,
+          debitis nam! Repudiandae, provident iste consequatur hic dignissimos
+          ratione ea quae.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

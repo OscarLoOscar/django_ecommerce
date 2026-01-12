@@ -18,5 +18,15 @@ class Category(models.Model):
     help_text="選擇呢個分類屬於邊種產品，會影響 Size 嘅預設邏輯"
   )
   order=models.IntegerField(default=0)
+  created_at = models.DateTimeField(auto_now_add=True)
+
   def __str__(self):
     return f"{self.name} ({self.get_category_type_display()})"
+  
+  class Meta:
+    ordering=['-created_at']
+    indexes = [models.Index(fields=['created_at'])]
+
+    def __str__(self):
+      return self.product.title
+

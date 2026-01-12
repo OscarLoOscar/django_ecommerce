@@ -15,6 +15,7 @@ class Product(models.Model):
   image_03=models.ImageField(upload_to='products/',blank=True)
   image_04=models.ImageField(upload_to='products/',blank=True)
   is_published=models.BooleanField(default=True)
+  created_at = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
     return self.title
@@ -30,3 +31,10 @@ class Product(models.Model):
         if self.size == 11:
           self.size=0
     super().save(*args,**kwargs)
+  
+  class Meta:
+    ordering=['-created_at']
+    indexes = [models.Index(fields=['created_at'])]
+
+    def __str__(self):
+      return self.title
