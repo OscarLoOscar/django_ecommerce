@@ -6,7 +6,7 @@
 def product_detail(request, pk):
     # 儲存 ID 到 Session
     request.session['last_viewed_product'] = pk
-    
+
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'product_detail.html', {'product': product})
 
@@ -17,9 +17,24 @@ def show_recommendation(request):
 ```
 
 ---
-_search_form.html
+
+\_search_form.html
+
 ```html
     <option value="{{category.id}}" {% if category.id|slugify== values.category %} selected {% endif%}>
                     {{category.title}}
                   </option>
+```
+
+---
+
+---
+
+notes @12/01/2026
+https://icons.getbootstrap.com/icons/threads/
+
+Looking for logo:
+
+```bash
+https://fontawesome.com/
 ```

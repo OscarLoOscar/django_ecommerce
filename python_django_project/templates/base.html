@@ -14,10 +14,11 @@
     <!-- lightbox -->
     <link rel="stylesheet" href="{% static "css/lightbox.min.css"%}" />
     <!-- Custom -->
-    <link rel="stylesheet" href="{% static "css/style.css"%}" />
+    <link rel="stylesheet" href="{% static "css/style.css"%}?v=1.1" />
+    <!-- navbar.css-->
+    <link rel="stylesheet" href="{% static "css/navbar.css"%}" />
 
-    <title>BC Health Care {% block title %}{% endblock %} </title>
-
+    <title>BC Health Care {% block title %}{% endblock %}</title>
   </head>
   <body>
     <!--  topbar -->
@@ -26,13 +27,9 @@
     {% include 'partials/_topbar.html' %}
     <!--  navbar -->
     {% include 'partials/_navbar.html' %}
-    <div class="container mt-2">
-      {% include 'partials/_alert.html'%}
-    </div>
+    <div class="container mt-2">{% include 'partials/_alert.html'%}</div>
     <!--  content -->
-    <main>
-      {% block content %} {% endblock %}
-    </main>
+    <main>{% block content %} {% endblock %}</main>
     <!--  footer -->
     {% include 'partials/_footer.html' %}
 

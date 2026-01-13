@@ -5,16 +5,19 @@
     <a class="navbar-brand" href={% url 'pages:index' %}>
     <img src={% static 'img/logo.png' %} class="logo" alt="" />
   </a>
+
     <button
     class="navbar-toggler"
     type="button"
     data-toggle="collapse"
-    data-target="#navbarNavAltMarkup"
+    data-target="#mainNavbar"
     >
     <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <ul class="navbar-nav">
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+    {% comment %} add mr-auto {% endcomment %}
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item mr-3 {% if request.path == '/' %}active{% endif %}">
           <a class="nav-link" href={% url 'pages:index' %}>Home</a>
         </li>
@@ -23,12 +26,29 @@
         </li>
         <li class="nav-item mr-3 {% if 'products' in request.path %}active{% endif %}">
           <a class="nav-link" href={% url 'products:index' %}>
-            Inpatient medical services</a
+            Inpatient Accessories</a
           >
         </li>
+        {% comment %} end of ul @ 13/01/2026 {% endcomment %}
       </ul>
+      <!--search function -->
+      <ul class="navbar-nav ml-auto align-items-lg-center">
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0 mr-lg-3" action="{% url 'products:index' %}" method="GET">
+            <div class="search-hover-container">
+                <button type="submit" style="background:none;border:none;padding:0;">
+                  <i class="fas fa-search"></i>
+                </button>
+                <input 
+                  type="text" 
+                  class="hidden-search-input search-text" 
+                  name="q" 
+                  placeholder="找商品..."/>
+              </div>
+          </form>
+        </li>
+        <!-- login -->
 
-      <ul class="navbar-nav ml-auto">
       {% if user.is_authenticated %}
         <li class="nav-item mr-3 {% if 'dashboard' in request.path %}active{% endif %}">
           <a class="nav-link" href="{% url 'users:dashboard' %}">
@@ -46,7 +66,6 @@
               <input type="hidden"/> 
             </form>
         </li>
-
         {% else %}
           <li {% if 'register' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item mr-3" {% endif %}> 
             <a class="nav-link" href="{% url 'users:register' %}">
@@ -61,6 +80,7 @@
 
           {% endif %}
       </ul>
+
     </div>
-  </div>
+  </div> 
 </nav>
