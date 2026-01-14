@@ -1,0 +1,37 @@
+/* computer */
+.message-trigger-container {
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-trigger-container:hover {
+  transform: scale(1.1);
+}
+
+.message-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* mobile */
+@media (max-width: 991.98px) {
+  .message-trigger-container {
+    width: 100%;
+    justify-content: flex-start; /* 靠左對齊 */
+    padding: 15px 20px; /* increase click area */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .message-trigger-container:after {
+    content: "Contact us";
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+}

@@ -11,12 +11,20 @@
     <link rel="stylesheet" href="{% static "css/all.css" %}" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{% static "css/bootstrap.css"%} "/>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- lightbox -->
     <link rel="stylesheet" href="{% static "css/lightbox.min.css"%}" />
     <!-- Custom -->
     <link rel="stylesheet" href="{% static "css/style.css"%}?v=1.1" />
+    <!-- add navbar.css @ 13/01/206-->
     <!-- navbar.css-->
     <link rel="stylesheet" href="{% static "css/navbar.css"%}" />
+    <!-- contactmodal.css-->
+    <link rel="stylesheet" href="{% static "css/contactmodal.css"%}" />
 
     <title>BC Health Care {% block title %}{% endblock %}</title>
   </head>
@@ -32,6 +40,8 @@
     <main>{% block content %} {% endblock %}</main>
     <!--  footer -->
     {% include 'partials/_footer.html' %}
+    <!-- _contact_modal.html -->
+    {% include 'partials/_contact_modal.html' %}
 
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>

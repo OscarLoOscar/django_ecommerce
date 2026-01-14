@@ -20,3 +20,6 @@ def about(request):
   is_published = Product.objects.all()
   context = {"is_published":is_published}
   return render(request,'pages/about.html',context)
+
+def contact(request):
+  return render(request,'pages/contact.html')

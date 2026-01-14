@@ -1,86 +1,93 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-info sticky-top">
   <div class="container">
     <!-- <a class="navbar-brand" href="index.html"> -->
     <a class="navbar-brand" href={% url 'pages:index' %}>
     <img src={% static 'img/logo.png' %} class="logo" alt="" />
   </a>
 
-    <button
+  <button
     class="navbar-toggler"
     type="button"
     data-toggle="collapse"
     data-target="#mainNavbar"
     >
     <span class="navbar-toggler-icon"></span>
-    </button>
+  </button>
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
-    {% comment %} add mr-auto {% endcomment %}
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item mr-3 {% if request.path == '/' %}active{% endif %}">
-          <a class="nav-link" href={% url 'pages:index' %}>Home</a>
-        </li>
-        <li class="nav-item mr-3 {% if '/about' in request.path %}active{% endif %}">
-          <a class="nav-link" href={% url 'pages:about' %}>About</a>
-        </li>
-        <li class="nav-item mr-3 {% if 'products' in request.path %}active{% endif %}">
-          <a class="nav-link" href={% url 'products:index' %}>
-            Inpatient Accessories</a
-          >
-        </li>
-        {% comment %} end of ul @ 13/01/2026 {% endcomment %}
-      </ul>
+  <div class="collapse navbar-collapse" id="mainNavbar">
+  {% comment %} add mr-auto {% endcomment %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item mr-3 {% if request.path == '/' %}active{% endif %}">
+        <a class="nav-link" href={% url 'pages:index' %}>Home</a>
+      </li>
+      <li class="nav-item mr-3 {% if '/about' in request.path %}active{% endif %}">
+        <a class="nav-link" href={% url 'pages:about' %}>About</a>
+      </li>
+      <li class="nav-item mr-3 {% if 'products' in request.path %}active{% endif %}">
+        <a class="nav-link" href={% url 'products:index' %}>
+          Inpatient Accessories</a>
+      </li>
+      {% comment %} end of ul @ 13/01/2026 {% endcomment %}
+    </ul>
       <!--search function -->
-      <ul class="navbar-nav ml-auto align-items-lg-center">
-        <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-3" action="{% url 'products:index' %}" method="GET">
-            <div class="search-hover-container">
-                <button type="submit" style="background:none;border:none;padding:0;">
-                  <i class="fas fa-search"></i>
-                </button>
-                <input 
-                  type="text" 
-                  class="hidden-search-input search-text" 
-                  name="q" 
-                  placeholder="找商品..."/>
-              </div>
-          </form>
-        </li>
-        <!-- login -->
-
-      {% if user.is_authenticated %}
-        <li class="nav-item mr-3 {% if 'dashboard' in request.path %}active{% endif %}">
-          <a class="nav-link" href="{% url 'users:dashboard' %}">
-          <i class="fas fa-user"></i> Welcome {{ user.username }}
-          </a>
-        </li>
-        <!-- logout-->
-        <li class="nav-item mr-3">
-            <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
-              <i class="fas fa-sign-out-alt" aria-hidden="true"></i>logout
-            </a>
-
-            <form action="{% url 'users:logout' %}" method="POST" id="logout">
-              {% csrf_token %}
-              <input type="hidden"/> 
-            </form>
-        </li>
-        {% else %}
-          <li {% if 'register' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item mr-3" {% endif %}> 
-            <a class="nav-link" href="{% url 'users:register' %}">
-            <i class="fas fa-user-plus"></i> Register
-            </a>
-          </li>
-          <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> 
-            <a class="nav-link" href="{% url 'users:login'%}">
-            <i class="fas fa-sign-in-alt"></i>Login</a
+    <ul class="navbar-nav ml-auto align-items-lg-center">
+      <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0 mr-lg-3" action="{% url 'products:search' %}" method="GET">
+          <div class="search-hover-container">
+            <button type="submit" style="background:none;border:none;padding:0;">
+              <i class="fas fa-search"></i>
+            </button>
+            <input
+            type="text" 
+            class="hidden-search-input search-text" 
+            name="q" 
+            placeholder="找商品..."/>
+          </div>
+        </form>
+      </li>
+      <!-- message function-->
+      <li class="nav-item">
+        <div class="message-trigger-container" 
+          data-toggle="modal"
+          data-target="#contactModal"
+          style="cursor: pointer;"
           >
-          </li>
+          <button type="button" class="message-btn" style="background:none;border:none;padding:0;">
+            <i class="fa-regular fa-message"></i>
+          </button>
+        </div>
+      </li>
 
-          {% endif %}
-      </ul>
+      <!-- login -->
+      {% if user.is_authenticated %}
+      <li class="nav-item mr-3 {% if 'dashboard' in request.path %}active{% endif %}">
+        <a class="nav-link" href="{% url 'users:dashboard' %}">
+        <i class="fas fa-user"></i> Welcome {{ user.username }}
+        </a>
+      </li>
+      <!-- logout-->
+      <li class="nav-item mr-3">
+        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>logout
+        </a>
 
-    </div>
+        <form action="{% url 'users:logout' %}" method="POST" id="logout">
+        {% csrf_token %}
+          <input type="hidden"/> 
+        </form>
+      </li>
+        {% else %}
+      <li {% if 'register' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item mr-3" {% endif %}> 
+        <a class="nav-link" href="{% url 'users:register' %}">
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+      </li>
+      <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> 
+        <a class="nav-link" href="{% url 'users:login'%}">
+          <i class="fas fa-sign-in-alt"></i>Login</a>
+      </li>
+        {% endif %}
+    </ul>
   </div> 
 </nav>

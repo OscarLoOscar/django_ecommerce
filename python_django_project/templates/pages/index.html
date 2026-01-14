@@ -5,7 +5,9 @@
 <!-- block content外面加，唔好入面加-->
 {% block title %} | Welcome {% endblock %}
 <!-- index main content-->
-{% block content %} {% include 'partials/_search_form.html' %}
+{% block content %}
+<!-- search_form.html  -->
+{% include 'partials/_search_form.html' %}
 <section id="products" class="py-5">
   <div class="container">
     <h3 class="text-center mb-3">Inpatient medical services</h3>

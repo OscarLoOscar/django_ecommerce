@@ -59,20 +59,20 @@ def search(request):
     except ValueError:
       pass
     
-  if'price' in request.GET:
-    price = request.GET['price']
-    if price:
-      queryset_list = queryset_list.filter(price__lte=price)
+  # if'price' in request.GET:
+  #   price = request.GET['price']
+  #   if price:
+  #     queryset_list = queryset_list.filter(price__lte=price)
 
-  if'stock_count' in request.GET:
-    stock = request.GET['stock_count']
-    if stock:
-      queryset_list = queryset_list.filter(stock_count__gte=stock)
+  # if'stock_count' in request.GET:
+  #   stock = request.GET['stock_count']
+  #   if stock:
+  #     queryset_list = queryset_list.filter(stock_count__gte=stock)
 
-  if'size' in request.GET:
-    size = request.GET['size']
-    if size:
-      queryset_list = queryset_list.filter(size=size)
+  # if'size' in request.GET:
+  #   size = request.GET['size']
+  #   if size:
+  #     queryset_list = queryset_list.filter(size=size)
   
   categories = Category.objects.all()
 
