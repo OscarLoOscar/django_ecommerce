@@ -1,4 +1,35 @@
-<footer id="main-footer" class="py-4 bg-primary text-white text-center">
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+<!-- load static-->
+{% load static %}
+<!-- load humanize-->
+
+{% load humanize %}
+<!-- block title -->
+{% comment %} {% block title | %} {% endcomment %}
+<footer id="main-footer" class="py-4 bg-light text-dark text-center mb-2">
   Copyright &copy;
-  <span class="year"></span> footer,footer,footer,footer,footer,footer,footer,footer,footer
+  <span class="year"></span>
+  <div>
+    <!-- apple pay-->
+    <img src = {% static 'img/payment/apple-pay.png' %} alt="Apple Pay"
+    style="height:25px; width:auto"/>
+    <!-- google pay -->
+    <img src = {% static 'img/payment/Google_Pay.png' %} alt="Google Pay"
+    style="height:25px; width:auto"/>
+    <!-- fps -->
+    <img src = {% static 'img/payment/fps.svg' %} alt="FPS" style="height:25px;
+    width:auto"/>
+    <!-- master card -->
+    <img src = {% static 'img/payment/master_card.svg' %} alt="Master"
+    style="height:25px; width:auto"/>
+    <!-- visa-->
+    <img src = {% static 'img/payment/visa.png' %} alt="Visa"
+    style="height:25px; width:auto"/>
+    <!-- octopus-->
+    <img src = {% static 'img/payment/octopus.png' %} alt="Octopus"
+    style="height:25px; width:auto"/>
+    <!-- payme-->
+    <img src = {% static 'img/payment/payMe.png' %} alt="PayMe"
+    style="height:25px; width:auto"/>
+  </div>
 </footer>

@@ -1,24 +1,40 @@
-#contactModal .modal-content {
+/* computer */
+.message-trigger-container {
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.message-trigger-container:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.message-btn {
+  background: none;
   border: none;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  color: white;
+  font-size: 1.2rem;
 }
 
-#contactModal .form-content {
-  background-color: #f8f9fa;
-  border: 1px solid #eee;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-#contactModal .btn-primary {
-  background-color: #007bff;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-}
-
-#contactModal .title {
-  font-weight: bold;
-  margin-bottom: 10px;
+/* mobile */
+@media (max-width: 991.98px) {
+  .message-trigger-container {
+    width: 100%;
+    justify-content: flex-start; /* 靠左對齊 */
+    padding: 15px 20px; /* increase click area */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+  }
+  .message-trigger-container:after {
+    content: "Contact us";
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-left: 10px;
+    cursor: pointer;
+  }
 }

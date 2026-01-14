@@ -11,7 +11,8 @@ a:visited {
   color: #ededed;
 }
 div.breadcrumbs {
-  background: #2a81fd;
+  /* background: #2a81fd; */
+  background: #ffffffff;
   color: #ededed;
 }
 div.breadcrumbs a {

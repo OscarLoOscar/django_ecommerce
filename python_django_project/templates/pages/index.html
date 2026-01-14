@@ -8,6 +8,7 @@
 {% block content %}
 <!-- search_form.html  -->
 {% include 'partials/_search_form.html' %}
+
 <section id="products" class="py-5">
   <div class="container">
     <h3 class="text-center mb-3">Inpatient medical services</h3>
@@ -129,6 +130,21 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-md-4">
+        <!-- repeated -->
+        {% comment %}
+        <div
+          class="pip-trigger"
+          data-toggle="modal"
+          data-target="#contactModal"
+          style="cursor: pointer"
+        >
+          <i
+            class="fa-regular fa-comment"
+            style="font-size: 24px; color: #007bff"
+          ></i>
+        </div>
+        {% endcomment %}
+        <!-- repeated-->
         <i class="fas fa-comment fa-4x mr-4"></i>
         <hr />
         <h3>Consulting Services</h3>
