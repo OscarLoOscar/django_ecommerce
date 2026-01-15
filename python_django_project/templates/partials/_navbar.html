@@ -86,7 +86,8 @@
         </a>
       </li>
       <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> 
-        <a class="nav-link" href="{% url 'users:login'%}">
+        {% comment %} Must Change URL {% endcomment %}
+        <a class="nav-link" href=#">
           <i class="fa fa-cart-shopping"></i>
           </a>
       </li>
