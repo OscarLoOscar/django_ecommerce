@@ -31,7 +31,7 @@
   <div
     class="col-md-6 offset-md-3 text-center mx-auto shadow-sm pb-5"
     style="
-      border: 3px solid rgb(0, 21, 255);
+      border: 3px solid transparent;
       height: auto;
       max-width: 500px;
       width: 90%;
@@ -165,12 +165,12 @@
           </button>
         </a>
         <p class="pt-4"></p>
-        <hr style="border-top:2px solid #878787;width:100%;"/>
+        <hr style="border-top:2px solid #878787;width:90%;"/>
       </div>
     </div>
 
     <div id="register-section" style="display: none">
-      <h3 class="mb-4">註冊會員</h3>
+      <h2 class="mb-4 text-left ml-4">註冊會員</h2>
       <form action="{% url 'users:register' %}" method="POST">
         {% csrf_token %}
         <div class="mb-3 mx-auto" style="width: 90%">
@@ -192,129 +192,40 @@
         </div>
 
         <button type="submit" class="solid-btn"
-          style="cursor: pointer; background-color: #ffb7b7ff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">
+          style="cursor: pointer; background-color: #ff8e8eff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">
           提交註冊
         </button>
       </form>
+      
+      <!-- add -->
+      <div class="d-flex align-items-center mb-4 mx-auto" style="width:90%">
+        <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
+          <div
+            class="px-3 text-muted"
+            style="
+            cursor: pointer;
+            border: 3px solid transparent;
+            font-size:0.8rem
+            "
+          >或使用其他方式</div>
+          <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
+        </div>
+        <!-- login method-->
+      <div>
+        <button class="btn btn-outline-light border mb-4" style="width:20%;cursor: pointer;" type="button" aria-label="google login" aria-hidden="true" focusable="false">
+          <img src = {% static 'img/google_logo.png' %} alt="google logo"
+          style="height:25px; width:auto"/>
+        </button>
+      </div>
+      <!-- end add -->
 
-      <div class="mt-5 mx-auto" style="width: 90%;">
-        <h2 class="title text-left pl-2 pb-3" style="font-size: 1.25rem; font-weight: bold;">已經有帳號？</h2>
+      <div class="mx-auto" style="width: 90%;">
+        <h2 class="title text-left pl-2 pb-3" style="font-weight: bold;">已經有帳號？</h2>
         <button type="button" onclick="showLogin()" class="outline-btn font-weight-bold"
-          style="cursor: pointer; border: 2px solid #007bff; color: #007bff; padding: 10px; border-radius: 8px; width: 100%; background: transparent;">
+          style="cursor: pointer; border: 2px solid #ffb7b7ff; color: #ffb7b7ff; padding: 10px; border-radius: 8px; width: 100%; background: transparent;">
           返回登入
         </button>
         <hr style="border:none; border-top:2px solid #878787; width:100%; margin-top: 30px;" />
-      </div>
-    </div>
-
-    <div id="register-section" style="display: none">
-      <h3 class="text-left pl-4">註冊會員</h3>
-      <form action="{% url 'users:register' %}" method="POST">
-        {% csrf_token %}
-        <div class="mb-3 mx-auto" style="width: 90%">
-          <input
-            name="username"
-            class="form-control"
-            placeholder="使用者名稱"
-            style="border: none; padding: 10px; background: transparent"
-            required
-          />
-          <hr
-            style="
-              border: none;
-              border-top: 2px solid #ffb7b7ff;
-              width: 100%;
-              margin: 0;
-            "
-          />
-        </div>
-        <div class="mb-3 mx-auto" style="width: 90%">
-          <input
-            name="email"
-            type="email"
-            class="form-control"
-            placeholder="電郵"
-            style="border: none; padding: 10px; background: transparent"
-            required
-          />
-          <hr
-            style="
-              border: none;
-              border-top: 2px solid #ffb7b7ff;
-              width: 100%;
-              margin: 0;
-            "
-          />
-        </div>
-        <div class="mb-3 mx-auto" style="width: 90%">
-          <input
-            name="password"
-            type="password"
-            class="form-control"
-            placeholder="設置密碼"
-            style="border: none; padding: 10px; background: transparent"
-            required
-          />
-          <hr
-            style="
-              border: none;
-              border-top: 2px solid #ffb7b7ff;
-              width: 100%;
-              margin: 0;
-            "
-          />
-        </div>
-        {% comment %} <div class="mb-3 mx-auto" style="width: 90%">
-          <input
-            name="password2"
-            type="password"
-            class="form-control"
-            placeholder="確認密碼"
-            style="border: none; padding: 10px; background: transparent"
-            required
-          />
-          <hr
-            style="
-              border: none;
-              border-top: 2px solid #ffb7b7ff;
-              width: 100%;
-              margin: 0;
-            "
-          />
-        </div> {% endcomment %}
-        <button
-          type="submit"
-          class="solid-btn"
-          style="
-            background-color: #ffb7b7ff;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px;
-            width: 90%;
-          "
-        >
-          提交註冊
-        </button>
-      </form>
-
-      <div class="mt-4">
-        <button
-          type="button"
-          onclick="showLogin()"
-          class="outline-btn font-weight-bold"
-          style="
-            border: 2px solid #007bff;
-            color: #007bff;
-            padding: 10px;
-            border-radius: 8px;
-            width: 90%;
-            background: transparent;
-            cursor: pointer;
-          "
-        >
-          返回登入
-        </button>
       </div>
     </div>
   </div>
