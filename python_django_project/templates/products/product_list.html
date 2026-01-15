@@ -1,1 +1,193 @@
 <!-- card , display all product-->
+{% extends 'base.html' %}
+<!-- load base-->
+{% load humanize %}
+<!-- load humanize-->
+{% load static %}
+<!-- block title-->
+{% block title %} | Browser products {% endblock %}
+<!--load static -->
+{% block content %}
+<style>
+  .product-preview .card-body{
+    min-height: 350px;
+  }
+</style>
+    <section id="showcase-inner" class="py-5 text-white">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <h1 class="display-4">Browse Our Clinic</h1>
+            <p class="lead">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt,
+              pariatur!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section id="bc" class="mt-3">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              {% comment %} 去個home，所以pages，not products {% endcomment %}
+              <a href={% url 'pages:index'%}><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="breadcrumb-item active">Browse products</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <!-- products -->
+    <section id="products" class="py-4">
+  <div class="container">
+    <div class="row">
+      {% if products %}
+        {% for product in products %}
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card product-preview">
+              <img 
+                class="card-img-top" 
+                style="height:380px ; width:100% ; object-fit:cover;" 
+                src="{{ product.image_00.url }}" 
+                alt="" />
+              <!-- 暫時多餘 ,add style="pointer-events:none;"@15/01/2026-->
+              <div class="card-img-overlay" style="pointer-events:none;"></div>
+              <div class="card-body" >
+                <div class="product-heading text-center" >
+                  <h4 style="color: #1f5b72ff !important;">{{ product.title | title }}</h4>
+                  <p style="color: #ff9e9eff;">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    {{product.price | title}}
+                  </p>
+                </div>
+                <div style="color: #37515bff;">
+                <!-- rings ,if else-->
+                <div class="row py-2">
+                  <div class="col-12">
+                    <i class="fa-solid fa-ring"></i>
+                    {% if product.category.category_type == '戒指' %}
+                    Size : {{product.size|apnumber | capfirst}}
+                    {% else%}
+                    Not Applicable
+                    {% endif%}
+                  </div>
+                  {% comment %} <div class="col-6"><i class="fas fa-dumbbell"></i> Test</div> {% endcomment %}
+                </div>
+                <!-- Description-->
+                <div class="row py-2">
+                  <div class="col-12">
+                    <i class="fa-regular fa-comments"></i> Description : {{product.description}}
+                    <!-- add js @ 15/01/2026 , '|'前後不能有space，但'>' 要有space-->
+                    {% if product.description|length > 10 %}
+                    <span id="dots-{{product.id}}">{{product.description| truncatechars:10}}</span>
+                    <span id="more-{{product.id}}" style="display:none">{{product.description}}</span>
+                    <button onClick="toggleDescription('{{product.id}}')"
+                            id="btn-{{product.id}}"
+                            class="btn btn-link p-0"
+                            style=" font-size: 0.8rem;
+                                    color: #9072d6ff;
+                                    vertical-align:baseline;"
+
+                    >
+                    Read More
+                    </button>
+                    {% comment %} {{product.description}} {% endcomment %}
+                    {% endif %}
+                  </div>
+                </div>
+                  {% comment %} <div class="col-6"><i class="fas fa-bath"></i> Description</div> {% endcomment %}
+                <!--category_type-->
+                <div class="row py-2">
+                  <div class="col-12">
+                    <i class="fa-regular fa-font-awesome"></i> 
+                    {{product.category.category_type}}
+                  </div>
+                </div>
+                {% comment %} <div class="row text-secondary pb-2">
+                  <div class="col-12">
+                    <i class="fas fa-clock"></i> {{product.list_date | timesince}}
+                  </div>
+                </div> {% endcomment %}
+
+                <!-- More Info -->
+                <div class="btn btn-outline-light border mb-4 bg-success" 
+                    style="cursor:pointer;border: none;width:100%;background-color:#ffb7b7ff;color:#fff" >
+                  <a 
+                  href="#" 
+                  aria-hidden="true" 
+                  focusable="false">
+                    More Info
+                  </a>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        {% endfor %} 
+        {% endif %}
+    </div> 
+    
+    <div class="row">
+      <div class="col-md-12">
+        {% if products.has_other_pages %}
+        <ul class="pagination">
+          {% if products.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">&laquo;</a>
+            </li>
+          {% endif %}
+
+          {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+              <li class="page-item active">
+                <a class="page-link">{{i}}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{i}}">{{i}}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if products.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+    
+  </div> </section>
+<script>
+  function toggleDescription(productId){
+    const dots = document.getElementById("dots-" + productId)
+    const moreText = document.getElementById("more-" + productId)
+    const btnText = document.getElementById("btn-" + productId)
+
+    if(dots.style.display === "none"){
+      dots.style.display = 'inline';
+      btnText.innerHtml = "Back";
+      moreText.style.display = "none"
+    }else{
+      dots.style.display = 'none';
+      btnText.innerHtml = "TEST";
+      moreText.style.display = "inline"
+    }
+  }
+</script>
+
+{% endblock %}

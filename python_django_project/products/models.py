@@ -1,5 +1,7 @@
 from django.db import models
 from categories.models import Category
+from PIL import Image # Pillow, must talk
+import os
 # Create your models here.
 class Product(models.Model):
   category = models.ForeignKey(Category,related_name='products',on_delete=models.PROTECT)
@@ -24,14 +26,34 @@ class Product(models.Model):
     if self.category:
       ctype = self.category.category_type
 
-      if ctype == '戒指':
-        if self.size==0 or self.size is None:
-          self.size=11
-      elif ctype in ['手鏈','頸鏈']:
-        if self.size == 11:
+      if ctype == ['手鏈','頸鏈']:
+        if self.size==11 or self.size is None:
           self.size=0
+      elif ctype in '戒指':
+        if self.size == 11:
+          self.size = 11
     super().save(*args,**kwargs)
-  
+
+    images_to_resize = [self.image_00,self.image_01,self.image_02,self.image_03,self.image_04]
+
+    for img_field in images_to_resize:
+      if img_field and os.path.exists(img_field.path):
+        img=Image.open(img_field.path)
+
+        if img.height > 500 and img.width > 500:
+          output_size = (500,500)
+          img.thumbnail(output_size)
+          img.save(img_field.path)
+    # img = Image.open(self.image_00.path)
+    # if img.height > 500 or img.width >500:
+    #   output_size=(500,500)
+    #   img.thumbnail(output_size)
+    #   img.save(self.image_00.path)
+    # img.thumbnail vs img.resize:
+    # thumbnail: 會幫你維持比例
+    # 例如你張相係 1000 x 600，做完會變 500 x 300
+    # resize: 會夾硬拉伸
+    # 如果你寫死 500x 500，張相會變形
   class Meta:
     ordering=['-created_at']
     indexes = [models.Index(fields=['created_at'])]
