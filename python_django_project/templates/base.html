@@ -21,6 +21,7 @@
     <!-- Custom -->
     <link rel="stylesheet" href="{% static "css/style.css"%}?v=1.1" />
     <!-- add navbar.css @ 13/01/206-->
+    {% block extra_css %}{% endblock %}
     <!-- navbar.css-->
     <link rel="stylesheet" href="{% static "css/navbar.css"%}" />
     <!-- contactmodal.css-->
@@ -28,7 +29,7 @@
 
     <title>BC Health Care {% block title %}{% endblock %}</title>
   </head>
-  <body>
+  <body class="d-flex flex-column h-100">
     <!--  topbar -->
     {% comment %} Django command {% endcomment %}
     <!--   -->
@@ -37,7 +38,7 @@
     {% include 'partials/_navbar.html' %}
     <div class="container mt-2">{% include 'partials/_alert.html'%}</div>
     <!--  content -->
-    <main>{% block content %} {% endblock %}</main>
+    <main class="flex-shrink-0">{% block content %} {% endblock %}</main>
     <!--  footer -->
     {% include 'partials/_footer.html' %}
     <!-- _contact_modal.html -->

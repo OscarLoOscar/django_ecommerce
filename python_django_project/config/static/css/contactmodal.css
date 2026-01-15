@@ -4,8 +4,8 @@
   padding: 8px 12px;
   transition: transform 0.2s ease;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
 }
 
 .message-btn {

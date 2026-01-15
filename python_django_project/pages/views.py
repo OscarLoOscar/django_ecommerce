@@ -23,3 +23,9 @@ def about(request):
 
 def contact(request):
   return render(request,'pages/contact.html')
+
+def privacypolicy(request):
+  return render(request,'pages/privacy_policy.html')
+
+def tandc(request):
+  return render(request,'pages/terms_and_conditions.html')

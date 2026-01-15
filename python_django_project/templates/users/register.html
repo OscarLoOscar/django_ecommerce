@@ -1,1 +1,155 @@
-<h1>register page</h1>
+{% extends "base.html" %}
+<!---->
+{% load humanize %}
+<!---->
+{% load static %}
+<!---->
+{% comment %} {% block branding %} {% endcomment %}
+<!-- extra css-->
+{% block extra_css%}
+<style>
+/* remove hover blue color */
+  .form-control:focus {
+    box-shadow: none;
+    background-color: transparent;
+  }
+  /* hover change color */
+  .outline-btn:hover {
+    background-color: #ffb7b7ff !important;
+    color: #fff !important;            
+    border-color: #ffb7b7ff !important;
+  }
+</style>
+{% endblock %}
+<!-- block content -->
+{% block content %}
+
+<div class="row my-5">
+  <div
+    class="col-md-6 offset-md-3 text-center mx-auto shadow-sm pb-5"
+    style="
+      border: 3px solid rgb(0, 21, 255);
+      height: auto;
+      max-width: 500px;
+      width: 90%;
+      padding: 20px;
+    "
+  >
+    <!-- Login -->
+      <h3>登入</h3>
+      <form>
+        <div class="mb-3">
+          <div class="mx-auto" style="width:90%">
+              <input
+              class="form-control"
+                label="電郵或手機號碼"
+                placeholder="電郵或手機號碼"
+                errormessage=""
+                style="border:none;border:transparent; padding:10px;border-radius:5px;"
+                value=""
+              />
+              <hr style="border:none ;solid; #007bff ;width:100%;border-top:2px"/>
+          </div>
+        </div>
+
+          <div class="mb-2">
+            <div
+            class="mx-auto"
+              style="
+                cursor: pointer;
+                border: 3px ;solid; transparent;
+                width: 90%;
+              "
+            >
+              <input
+                class="form-control"
+                label="密碼"
+                placeholder="密碼"
+                errormessage=""
+                type="password"
+                value=""
+                style="border:transparent; padding:10px;border-radius:5px;"
+              />
+              <hr style="border-top:2px ;solid; #007bff; width:100%" "/>
+            </div>
+          </div>
+
+        <div
+          class="text-left pt-1 mb-4 mx-auto ml-3"
+          style="
+            cursor: pointer;
+            border: 1px solid transparent;
+            width: 90%;
+            padding-left:10px;
+          "
+        >
+          <a href="/users/password/new" style="color: #3494fa">忘記密碼？</a>
+        </div>
+
+        <button
+          type="submit"
+          class="solid-btn"
+          style="
+            cursor: pointer;
+            background-color: #ff8e8eff;
+            border: 3px solid transparent;
+            color: #fff;
+            border-radius: 8px;
+            padding: 5px 10px;
+            width: 90%;
+            max-width: 600px;
+          "
+          data-e2e-id="login-submit_button"
+        >
+          開始購物吧！
+        </button>
+        <p></p>
+        <div class="d-flex align-items-center mb-4 mx-auto" style="width:90%">
+          <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
+          <div
+          class="px-3 text-muted"
+          style="
+          cursor: pointer;
+          border: 3px solid transparent;
+          font-size:0.8rem
+          "
+          >或使用其他方式</div>
+          <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
+        </div>
+      </form>
+        <!-- login method-->
+    <div>
+      <button class="btn btn-outline-light border mb-4" style="width:20%;cursor: pointer;" type="button" aria-label="google login" aria-hidden="true" focusable="false">
+          <img src = {% static 'img/google_logo.png' %} alt="google logo"
+          style="height:25px; width:auto"/>
+      </button>
+    </div>
+
+    <!-- 未係member & Register-->
+    <div>
+      <h2 class="title text-left pl-4 pt-3 pb-4">還不是會員？</h2>
+      <a        {% if 'register' in request.path %} class="nav-item active mr-3" {%else%} class="nav-item active mr-3" {%endif%}
+      href="{% url 'users:register' %}"
+
+        type="button"
+        class="outline-btn font-weight-bold"
+        style="
+          cursor: pointer;
+          border: 2px solid #ffb7b7ff;
+          color: #ffb7b7ff;
+          padding: 5px 10px;
+          border-radius: 8px;
+          width: 90%;
+          max-width: 600px;
+          outline: none;
+        "
+      >
+        註冊會員
+      </a>
+      <p class="pt-4"></p>
+      <hr style="border-top:2px;solid #878787;width:100%;solid #878787;"/>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
