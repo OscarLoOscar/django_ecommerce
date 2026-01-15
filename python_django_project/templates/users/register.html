@@ -16,8 +16,11 @@
   /* hover change color */
   .outline-btn:hover {
     background-color: #ffb7b7ff !important;
-    color: #fff !important;            
+    color: white !important;            
     border-color: #ffb7b7ff !important;
+  }
+  .outline-btn:active {
+    transform: scale(0.95);
   }
 </style>
 {% endblock %}
@@ -34,8 +37,9 @@
       width: 90%;
       padding: 20px;
     "
-  >
-    <!-- Login -->
+    >
+    <div id="login-section">
+      <!-- Login -->
       <h3>登入</h3>
       <form>
         <div class="mb-3">
@@ -52,27 +56,27 @@
           </div>
         </div>
 
-          <div class="mb-2">
-            <div
+        <div class="mb-2">
+          <div
             class="mx-auto"
-              style="
-                cursor: pointer;
-                border: 3px ;solid; transparent;
-                width: 90%;
-              "
+            style="
+                  cursor: pointer;
+                  border: 3px ;solid; transparent;
+                  width: 90%;
+                  "
             >
-              <input
-                class="form-control"
-                label="密碼"
-                placeholder="密碼"
-                errormessage=""
-                type="password"
-                value=""
-                style="border:transparent; padding:10px;border-radius:5px;"
+            <input
+              class="form-control"
+              label="密碼"
+              placeholder="密碼"
+              errormessage=""
+              type="password"
+              value=""
+              style="border:transparent; padding:10px;border-radius:5px;"
               />
-              <hr style="border-top:2px ;solid; #007bff; width:100%" "/>
-            </div>
+            <hr style="border-top:2px ;solid; #007bff; width:100%" "/>
           </div>
+        </div>
 
         <div
           class="text-left pt-1 mb-4 mx-auto ml-3"
@@ -82,7 +86,7 @@
             width: 90%;
             padding-left:10px;
           "
-        >
+          >
           <a href="/users/password/new" style="color: #3494fa">忘記密碼？</a>
         </div>
 
@@ -106,31 +110,62 @@
         <p></p>
         <div class="d-flex align-items-center mb-4 mx-auto" style="width:90%">
           <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
-          <div
-          class="px-3 text-muted"
-          style="
-          cursor: pointer;
-          border: 3px solid transparent;
-          font-size:0.8rem
-          "
+            <div
+              class="px-3 text-muted"
+              style="
+              cursor: pointer;
+              border: 3px solid transparent;
+              font-size:0.8rem
+              "
           >或使用其他方式</div>
           <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
         </div>
       </form>
         <!-- login method-->
-    <div>
+      <div>
       <button class="btn btn-outline-light border mb-4" style="width:20%;cursor: pointer;" type="button" aria-label="google login" aria-hidden="true" focusable="false">
           <img src = {% static 'img/google_logo.png' %} alt="google logo"
           style="height:25px; width:auto"/>
       </button>
-    </div>
+      </div>
 
-    <!-- 未係member & Register-->
-    <div>
+      <!-- 未係member & Register-->
+      <div>
       <h2 class="title text-left pl-4 pt-3 pb-4">還不是會員？</h2>
       <a        {% if 'register' in request.path %} class="nav-item active mr-3" {%else%} class="nav-item active mr-3" {%endif%}
-      href="{% url 'users:register' %}"
+        {% comment %} href="{% url 'users:register' %}" {% endcomment %}
+        href="{% url 'users:login' %}">
+        <button
+        type="button"
+        onclick="showRegister()"
+        class="outline-btn font-weight-bold"
+        style="
+          cursor: pointer;
+          border: 2px solid #ffb7b7ff;
+          background-color:transparent;
+          color: #ffb7b7ff;
+          padding: 5px 10px;
+          border-radius: 8px;
+          width: 90%;
+          max-width: 600px;
+          outline: none;
+        "
+        >
+        註冊會員
+        </button>
+      </a>
+      <p class="pt-4"></p>
+      <hr style="border-top:2px;solid #878787;width:100%;solid #878787;"/>
+      </div>
+    </div>
 
+    <div id="register-section" style="display:none;">
+      <div>
+        <h2 class="title text-left pl-4 pt-3 pb-4">還不是會員？</h2>
+        <a        
+        {% if 'register' in request.path %} class="nav-item active mr-3" {%else%} class="nav-item active mr-3" {%endif%}
+        href="{% url 'users:register' %}">
+        <button
         type="button"
         class="outline-btn font-weight-bold"
         style="
@@ -142,14 +177,26 @@
           width: 90%;
           max-width: 600px;
           outline: none;
-        "
-      >
-        註冊會員
-      </a>
-      <p class="pt-4"></p>
-      <hr style="border-top:2px;solid #878787;width:100%;solid #878787;"/>
-    </div>
+        "> 
+        </button>
+        LOGIN
+        </a>
+        <p class="pt-4"></p>
+        <hr style="border-top:2px;solid #878787;width:100%;"/>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  function showRegister(){
+    document.getElementById('login-section').style.display ='none';
+    document.getElementById('register-section').style.display = 'block';
+  }
+
+  function showLogin(){
+    document.getElementById('register-section').style.display = 'none';
+    document.getElementById('login-section').style.display ='block';
+  }
+</script>
 {% endblock %}

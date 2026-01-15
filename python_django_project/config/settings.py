@@ -161,3 +161,6 @@ AUTHENTICATION_BACKENDS =[
     'users.backends.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+LOGIN_URL= 'users:login'
+LOGIN_REDIRECT_URL='pages/index'

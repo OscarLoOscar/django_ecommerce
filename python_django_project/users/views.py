@@ -8,7 +8,7 @@ from django.http import JsonResponse
 # Create your views here.
 User = get_user_model()
 
-@login_required
+# @login_required
 def login(request):
   if request.method == "POST":
     username_input = request.POST.get('username') # username = username / email , username is variable

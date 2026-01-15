@@ -30,8 +30,8 @@ urlpatterns = [
     path('products/',include('products.urls',namespace='products')),
     path('carts/',include('carts.urls',namespace='carts')),
     path('orders/',include('orders.urls',namespace='orders')),
-    path('privacypolicy/',include('pages.urls',namespace='privacypolicy')),
-    path('tandc/',include('pages.urls',namespace='tandc')),
+    # path('privacypolicy/',include('pages.urls',namespace='privacypolicy')),
+    # path('tandc/',include('pages.urls',namespace='tandc')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+ debug_toolbar_urls()
 
