@@ -40,7 +40,7 @@ class Product(models.Model):
       if img_field and os.path.exists(img_field.path):
         img=Image.open(img_field.path)
 
-        if img.height > 500 and img.width > 500:
+        if img.height > 500 or img.width > 500:
           output_size = (500,500)
           img.thumbnail(output_size)
           img.save(img_field.path)

@@ -1,27 +1,31 @@
 {% extends 'base.html' %}
-<!-- load base-->
+<!---->
 {% load humanize %}
-<!-- load humanize-->
+<!---->
 {% load static %}
-<!-- block title-->
-{% block title %} | {{product.title | title}} {% endblock %}
-<!-- block content-->
+<!---->
+{% block title %} | {{ product.title | title }}
+<!---->
+{% endblock %}
+<!---->
 {% block content %}
-
-<section id="showcase-inner" class="py-5 text-white">
+<section
+  id="showcase-inner"
+  class="py-5 text-white"
+  style="background-color: #174152ff"
+>
   <div class="container">
     <div class="row text-center">
       <div class="col-md-12">
-        <h1 class="display-4">{{product.title|title}}</h1>
+        <h1 class="display-4">{{ product.title | title }}</h1>
         <p class="lead">
-          <i class="fas fa-map-marker"></i> {{product.district |title}}
+          <i class="fas fa-map-marker"></i> {{ product.district | title }}
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Breadcrumb -->
 <section id="bc" class="mt-3">
   <div class="container">
     <nav>
@@ -30,169 +34,174 @@
           <a href="{% url 'pages:index' %}">Home</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'products:index' %}">products</a>
+          <a href="{% url 'products:index' %}">Products</a>
         </li>
-        <li class="breadcrumb-item active">{{product.title|title}}</li>
+        <li class="breadcrumb-item active">{{ product.title | title }}</li>
       </ol>
     </nav>
   </div>
 </section>
 
-<!-- product -->
 <section id="product" class="py-4">
   <div class="container">
     <a href="{% url 'products:index' %}" class="btn btn-light mb-4"
-      >Back To products</a
+      >Back To Products</a
     >
     <div class="row">
       <div class="col-md-9">
-        <!-- Home Main Image -->
         <img
-          src="{{ product.photo_main.url}}"
+          src="{{ product.image_00.url }}"
           alt=""
           class="img-main img-fluid mb-3"
+          style="
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+          "
         />
-        <!-- Thumbnails -->
+
         <div class="row mb-5 thumbs">
-          <div class="col-md-3">
-            {% comment %} {% is product.photo_main %}
-            <a href="{{ product.photo_main.url }}" data-lightbox="home-images">
+          {% for img in product_images %}
+          <!---->
+          {% if product.image_00 %}
+          <div class="col-md-2 col-4 mb-2">
+            <a href="{{ product.image_00.url }}" data-lightbox="home-images">
               <img
-                src="{{ product.photo_main.url }}"
-                alt=""
-                class="img-fluid"
+                src="{{ product.image_00.url }}"
+                class="img-fluid border"
+                style="height: 80px; width: 100%; object-fit: cover"
               />
             </a>
           </div>
-          {% endif %} {% endcomment %} {% if product.photo_1 %}
-          <div class="col-md-2">
-            <a href="{{ product.photo_1.url }}" data-lightbox="home-images">
-              <img src="{{ product.photo_1.url }}" alt="" class="img-fluid" />
-            </a>
-          </div>
-          {% endif %} {% if product.photo_2 %}
-          <div class="col-md-2">
-            <a href="{{ product.photo_2.url }}" data-lightbox="home-images">
-              <img src="{{product.photo_2.url}}" alt="" class="img-fluid" />
-            </a>
-          </div>
-          {% endif %} {% if product.photo_3 %}
-          <div class="col-md-2">
-            <a href="{{ product.photo_3.url }}" data-lightbox="home-images">
-              <img src="{{product.photo_3.url}}" alt="" class="img-fluid" />
-            </a>
-          </div>
-          {% endif %} {% if product.photo_4 %}
-          <div class="col-md-2">
-            <a href="{{ product.photo_4.url }}" data-lightbox="home-images">
-              <img src="{{product.photo_4.url}}" alt="" class="img-fluid" />
-            </a>
+          {% endif %}
+          <!---->
+          {% if product.image_01 %}
+          <div class="col-md-2 col-4 mb-2">
+            <a href="{{ product.image_01.url }}" data-lightbox="home-images"
+              ><img
+                src="{{ product.image_01.url }}"
+                class="img-fluid border"
+                style="height: 80px; width: 100%; object-fit: cover"
+            /></a>
           </div>
           {% endif %}
+          <!---->
+          {% if product.image_02 %}
+          <div class="col-md-2 col-4 mb-2">
+            <a href="{{ product.image_02.url }}" data-lightbox="home-images"
+              ><img
+                src="{{ product.image_02.url }}"
+                class="img-fluid border"
+                style="height: 80px; width: 100%; object-fit: cover"
+            /></a>
+          </div>
+          {% endif %}
+          <!---->
+          {% if product.image_03 %}
+          <div class="col-md-2 col-4 mb-2">
+            <a href="{{ product.image_03.url }}" data-lightbox="home-images"
+              ><img
+                src="{{ product.image_03.url }}"
+                class="img-fluid border"
+                style="height: 80px; width: 100%; object-fit: cover"
+            /></a>
+          </div>
+          {% endif %}
+          <!---->
+          {% if product.image_04 %}
+          <div class="col-md-2 col-4 mb-2">
+            <a href="{{ product.image_04.url }}" data-lightbox="home-images"
+              ><img
+                src="{{ product.image_04.url }}"
+                class="img-fluid border"
+                style="height: 80px; width: 100%; object-fit: cover"
+            /></a>
+          </div>
+          {% endif %}
+          <!---->
+          {% endfor %}
         </div>
 
-        <!-- Fields -->
-        <div class="row mb-5 fields">
-          <div class="col-md-12">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-money-bill-alt"></i> {{product.title|title}}
-                Fee Estimate:
-                <span class="float-right"
-                  >$ {{product.service | intcomma | capfirst}} /Day</span
-                >
-              </li>
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-bed"></i> Rooms:
-                <span class="float-right"> {{product.rooms}} </span>
-              </li>
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-bed"></i> Room Type:
-                <span class="float-right">{{product.room_type}}</span>
-              </li>
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-bath"></i> Services:
-                <span class="float-right">{{product.services}}</span>
-              </li>
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-dumbbell"></i> Profession:
-                <span class="float-right"> {{product.profession}} </span>
-              </li>
-              <li class="list-group-item text-secondary">
-                <i class="fas fa-dumbbell"></i> Address:
-                <span class="float-right"> {{product.address}} </span>
-              </li>
-            </ul>
-          </div>
+        <div class="card mb-5">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="fas fa-money-bill-alt text-success"></i> <b>Price:</b>
+              <span class="float-right text-primary font-weight-bold"
+                >${{ product.price | intcomma }}</span
+              >
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-box text-secondary"></i> <b>Stock:</b>
+              <span class="float-right">{{ product.stock_count }} items</span>
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-ruler-combined text-secondary"></i> <b>Size:</b>
+              <span class="float-right">{{ product.size }}</span>
+            </li>
+          </ul>
         </div>
-        {% comment %} 07/01/2026 , 加tag show profession {% endcomment %}
 
-        <!-- profession -->
-        <div>
-          <div class="row mb-5">
-            {% comment %} h4.mr-3.text-secondary{Professions:} {% endcomment %}
-            {% comment %}
-            <div class="col-md-4 d-flex align-items-start">
-              {% endcomment %}
-              <h4 class="mr-3 text-secondary">Professions:</h4>
-              {% if product.profession.all %}
-              <ul>
-                {% for profession in product.profession.all %}
-                <li class="mr-3">
-                  <h4>{{profession.name}}</h4>
-                </li>
-                {% endfor %}
-              </ul>
-              {% comment %} follow products/models.py field name {% endcomment
-              %} {% else %}
-              <p class="text-secondary">No Professions Listed</p>
-              {% endif %}
-            </div>
-            {% comment %}
-          </div>
-          {% endcomment %}
-
-          <!-- Services -->
-          <div class="row mb-5">
-            <h4 class="mr-3 text-secondary">Services :</h4>
-            {% if products.services.all %}
-            <!-- service tag-->
-            <ul>
-              {% for service in products.services.all %}
-              <li class="mr-3"><h4>{{service.name | title}}</h4></li>
-              {% endfor %}
-            </ul>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5 class="text-secondary">
+              <i class="fas fa-user-md"></i> Professions
+            </h5>
+            {% if product.profession.all %}
+            <!---->
+            {% for p in product.profession.all %}
+            <span class="badge badge-info p-2 m-1">{{ p.name }}</span>
+            {% endfor %}
+            <!---->
             {% else %}
-            <h4>No Services</h4>
+            <p class="text-muted">None listed</p>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <h5 class="text-secondary">
+              <i class="fas fa-concierge-bell"></i> Services
+            </h5>
+            {% if product.services.all %}
+            <!---->
+            {% for s in product.services.all %}
+            <span class="badge badge-success p-2 m-1"
+              >{{ s.name | title }}</span
+            >
+            {% endfor %}<!---->
+            {% else %}
+            <p class="text-muted">None listed</p>
             {% endif %}
           </div>
         </div>
 
-        <!-- Description -->
-        <div class="row mb-5 text-center">
-          <div class="col-md-12">
-            <h5 class="text-primary">{{product.description|linebreaks}}</h5>
-            <p>{{ product.description }}</p>
+        <div class="card card-body bg-light mb-5">
+          <h5 class="card-title text-primary">Description</h5>
+          <hr />
+          <div class="card-text text-dark">
+            {{ product.description | linebreaks }}
           </div>
         </div>
       </div>
-      <!-- Make Inquiry -->
+
       <div class="col-md-3">
-        <div class="card mb-3">
+        <div class="card shadow-sm mb-3">
+          {% if product.doctor.photo %}
           <img
             class="card-img-top"
-            src="{{product.doctor.photo.url}}"
-            alt="Seller of the month"
+            src="{{ product.doctor.photo.url }}"
+            style="height: 200px; object-fit: cover"
           />
-          <div class="card-body">
-            <h5 class="card-title">Medical Practitioner</h5>
-            <h6 class="text-secondary">{{product.doctor.name}}</h6>
+          {% endif %}
+          <div class="card-body text-center">
+            <h5 class="card-title">Practitioner</h5>
+            <h6 class="text-secondary">{{ product.doctor.name }}</h6>
           </div>
         </div>
         <button
-          class="btn-primary btn-block btn-lg"
+          class="btn btn-primary btn-block btn-lg"
           data-toggle="modal"
           data-target="#inquiryModal"
+          style="background-color: #ffb7b7ff; border: none"
         >
           Make An Inquiry
         </button>
@@ -201,71 +210,43 @@
   </div>
 </section>
 
-<!-- Inquiry Modal -->
 <div class="modal fade" id="inquiryModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="inquiryModalLabel">Make An Inquiry</h5>
-        <button type="button" class="close" data-dismiss="modal">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Clinic Inquiry</h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
           <span>&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{% url 'contacts:contact' %}">
+        <form method="POST" action="{% url 'products:search' %}">
           {% csrf_token %}
+          <input type="hidden" name="listing_id" value="{{ product.id }}" />
           <input
             type="hidden"
             name="doctor_email"
             value="{{ product.doctor.email }}"
           />
-          <input type="hidden" name="listing_id" value="{{product.id}}" />
-          <input
-            type="hidden"
-            class="doctor_email"
-            value="{{product.doctor.email}}"
-          />
+
           {% if user.is_authenticated %}
-          <!-- start of take care input form -->
           <input type="hidden" name="user_id" value="{{ user.id }}" />
           {% else %}
-          <input type="hidden" name="0" />
-          {% endif%}
-          <!-- end of take care input form -->
+          <input type="hidden" name="user_id" value="0" />
+          {% endif %}
+
           <div class="form-group">
-            <label for="product" class="col-form-label">Clinic:</label>
+            <label>Clinic:</label>
             <input
               type="text"
               name="product"
               class="form-control"
-              value="{{product.title | title }}"
+              value="{{ product.title }}"
               readonly
-              {%
-              comment
-              %}
-              readonly,
-              等人唔要modify
-              data
-              同
-              data
-              入name="product"
-              {%
-              endcomment
-              %}
-              {%
-              comment
-              %}
-              disabled
-              ,
-              唔入database,backend
-              會emptyString
-              {%
-              endcomment
-              %}
             />
           </div>
           <div class="form-group">
-            <label for="name" class="col-form-label">Name:</label>
+            <label>Name:</label>
             <input
               type="text"
               name="name"
@@ -274,15 +255,16 @@
               if
               user.is_authenticated
               %}
-              value="{{user.first_name}} {{user.last_name}}"
+              value="{{ user.get_full_name }}"
               readonly
               {%
               endif
               %}
+              required
             />
           </div>
           <div class="form-group">
-            <label for="email" class="col-form-label">Email:</label>
+            <label>Email:</label>
             <input
               type="email"
               name="email"
@@ -291,25 +273,25 @@
               if
               user.is_authenticated
               %}
-              value="{{user.email}}"
+              value="{{ user.email }}"
               readonly
               {%
               endif
               %}
+              required
             />
           </div>
           <div class="form-group">
-            <label for="phone" class="col-form-label">Phone:</label>
+            <label>Phone:</label>
             <input type="text" name="phone" class="form-control" required />
           </div>
           <div class="form-group">
-            <label for="message" class="col-form-label">Message:</label>
-            <textarea name="message" class="form-control"></textarea>
+            <label>Message:</label>
+            <textarea name="message" class="form-control" rows="3"></textarea>
           </div>
-          <hr />
           <input
             type="submit"
-            value="Send"
+            value="Send Message"
             class="btn btn-block btn-secondary"
           />
         </form>

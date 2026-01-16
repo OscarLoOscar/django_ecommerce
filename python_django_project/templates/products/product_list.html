@@ -12,6 +12,11 @@
   .product-preview .card-body{
     min-height: 350px;
   }
+
+  .description-text {
+    height: 60px;     
+    overflow-y: auto;   /* too more words > Scrollbar */
+  }
 </style>
     <section id="showcase-inner" class="py-5 text-white">
       <div class="container">
@@ -80,23 +85,29 @@
                 <!-- Description-->
                 <div class="row py-2">
                   <div class="col-12">
-                    <i class="fa-regular fa-comments"></i> Description : {{product.description}}
-                    <!-- add js @ 15/01/2026 , '|'前後不能有space，但'>' 要有space-->
-                    {% if product.description|length > 10 %}
-                    <span id="dots-{{product.id}}">{{product.description| truncatechars:10}}</span>
-                    <span id="more-{{product.id}}" style="display:none">{{product.description}}</span>
-                    <button onClick="toggleDescription('{{product.id}}')"
-                            id="btn-{{product.id}}"
-                            class="btn btn-link p-0"
-                            style=" font-size: 0.8rem;
-                                    color: #9072d6ff;
-                                    vertical-align:baseline;"
+                    <i class="fa-regular fa-comments"></i> <!-- Description : {{product.description}} --> 
+                    {% comment %} b tag and description-text add @ 16/01/2026 {% endcomment %}
+                    <b>Description : </b>
+                    <div class="description-text mt-2" style="min-height:60px">
+                      {% if product.description|length > 10 %}
+                      <span id="dots-{{product.id}}">{{product.description| truncatechars:15}}</span>
+                      <span id="more-{{product.id}}" style="display:none">{{product.description}}</span>
+                      <button onClick="toggleDescription('{{product.id}}')"
+                              id="btn-{{product.id}}"
+                              class="btn btn-link p-0"
+                              style=" font-size: 0.8rem;
+                                      color: #9072d6ff;
+                                      vertical-align:baseline;"
 
-                    >
-                    Read More
-                    </button>
-                    {% comment %} {{product.description}} {% endcomment %}
+                      >
+                      Read More
+                      </button>
+                    {% else %}
+                      <span>{{ product.description}}</span>
                     {% endif %}
+                    </div>
+                    <!-- add js @ 15/01/2026 , '|'前後不能有space，但'>' 要有space-->
+                    {% comment %} {{product.description}} {% endcomment %}
                   </div>
                 </div>
                   {% comment %} <div class="col-6"><i class="fas fa-bath"></i> Description</div> {% endcomment %}
@@ -114,15 +125,14 @@
                 </div> {% endcomment %}
 
                 <!-- More Info -->
-                <div class="btn btn-outline-light border mb-4 bg-success" 
-                    style="cursor:pointer;border: none;width:100%;background-color:#ffb7b7ff;color:#fff" >
-                  <a 
-                  href="#" 
+                <a 
+                  href="{% url 'products:product_detail' product.id%}"
                   aria-hidden="true" 
-                  focusable="false">
-                    More Info
-                  </a>
-                </div>
+                  focusable="false"
+                  class="btn btn-outline-light border mb-4 bg-success" 
+                  style="cursor:pointer;border: none;width:100%;background-color:#ffb7b7ff;color:#fff" >
+                  More Info
+                </a>
                 </div>
               </div>
             </div>
@@ -131,6 +141,7 @@
         {% endif %}
     </div> 
     
+    <!-- control pages -->
     <div class="row">
       <div class="col-md-12">
         {% if products.has_other_pages %}
@@ -152,7 +163,7 @@
               </li>
             {% else %}
               <li class="page-item">
-                <a class="page-link" href="?page={{i}}">{{i}}</a>
+                <a class="page-link" href="?page={{i}}{% if query %}&q={{query}}{% endif %}">{{i}}</a>
               </li>
             {% endif %}
           {% endfor %}
@@ -180,11 +191,11 @@
 
     if(dots.style.display === "none"){
       dots.style.display = 'inline';
-      btnText.innerHtml = "Back";
+      btnText.innerHTML = "Back";
       moreText.style.display = "none"
     }else{
       dots.style.display = 'none';
-      btnText.innerHtml = "TEST";
+      btnText.innerHTML = "Close";
       moreText.style.display = "inline"
     }
   }

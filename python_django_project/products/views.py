@@ -2,28 +2,32 @@ from django.shortcuts import render ,get_object_or_404
 from .models import Product
 from categories.models import Category
 from django.db.models import Q
-from django.http import HttpResponse
+from django.core.paginator import Paginator
 # Create your views here.
 def product_list(request):
-  products = Product.objects.filter(is_published=True)
+  products_list = Product.objects.filter(is_published=True)
   categories = Category.objects.all().order_by('order')
 
   query = request.GET.get('q')
   if query:
-    products = products.filter(
+    products_list = products_list.filter(
       Q(title__icontains=query) |Q(description__icontains=query)
     )
 
-
   category_id = request.GET.get('category')
   if category_id:
-    products = products.filter(category_id = category_id)
+    products_list = products_list.filter(category_id = category_id)
+
+  # Paginator
+  paginator = Paginator(products_list,3)
+  page = request.GET.get('page')
+  products = paginator.get_page(page) # direct use for template
 
   # django html
-  # categories = Category.objects.all().order_by('order')
   context = {'products': products,
               'categories':categories,
-              'query':query}
+              'query':query,
+            }
   return render(request,'products/product_list.html',context)
 
   # data = [{
@@ -35,9 +39,13 @@ def product_list(request):
 
   # return JsonResponse({'products':data})
 
-def product_detail(request,pk):
-  product = get_object_or_404(Product,pk=pk)
-  return render(request,'products/product_detail.html',{'product':product})
+# 要跟products/urls.py 既setting ,用product_id ，但reference可以用pk/id
+def product_detail(request,product_id):
+  product = get_object_or_404(Product,pk=product_id)
+  context={
+    'product':product
+  }
+  return render(request,'products/product_detail.html',context)
 
 def search(request):
   queryset_list = Product.objects.filter(is_published=True).order_by('-created_at')
