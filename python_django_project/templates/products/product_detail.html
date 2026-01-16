@@ -122,27 +122,47 @@
           <!---->
           {% endfor %}
         </div>
-
+        <!-- Product Detail-->
         <div class="card mb-5">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              <i class="fas fa-money-bill-alt text-success"></i> <b>Price:</b>
+              <i class="fa-regular fa-heart text-secondary"></i>
+              <b>Product Name : </b>
+              <span class="float-right text-primary font-weight-bold"
+                >{{ product.title | title }}</span
+              >
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-money-bill-alt text-success"></i> <b>Price : </b>
               <span class="float-right text-primary font-weight-bold"
                 >${{ product.price | intcomma }}</span
               >
             </li>
             <li class="list-group-item">
-              <i class="fas fa-box text-secondary"></i> <b>Stock:</b>
+              <i class="fas fa-box text-secondary"></i> <b>Stock : </b>
+              {% if product.category.category_type == "耳環" %}
+              <span class="float-right"
+                >Tailor-made items,Please contact Only K</span
+              >
+              {% else %}
               <span class="float-right">{{ product.stock_count }} items</span>
+              {% endif %}
             </li>
             <li class="list-group-item">
-              <i class="fas fa-ruler-combined text-secondary"></i> <b>Size:</b>
+              <i class="fas fa-ruler-combined text-secondary"></i>
+              <b>Size : </b>
+              {% if product.category.category_type == "戒指" %}
               <span class="float-right">{{ product.size }}</span>
+              {% else %}
+              <span class="float-right">Not Applicable</span>
+              {% endif %}
             </li>
           </ul>
         </div>
 
+        <!-- -->
         <div class="row mb-4">
+          {% comment %}
           <div class="col-md-6">
             <h5 class="text-secondary">
               <i class="fas fa-user-md"></i> Professions
@@ -172,23 +192,26 @@
             <p class="text-muted">None listed</p>
             {% endif %}
           </div>
+          {% endcomment %}
         </div>
 
-        <div class="card card-body bg-light mb-5">
-          <h5 class="card-title text-primary">Description</h5>
+        <div
+          class="card card-body mb-5"
+          style="background-color: #fbc6c6ff; border: none; color: #777474ff"
+        >
+          <h5 class="card-title" style="font-weight: bold">Description</h5>
           <hr />
-          <div class="card-text text-dark">
-            {{ product.description | linebreaks }}
-          </div>
+          <div class="card-text">{{ product.description | linebreaks }}</div>
         </div>
       </div>
 
       <div class="col-md-3">
+        {% comment %}
         <div class="card shadow-sm mb-3">
-          {% if product.doctor.photo %}
+          {% if product.image_00 %}
           <img
             class="card-img-top"
-            src="{{ product.doctor.photo.url }}"
+            src="{{ product.image_00.url }}"
             style="height: 200px; object-fit: cover"
           />
           {% endif %}
@@ -197,6 +220,7 @@
             <h6 class="text-secondary">{{ product.doctor.name }}</h6>
           </div>
         </div>
+        {% endcomment %}
         <button
           class="btn btn-primary btn-block btn-lg"
           data-toggle="modal"
@@ -205,7 +229,16 @@
         >
           Make An Inquiry
         </button>
+        <button
+          class="btn btn-primary btn-block btn-lg"
+          data-toggle="modal"
+          data-target="#inquiryModal"
+          style="background-color: #ffb7b7ff; border: none"
+        >
+          Add To Shopping Cart
+        </button>
       </div>
+      <!-- shopping cart-->
     </div>
   </div>
 </section>
