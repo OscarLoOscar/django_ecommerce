@@ -1,5 +1,6 @@
 from django.shortcuts import render ,get_object_or_404
 from .models import Product
+from cartitems.models import CartItem
 from categories.models import Category
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -43,12 +44,13 @@ def product_list(request):
 # 要跟products/urls.py 既setting ,用product_id ，但reference可以用pk/id
 def product_detail(request,product_id):
   product = get_object_or_404(Product,pk=product_id)
-
   cart = _get_or_create_cart(request)
-  cart_item = cart.cartitem_set.all()
+
+  cartitem_count = CartItem.objects.filter(cart=cart).count()
+
   context={
     'product':product,
-    'cart_item':cart_item,
+    'cartitem_count':cartitem_count,
   }
   return render(request,'products/product_detail.html',context)
 

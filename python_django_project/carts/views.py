@@ -19,17 +19,27 @@ def _get_or_create_cart(request):
 
 # @login_required
 def api_add_to_cart(request,product_id):
-  product = get_object_or_404(Product,id=product_id)
-  cart = _get_or_create_cart(request)
-  item , created = CartItem.objects.get_or_create(cart=cart , product=product)
+  if request.method == "POST":
+    product = get_object_or_404(Product,id=product_id)
+    cart = _get_or_create_cart(request)
 
-  if not created:
-    item.quantity+=1
-  else:
-    item.quantity=1
-  item.save()
+    size = request.POST.get('size','Standard')
 
-  # return JsonResponse({"status": "success","message":"Added to cart"})
+    item , created = CartItem.objects.get_or_create(cart=cart , product=product,size=size)
+
+    print(f"DEBUG: Cart ID is {cart.id}")
+    print(f"DEBUG: Item created: {created}, Quantity: {item.quantity}")
+    if not created:
+      item.quantity+=1
+    else:
+      item.quantity=1
+    item.save()
+
+    cartitem_set = CartItem.objects.filter(cart=cart).count()
+    # return JsonResponse({"status": "success","message":"Added to cart"})
+    print(f"Items in cart: {cartitem_set}")
+    return redirect(request.META.get('HTTP_REFERER','products:index'))
+  # return redirect('products:index')
   return redirect('carts:view_cart')
 
 # @login_required

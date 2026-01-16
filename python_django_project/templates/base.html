@@ -92,13 +92,13 @@
                   <small class="text-muted">Qty : {{item.quantity}} </small>
                 </div>
                 <span class="badge badge-pill badge-light">
-                  $ {{item.product.price}}
+                Price : $ {{item.product.price}}
                 </span>
               </li>
               {% endfor %}
             </ul>
             <div class="p-3 border-top mt-3">
-              <h5 class="text-right">total: ${{global_cart_total}}</h5>
+              <h5 class="text-right">Total: ${{global_cart_total}}</h5>
               <a
                 href="{% url 'carts:view_cart' %}"
                 class="btn btn-block"
