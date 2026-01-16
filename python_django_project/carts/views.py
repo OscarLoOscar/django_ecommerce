@@ -48,7 +48,7 @@ def api_update_cart_item(request,item_id):
   # return JsonResponse({'status':'success', 'new_quantity' : item.quantity})
   return redirect('carts:view_cart')
 
-@login_required
+# @login_required
 def remove_from_cart(request,item_id):
   cart = _get_or_create_cart(request)
   cart_item = get_object_or_404(CartItem,id=item_id,cart=cart)
