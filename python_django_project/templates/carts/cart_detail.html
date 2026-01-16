@@ -1,1 +1,178 @@
-<h1>shopping detail</h1>
+{% extends 'base.html' %}
+<!---->
+{% load humanize %}
+<!---->
+{% load static %}
+<!---->
+{% block title %}
+<!---->
+{% endblock %}
+<!---->
+{% block content %}
+<div
+  id="cart-panel"
+  class="CartPanel nav-bg-color js-cart-panel sidr left is-open"
+  style="display: block; left: 0px"
+>
+  <div class="CartPanel-section">
+    <div ng-controller="CartsController" class="ng-scope">
+      <div class="clear"></div>
+      <!-- Hint: Cart Empty -->
+      <div ng-show="currentCart.isCartEmpty()" class="ng-hide">
+        <div class="CartPanel-hint">你的購物車是空的</div>
+      </div>
+
+      <div
+        class="cart-panel-content"
+        data-e2e-id="cart-panel_container"
+        ng-hide="currentCart.isCartEmpty()"
+      >
+        <!-- CartItems -->
+        <div class="cart-items">
+          <!-- ngRepeat: item in currentCart.getItems() track by item._id --><!-- ngIf: item.type !== 'gift' -->
+          <div
+            ng-repeat="item in currentCart.getItems() track by item._id"
+            ng-if="item.type !== 'gift'"
+            class="cart-item-container ng-scope"
+            data-cart-item-id="60fecf9195ba40139839b4787fce1008"
+            product-id="69688df8a96d9adaa3fe1715"
+          >
+            <!-- Item -->
+            <div class="cart-item">
+              <!-- ngIf: item.product.type !== 'gift' --><a
+                ng-if="item.product.type !== 'gift'"
+                ng-href="/products/69688df8a96d9adaa3fe1715"
+                target="_blank"
+                class="product-link js-product-link ng-scope"
+                href="/products/69688df8a96d9adaa3fe1715"
+              >
+                <img
+                  class="sl-lazy-image cart-item-image"
+                  ng-src="https://shoplineimg.com/667d1e291a4d770073c0ccfe/6969a6ed6f464f0018dfc30f/200x200f.webp?source_format=jpeg"
+                  alt=""
+                  src="https://shoplineimg.com/667d1e291a4d770073c0ccfe/6969a6ed6f464f0018dfc30f/200x200f.webp?source_format=jpeg"
+                /> </a
+              ><!-- end ngIf: item.product.type !== 'gift' -->
+              <!-- ngIf: item.product.type === 'gift' -->
+              <div class="cart-item-content" style="float: left; width: 130px">
+                <div class="wrap--bundle-title-variation">
+                  <div
+                    ng-show="['bundle_pricing', 'bundle_percentage', 'bundle_amount', 'bundle_gift'].includes(item.applied_promotion.discount_type)"
+                    class="label promotion-label label-default ng-binding ng-hide"
+                  >
+                    任選優惠
+                  </div>
+                  <div
+                    ng-show="['bundle_group', 'bundle_group_percentage', 'bundle_group_amount', 'bundle_group_gift'].includes(item.applied_promotion.discount_type)"
+                    class="label promotion-label label-default ng-binding ng-hide"
+                  >
+                    A+B 組合
+                  </div>
+                  <div
+                    ng-show="['buyandget_free', 'buyandget_percentage', 'buyandget_pricing'].includes(item.applied_promotion.discount_type)"
+                    class="label promotion-label label-default ng-binding ng-hide"
+                  >
+                    買 X 享 Y
+                  </div>
+                  <div
+                    ng-show="item.type === 'redeem_gift' || item.type === 'manual_gift'"
+                    class="label promotion-label label-default ng-binding ng-hide"
+                  >
+                    贈品
+                  </div>
+                  <div
+                    ng-show="item.type == 'addon_product'"
+                    class="label promotion-label label-default ng-binding ng-hide"
+                  >
+                    加購品
+                  </div>
+                  <div class="title ng-binding">Dr.Jr TOKIO 京喚羽護髮系列</div>
+                  <!-- ngRepeat: field in item.variation.fields track by $index -->
+                  <div
+                    ng-repeat="field in item.variation.fields track by $index"
+                    class="item-variation ng-scope"
+                  >
+                    <div
+                      ng-class="$index === 0 ? 'variation' : 'variation space-variation'"
+                      class="ng-binding variation"
+                    >
+                      銀喚羽 Platinum
+                    </div>
+                  </div>
+                  <!-- end ngRepeat: field in item.variation.fields track by $index -->
+                  <div
+                    ng-repeat="field in item.variation.fields track by $index"
+                    class="item-variation ng-scope"
+                  >
+                    <div
+                      ng-class="$index === 0 ? 'variation' : 'variation space-variation'"
+                      class="ng-binding variation space-variation"
+                    >
+                      Shampoo 400ml
+                    </div>
+                  </div>
+                  <!-- end ngRepeat: field in item.variation.fields track by $index -->
+                  <!-- ngIf: isProductSetEnabled && item.product.type === 'product_set' && item.product.child_products -->
+                  <!-- ngIf: !state.variationOpenedChildren.has(item._id) && item.product.type === 'product_set' -->
+                  <!-- ngIf: isProductSetRevampEnabled && item.product.type === 'product_set' && item.product.child_products && state.variationOpenedChildren.has(item._id) -->
+                  <!-- ngIf: checkJoinVariantsEnabled() -->
+                  <div
+                    class="variation ng-binding ng-hide"
+                    ng-hide="item.variation.fields"
+                  ></div>
+                </div>
+                <div class="price-details ng-binding">
+                  1<span style="margin: 0 3px">x</span>
+                  <!-- ngIf: currentCart.getItemPrice(item).label !== '' && item.type !== 'redeem_gift' --><span
+                    ng-if="currentCart.getItemPrice(item).label !== '' &amp;&amp; item.type !== 'redeem_gift'"
+                    ng-bind-html="currentCart.getItemPrice(item).label | changeCurrency"
+                    class="ng-binding ng-scope"
+                    >HK$299.00</span
+                  ><!-- end ngIf: currentCart.getItemPrice(item).label !== '' && item.type !== 'redeem_gift' -->
+                  <!-- ngIf: currentCart.getItemPrice(item).label === '' && item.type !== 'redeem_gift' -->
+                  <!-- ngIf: item.type === 'redeem_gift' -->
+                </div>
+              </div>
+              <!--cart-item-content-->
+              <!-- ngIf: shouldShowDeleteButton -->
+              <div class="remove ng-scope" ng-if="shouldShowDeleteButton">
+                <a ng-click="removeItemFromCart(item._id,$event)">
+                  <span>刪除</span>
+                  <svg class="icons icon-delete">
+                    <use xlink:href="#icon-delete"></use>
+                  </svg>
+                </a>
+              </div>
+              <!-- end ngIf: shouldShowDeleteButton -->
+              <div class="clear"></div>
+            </div>
+            <!-- Item end-->
+            <!-- Addon items -->
+            <!-- ngRepeat: addonItem in item.addon_items track by addonItem._id -->
+            <!-- Addon items end -->
+          </div>
+          <!-- end ngIf: item.type !== 'gift' --><!-- end ngRepeat: item in currentCart.getItems() track by item._id -->
+          <div class="clear"></div>
+        </div>
+        <!-- CartItems end -->
+
+        <div class="clear"></div>
+        <!-- Checkout button -->
+        <div class="cart-chkt-btn-cont">
+          <button
+            id="btn-checkout"
+            data-e2e-id="checkout_button"
+            class="cart-chkt-btn ladda-button ng-binding"
+            data-style="slide-down"
+            ladda="checkoutButtonLoading"
+            ng-click="onCheckoutClicked($event)"
+          >
+            訂單結帳
+          </button>
+        </div>
+        <!-- Checkout button end -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

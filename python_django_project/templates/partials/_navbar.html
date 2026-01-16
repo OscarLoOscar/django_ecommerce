@@ -30,8 +30,8 @@
       </li>
       {% comment %} end of ul @ 13/01/2026 {% endcomment %}
     </ul>
-      <!--search function -->
     <ul class="navbar-nav ml-auto align-items-lg-center">
+      <!--search function -->
       <li class="nav-item">
         <form class="form-inline my-2 my-lg-0 mr-lg-3" action="{% url 'products:search' %}" method="GET">
           <div class="search-hover-container">
@@ -85,13 +85,18 @@
           <i class="fa-solid fa-user"></i>
         </a>
       </li>
-      <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class='nav-item mr-3' {% endif %}> 
-        {% comment %} Must Change URL {% endcomment %}
-        <a class="nav-link" href=#">
-          <i class="fa fa-cart-shopping"></i>
-          </a>
-      </li>
         {% endif %}
+        <!-- shopping cart-->
+      <li class="shoppingCartLeft"> 
+        {% comment %} Must Change URL {% endcomment %}
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#navCartModal">
+          <i class="fa fa-cart-shopping"></i>
+          {% if global_cart_count > 0%}
+          <span class="badge badge-danger" style="font-size: 0.6rem; vertical-align: top;">{{global_cart_count}}</span>
+          {% endif %}
+        </a>
+      </li>
+
     </ul>
   </div> 
 </nav>

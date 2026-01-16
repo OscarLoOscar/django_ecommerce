@@ -19,7 +19,8 @@
       <div class="col-md-12">
         <h1 class="display-4">{{ product.title | title }}</h1>
         <p class="lead">
-          <i class="fas fa-map-marker"></i> {{ product.district | title }}
+          {% comment %} <i class="fas fa-map-marker"></i> {{ product.district |
+          title }} {% endcomment %}
         </p>
       </div>
     </div>
@@ -61,6 +62,7 @@
           "
         />
 
+        <!-- photo lists -->
         <div class="row mb-5 thumbs">
           {% for img in product_images %}
           <!---->
@@ -122,7 +124,7 @@
           <!---->
           {% endfor %}
         </div>
-        <!-- Product Detail-->
+        <!-- Product name -->
         <div class="card mb-5">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -132,12 +134,24 @@
                 >{{ product.title | title }}</span
               >
             </li>
+            <!-- Category -->
+            <li class="list-group-item">
+              <i class="fa-regular fa-heart text-secondary"></i>
+              <b>Category : </b>
+              <span class="float-right text-primary font-weight-bold"
+                >{{ product.category.category_type | title }}</span
+              >
+            </li>
             <li class="list-group-item">
               <i class="fas fa-money-bill-alt text-success"></i> <b>Price : </b>
               <span class="float-right text-primary font-weight-bold"
                 >${{ product.price | intcomma }}</span
               >
             </li>
+            <!-- stock -->
+            {% if product.category.category_type == "媽媽勾織"%}
+            <!---->
+            {% else %}
             <li class="list-group-item">
               <i class="fas fa-box text-secondary"></i> <b>Stock : </b>
               {% if product.category.category_type == "耳環" %}
@@ -148,11 +162,17 @@
               <span class="float-right">{{ product.stock_count }} items</span>
               {% endif %}
             </li>
+            {% endif %}
+            <!-- size -->
             <li class="list-group-item">
               <i class="fas fa-ruler-combined text-secondary"></i>
               <b>Size : </b>
               {% if product.category.category_type == "戒指" %}
               <span class="float-right">{{ product.size }}</span>
+              {% elif product.category.category_type == "媽媽勾織" %}
+              <span class="float-right"
+                >Tailor-made items,Please contact Only K
+              </span>
               {% else %}
               <span class="float-right">Not Applicable</span>
               {% endif %}
@@ -195,6 +215,7 @@
           {% endcomment %}
         </div>
 
+        <!-- Description -->
         <div
           class="card card-body mb-5"
           style="background-color: #fbc6c6ff; border: none; color: #777474ff"
@@ -205,6 +226,7 @@
         </div>
       </div>
 
+      <!-- inquiry , shopping cart-->
       <div class="col-md-3">
         {% comment %}
         <div class="card shadow-sm mb-3">
@@ -225,34 +247,109 @@
           class="btn btn-primary btn-block btn-lg"
           data-toggle="modal"
           data-target="#inquiryModal"
-          style="background-color: #ffb7b7ff; border: none"
+          style="background-color: #ffb7b7ff; border: none; font-size: 110%"
         >
           Make An Inquiry
         </button>
+        {% comment %} {% url 'carts:cart_detail' %} {% endcomment %}
+        <!---->
+        {% if product.category.category_type == '戒指'%}
         <button
-          class="btn btn-primary btn-block btn-lg"
           data-toggle="modal"
-          data-target="#inquiryModal"
-          style="background-color: #ffb7b7ff; border: none"
+          data-target="#shoppingCartLeft"
+          class="btn btn-primary btn-block btn-lg"
+          style="background-color: #ffb7b7ff; border: none; font-size: 110%"
         >
           Add To Shopping Cart
         </button>
+        <!---->
+        <div class="modal fade" id="shoppingCartLeft" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div
+                class="modal-header text-white"
+                style="background-color: #ffb7b7ff"
+              >
+                <h5 class="modal-title">Confirm Options : {{product.title}}</h5>
+                <button
+                  class="close text-white"
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form method="POST">
+                  {% csrf_token %}
+                  <!---->
+                  {% if product.category.category_type == '戒指' %}
+                  <div class="form-group">
+                    <label>Size Selection:</label>
+                    <!-- Method : 1 -->
+                    {% comment %}
+                    <input
+                      type="number"
+                      min="11"
+                      max="20"
+                      class="form-control"
+                      name="size"
+                      placeholder="Please Input Size(11-20)"
+                      required
+                    />
+                    {% endcomment %}
+                    <!-- Method : 2 -->
+                    <select
+                      name="size"
+                      class="form-control"
+                      required="required"
+                    >
+                      <option value="" disable="" selected="selected">
+                        Please choose size: (11-20)
+                      </option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                    </select>
+                    {% endif %}
+                  </div>
+                  <input
+                    type="submit"
+                    class="btn btn-block"
+                    style="background-color: #ffb7b7ff; color: #fff"
+                    value="Confirm & Add"
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
       </div>
       <!-- shopping cart-->
     </div>
   </div>
 </section>
 
+<!-- message modal -->
 <div class="modal fade" id="inquiryModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Clinic Inquiry</h5>
+      <div class="modal-header text-white" style="background-color: #ffb7b7ff">
+        <h5 class="modal-title">Contact Only K</h5>
         <button type="button" class="close text-white" data-dismiss="modal">
           <span>&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <!-- modify url -->
         <form method="POST" action="{% url 'products:search' %}">
           {% csrf_token %}
           <input type="hidden" name="listing_id" value="{{ product.id }}" />
@@ -269,7 +366,7 @@
           {% endif %}
 
           <div class="form-group">
-            <label>Clinic:</label>
+            <label>Accessories :</label>
             <input
               type="text"
               name="product"
@@ -278,6 +375,7 @@
               readonly
             />
           </div>
+          {% if user.is_authenticated %}
           <div class="form-group">
             <label>Name:</label>
             <input
@@ -314,9 +412,52 @@
               required
             />
           </div>
+          {% else %}
+          <div class="form-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              placeholder="Input your name"
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              placeholder="Input your email"
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+
+          {% endif %}
           <div class="form-group">
             <label>Phone:</label>
-            <input type="text" name="phone" class="form-control" required />
+            <input
+              type="text"
+              name="phone"
+              class="form-control"
+              placeholder="Input your phone number"
+              required
+            />
           </div>
           <div class="form-group">
             <label>Message:</label>
@@ -325,11 +466,124 @@
           <input
             type="submit"
             value="Send Message"
-            class="btn btn-block btn-secondary"
+            class="btn btn-block"
+            style="
+              color: #fff;
+              background-color: #ffb7b7ff !important;
+              border: none !important;
+              outline: none !important;
+            "
           />
         </form>
       </div>
     </div>
   </div>
 </div>
+<!-- shopping cart modal -->
+<div class="modal fade shoppingCartLeft" id="shoppingCartLeft" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-white" style="background-color: #ffb7b7ff">
+        <h5 class="modal-title">{{product.title | title}}</h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- need to modify url -->
+        <form method="POST" action="{% url 'products:search' %}">
+          {% csrf_token %} {% comment %}
+          <input type="hidden" name="listing_id" value="{{ product.id }}" />
+          <input
+            type="hidden"
+            name="doctor_email"
+            value="{{ product.doctor.email }}"
+          />
+          {% endcomment %} {% if user.is_authenticated %}
+          <input type="hidden" name="user_id" value="{{ user.id }}" />
+          {% else %}
+          <input type="hidden" name="user_id" value="0" />
+          {% endif %}
+
+          <div class="form-group">
+            <label>Product Name :</label>
+            <input
+              type="text"
+              name="product"
+              class="form-control"
+              value="{{ product.title }}"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Category : </label>
+            <input
+              type="text"
+              name="category"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{ product.category.category_type }}"
+              readonly
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Price:</label>
+            <input
+              type="text"
+              name="price"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{ product.price }}"
+              readonly
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Size :</label>
+            {% if product.category.category_type == '戒指' %}
+            <input
+              type="text"
+              name="size"
+              class="form-control"
+              placeholder="請輸入尺寸"
+              required
+            />
+            {% elif product.category.category_type == '媽媽勾織'%}
+            <input
+              type="text"
+              name="size"
+              class="form-control"
+              value="請聯絡Only K for Tailor-made"
+              readonly
+            />
+            {% else %}
+            <input type="text" class="form-control" value="不適用" readonly />
+            <input type="hidden" name="size" value="0" />
+            {% endif %}
+          </div>
+          <input
+            style="background-color: #ffb7b7ff; color: #fff"
+            type="submit"
+            value="Add To Shopping Cart"
+            class="btn btn-block"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

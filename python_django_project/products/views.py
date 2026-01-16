@@ -3,6 +3,7 @@ from .models import Product
 from categories.models import Category
 from django.db.models import Q
 from django.core.paginator import Paginator
+from carts.views import _get_or_create_cart
 # Create your views here.
 def product_list(request):
   products_list = Product.objects.filter(is_published=True)
@@ -42,8 +43,12 @@ def product_list(request):
 # 要跟products/urls.py 既setting ,用product_id ，但reference可以用pk/id
 def product_detail(request,product_id):
   product = get_object_or_404(Product,pk=product_id)
+
+  cart = _get_or_create_cart(request)
+  cart_item = cart.cartitem_set.all()
   context={
-    'product':product
+    'product':product,
+    'cart_item':cart_item,
   }
   return render(request,'products/product_detail.html',context)
 

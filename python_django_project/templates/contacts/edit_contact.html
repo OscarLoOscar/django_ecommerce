@@ -1,25 +1,27 @@
 {% extends "base.html" %}
+<!---->
 {% load humanize %}
 <!-- ignore-prettier -->
 {% load widget_tweaks %}
+<!---->
 {% block content %}
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card p-6 shadow-sm">
         <h1 class="text-center mb-4">Edit Message</h1>
-        <form action="{% url 'contacts:edit_contact' contact.id %}" method="POST">
+        <form
+          action="{% url 'contacts:edit_contact' contact.id %}"
+          method="POST"
+        >
           {% csrf_token %}
           <div class="mb-3">
-            {% comment %} expression : {% endcomment %}
-            {{form.message | add_label_class:'form-label'}}
+            {% comment %} expression : {% endcomment %} {{form.message |
+            add_label_class:'form-label'}}
             <!-- form-error -->
             {% if form.message.errors %}
-            <div class="text-danger mb-2">
-              {{form.message.errors}}
-            </div>
-            {% endif %}
-            {{form.message | add_class:'form-control'}}
+            <div class="text-danger mb-2">{{form.message.errors}}</div>
+            {% endif %} {{form.message | add_class:'form-control'}}
           </div>
           <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
