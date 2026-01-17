@@ -9,7 +9,10 @@ class CartItem(models.Model):
   size = models.CharField(max_length=20,default='Standard')
   quantity=models.PositiveIntegerField(default=1)
   created_at = models.DateTimeField(auto_now_add=True)
-
+  
+  def get_subtotal(self):
+      return self.product.price * self.quantity
+  
   class Meta:
     ordering=['-created_at']
     indexes = [models.Index(fields=['created_at'])]

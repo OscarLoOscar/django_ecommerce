@@ -135,14 +135,14 @@
             </div>
 
             <div class="remove-section">
-              <div class="mb-2 font-weight-bold">Subtotal:</div>
+              <div class="mb-2 font-weight-bold"></div>
               <div class="mb-3 text-danger font-weight-bold">
                 HK${{ item.get_subtotal|intcomma }}
               </div>
               <a
                 href="{% url 'carts:remove_from_cart' item.id %}"
                 class="text-muted small"
-                onclick="return confirm('確定要從購物車移除嗎？')"
+                onclick="return confirm('確定要從購物車移除嗎？');"
               >
                 <i class="fa fa-trash"></i> 刪除
               </a>

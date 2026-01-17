@@ -197,7 +197,7 @@
       </div>
 
       <!-- inquiry , shopping cart-->
-      <div class="col-md-3">
+      <div class="col-md-3 custom-cart-btn">
         {% comment %}
         <div class="card shadow-sm mb-3">
           {% if product.image_00 %}
@@ -217,7 +217,11 @@
           class="btn btn-primary btn-block btn-lg"
           data-toggle="modal"
           data-target="#inquiryModal"
-          style="background-color: #ffb7b7ff; border: none; font-size: 110%"
+          style="
+            background-color: #ffb7b7ff;
+            border: none;
+            font-size: 1.1rem !important;
+          "
         >
           Make An Inquiry
         </button>
@@ -226,14 +230,20 @@
         {% if product.category.category_type in '戒指 頸鏈 耳環 手鏈' %}
         <button
           data-toggle="modal"
-          data-target="#shoppingCartLeft"
+          data-target="#actualAddToCartModal"
           class="btn btn-primary btn-block btn-lg"
-          style="background-color: #ffb7b7ff; border: none; font-size: 110%"
+          style="
+            background-color: #ffb7b7ff;
+            border: none;
+            font-size: 1.1rem !important;
+            text-align:;
+          "
         >
-          Add To Shopping Cart
+          Add To <br class="d-none d-md-block d-lg-none" />
+          Shopping Cart
         </button>
         <!---->
-        <div class="modal fade" id="shoppingCartLeft" role="dialog">
+        <div class="modal fade" id="actualAddToCartModal" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
               <div
@@ -272,6 +282,7 @@
                     />
                     {% endcomment %}
                     <!-- Method : 2 -->
+                    {% comment %}
                     <select
                       name="size"
                       class="form-control"
@@ -291,32 +302,40 @@
                       <option value="19">19</option>
                       <option value="20">20</option>
                     </select>
-                    {% else %}
-                    <div class="text-center py-3">
-                      <span class="font-weight-bold"
-                        >Thank you for shopping
-                      </span>
-                    </div>
-                    <input type="hidden" name="size" value="Standard" />
-                    <!---->
-                    {% endif %}
+                    {% endcomment %}
+                    <!-- Method : 3-->
+                    <select
+                      name="size"
+                      id=""
+                      class="form-control"
+                      required="required"
+                    >
+                      {% for i in "123456789" %}
+                      <option value="{{forloop.counter|add:10}}" class="">
+                        {{forloop.counter|add:10}}
+                      </option>
+                      {% endfor %}
+                    </select>
                   </div>
-                  {% comment %}
-                  <input
-                    type="submit"
-                    class="btn btn-block"
-                    style="background-color: #ffb7b7ff; color: #fff"
-                    value="Confirm & Add"
-                  />
-                  {% endcomment %}
-                  <button
-                    class="btn btn-primary"
-                    type="submit"
-                    style="background-color: #ffb7b7ff; color: #fff"
-                    onClick="console.log('Form is being submitted!')"
-                  >
-                    Confirm & Add
-                  </button>
+                  {% else %}
+                  <div class="text-center py-3">
+                    <span class="font-weight-bold"
+                      >Thank you for shopping
+                    </span>
+                  </div>
+                  <input type="hidden" name="size" value="Standard" />
+                  <!---->
+                  {% endif %}
+                  <div class="text-center mt-3">
+                    <button
+                      class="btn btn-primary"
+                      type="submit"
+                      style="background-color: #ffb7b7ff; color: #fff"
+                      onClick="console.log('Form is being submitted!')"
+                    >
+                      Confirm & Add
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>

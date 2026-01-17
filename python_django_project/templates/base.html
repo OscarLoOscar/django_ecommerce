@@ -23,6 +23,9 @@
       .modal.shoppingCartLeft.show .modal-dialog {
         transform: translate3d(0, 0, 0);
       }
+      @media(max-width:576px){
+        .modal.shoppingCartLeft .modal-dialog { width: 85%; }
+      }
     </style>
 
     <meta charset="UTF-8" />
@@ -86,14 +89,25 @@
               <li
                 class="list-group-item justify-content-between align-items-center"
               >
-                <div>
-                  <strong>{{item.product.title}}</strong>
+                <div class="mb-2">
+                  <strong>{{item.product.title|title}}</strong>
                   <br />
                   <small class="text-muted">Qty : {{item.quantity}} </small>
                 </div>
-                <span class="badge badge-pill badge-light">
-                Price : $ {{item.product.price}}
-                </span>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="badge badge-pill badge-light">
+                  Price : $ {{item.product.price}}
+                  </span>
+                  <!---->
+                  <a
+                    href="{% url 'carts:remove_from_cart' item.id %}"
+                    class="text-muted small"
+                    onClick="return confirm('確定要從購物車移除嗎？')"
+                  >
+                    <i class="fa fa-trash"></i> 刪除
+                  </a>
+                <!---->
+                </div>
               </li>
               {% endfor %}
             </ul>

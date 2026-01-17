@@ -43,10 +43,10 @@ def api_add_to_cart(request,product_id):
   return redirect('carts:view_cart')
 
 # @login_required
-def api_update_cart_item(request,item_id):
+def api_update_cart_item(request,product_id):
   cart = _get_or_create_cart(request)
 
-  item = get_object_or_404(CartItem , id = item_id,cart=cart)
+  item = get_object_or_404(CartItem , id = product_id,cart=cart)
   action = request.POST.get('action')
 
   if action == 'increase':
@@ -59,9 +59,9 @@ def api_update_cart_item(request,item_id):
   return redirect('carts:view_cart')
 
 # @login_required
-def remove_from_cart(request,item_id):
+def remove_from_cart(request,product_id):
   cart = _get_or_create_cart(request)
-  cart_item = get_object_or_404(CartItem,id=item_id,cart=cart)
+  cart_item = get_object_or_404(CartItem,id=product_id,cart=cart)
 
   cart_item.delete()
   return redirect('carts:view_cart')
