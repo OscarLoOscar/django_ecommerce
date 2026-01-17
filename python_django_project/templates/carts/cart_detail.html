@@ -163,17 +163,19 @@
             <span>商品總計</span>
             <span class="font-weight-bold">HK${{ total_price|intcomma }}</span>
           </div>
-          <button
-            class="btn btn-block text-white"
-            style="
-              background-color: #ffb7b7ff;
-              border: none;
-              height: 50px;
-              font-weight: bold;
-            "
-          >
-            訂單結帳
-          </button>
+          <a href="{% url 'orders:checkout' %}">
+            <button
+              class="btn btn-block text-white"
+              style="
+                background-color: #ffb7b7ff;
+                border: none;
+                height: 50px;
+                font-weight: bold;
+              "
+            >
+              訂單結帳
+            </button>
+          </a>
           <a
             href="{% url 'products:index' %}"
             class="btn btn-link btn-block btn-sm text-muted mt-2"

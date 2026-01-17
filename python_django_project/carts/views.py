@@ -4,8 +4,18 @@ from django.contrib.auth.decorators import login_required
 from .models import Cart
 from cartitems.models import CartItem
 from products.models import Product
+from django.contrib import messages
+from django.db import transaction
+from orders.models import Order
+from carts.models import Cart
+from cartitems.models import CartItem
+from orderitems.models import OrderItem
+from users.models import PurchaseHistory
 
 # Create your views here.
+def calculate_total(cart_items):
+   return sum(item.product.price * item.quantity for item in cart_items)
+
 def _get_or_create_cart(request):
   if request.user.is_authenticated:
     cart,_ = Cart.objects.get_or_create(user=request.user)
@@ -79,3 +89,65 @@ def view_cart(request):
 
 # get_object_or_404(CartItem, id=item_id), 仆街user random試一個id,就可以delete/modify其他user既shopping cart
 # 加cart＝cart , system會check this ID is it in your cart 
+
+# def checkout(request):
+#   return render(request,'carts/checkout.html')
+
+# @login_required
+# @transaction.atomic # Prevent Rollback
+# def checkout(request):
+#     cart_items = CartItem.objects.filter(cart__user=request.user)
+
+#     if request.method == 'POST':
+#       if not cart_items.exists():
+#         messages.error(request,"你的購物車係空的")
+#         return redirect('products:product_list')
+#       total_amount = calculate_total(cart_items)
+
+#       try:
+#         order = Order.objects.create(
+#           user = request.user,
+#           total_price=total_amount,
+#           delivery_method=request.POST.get('delivery_method'),
+#           payment_method=request.POST.get('payment_method'),
+#           shipping_location = request.POST.get('sf_location',''),
+#           sf_region = request.POST.get('sf_region',''),
+#           sf_address = request.POST.get('sf_address',''),
+#           status="Pending"
+#         )
+
+#         for item in cart_items:
+#           if item.product.stock_count < item.quantity:
+#               messages.error(request,f"產品{item.product.title} 庫存不足")
+#               raise Exception(f"產品{item.product.title} 庫存不足")
+      
+#         OrderItem.objects.create(
+#           order=order,
+#           product = item.product,
+#           price=item.product.price,
+#           quantity=item.quantity,
+#           size=item.size
+#         )
+  
+#         PurchaseHistory.objects.get_or_create(
+#             user=request.user,
+#             product=item.product
+#         )
+
+#         item.product.stock_count -=item.quantity
+#         item.product.save()
+
+#       # cart.products.clear()
+#         cart_items.delete()
+
+#         messages.success(request,f"訂單 #{order.id} 已建立，請盡快付款")
+#         return redirect('users:dashboard')
+#       except Exception as e:
+#         messages.error(request,str(e))
+#         return redirect('carts:view_cart')
+      
+#     context = {
+#       'cart_items':cart_items,
+#       'total_price': calculate_total(cart_items),
+#     }
+#     return render(request,'orders/checkout.html', context)

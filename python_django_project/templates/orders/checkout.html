@@ -6,4 +6,210 @@
 <!---->
 {% block title %} | Check Out {% endblock %}
 <!---->
-{% block content %} {% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">訂單結帳</h2>
+  <form action="{% url 'orders:checkout' %}" method="POST">
+    {% csrf_token %}
+    <!-- 商品-->
+    <div class="row">
+      <div class="col-md-7">
+        <div class="shadow-sm p-3 bg-white rounder mb-4">
+          <h5 class="font-weight-bold mb-3">商品內容</h5>
+          {% for item in cart_items %}
+          <div class="d-flex mb-3 align-items-center">
+            <img
+              src="{{item.product.image_00.url}}"
+              style="width: 60px; height: 60px; object-fit: cover"
+              class="rounder mr-3"
+            />
+            <div class="flex-grow-1">
+              <div class="font-weight-bold">{{item.product.title|title}}</div>
+              <small class="text-muted"
+                >尺寸: {{ item.size }} | 數量: {{ item.quantity }}</small
+              >
+            </div>
+            <div class="text-right font-weight-bold">
+              HK${{ item.get_subtotal|intcomma }}
+            </div>
+          </div>
+          <hr />
+          {% endfor%}
+          <div class="text-right">
+            <span>商品總計：</span>
+            <span class="h4 font-weight-bold text-danger"
+              >HK${{ total_price|intcomma }}</span
+            >
+          </div>
+        </div>
+      </div>
+      <!-- 送貨相關-->
+      <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title font-weight-bold">選擇送貨及付款方式</h5>
+            <hr />
+            <!--送貨地點-->
+            <div class="form-group">
+              <label for="">送貨地點</label>
+              <select
+                name="shipping_location"
+                id=""
+                class="form-control"
+                required
+              >
+                <option value="香港">香港</option>
+                <option value="九龍">九龍</option>
+                <option value="新界">新界</option>
+              </select>
+            </div>
+            <!-- 送貨方式-->
+            <div class="form-group">
+              <label for="">送貨方式 (運費到付)</label>
+              <select
+                name="delivery_method"
+                id=""
+                class="form-control"
+                required
+              >
+                <option value="BOOTH">下次 Booth 自取</option>
+                <option value="SF">順豐到付</option>
+              </select>
+            </div>
+            <!--配送區域-->
+            <div class="form-group">
+              <label for="region-select">配送區域</label>
+              <select id="region-select" class="form-control" required>
+                <option value="" disabled selected>--- 請選擇區域 ---</option>
+                <option value="kwun-tong">九龍--觀塘區--觀塘</option>
+                <option value="fo-tan">新界--沙田區--火炭</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>順豐地址</label>
+              <select
+                name="sf_address"
+                id="address-select"
+                class="form-control"
+                required
+              >
+                <option value="" disabled selected>請先選擇配送區域</option>
+                <option
+                  value="H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃"
+                  data-region="kwun-tong"
+                >
+                  H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃
+                </option>
+                <option
+                  value="H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃"
+                  data-region="kwun-tong"
+                >
+                  H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃
+                </option>
+                <option
+                  value="H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃
+                </option>
+                <option
+                  value="H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃
+                </option>
+                <option
+                  value="H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine 24)順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine
+                  24)順豐自助櫃
+                </option>
+                <option
+                  value="H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃
+                </option>
+                <option
+                  value="H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃
+                </option>
+                <option
+                  value="H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃
+                </option>
+                <option
+                  value="H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃"
+                  data-region="fo-tan"
+                >
+                  H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃
+                </option>
+              </select>
+            </div>
+            <!--付款方式-->
+            <div class="form-group">
+              <label>付款方式</label>
+              <select name="payment_method" class="form-control" required>
+                <option value="PAYME">Payme</option>
+                <option value="OCTOPUS">Octopus (八達通)</option>
+              </select>
+            </div>
+            <!--注意事項 -->
+            <div class="bg-light p-3 rounded small text-secondary mt-4">
+              <p class="font-weight-bold text-dark mb-2">注意事項:</p>
+              <ul class="pl-3">
+                <li>付款時請註明訂單號碼</li>
+                <li>上載入數證明時請註明銀行戶口全名以便核對</li>
+                <li>訂單成立後, 請於24小時內完成轉帳並截圖</li>
+                <li>為加快核數請截低Ref No. + 截圖上寫上銀行戶口全名</li>
+                <li>轉帳成功後, 請在訂單頁面上傳紀錄</li>
+              </ul>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg mt-4" type="submit">
+              提交訂單並結帳
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+  window.onload = function () {
+    const options = document
+      .getElementById("address-select")
+      .querySelectorAll("option[data-region]");
+    options.forEach((opt) => (opt.style.display = "none"));
+  };
+
+  document
+    .getElementById("region-select")
+    .addEventListener("change", function () {
+      const selectedRegion = this.value;
+      const addressSelect = document.getElementById("address-select");
+      const options = addressSelect.querySelectorAll("option");
+
+      addressSelect.value = "";
+
+      options.forEach((option) => {
+        const region = option.getAttribute("data-region");
+        if (region) {
+          if (region === selectedRegion) {
+            option.style.display = "block";
+            option.disabled = false;
+          } else if (option.getAttribute("data-region")) {
+            option.style.display = "none";
+            option.disabled = true;
+          }
+        }
+      });
+      options[0].textContent = "--- 請選擇詳細地址 ---";
+    });
+</script>
+{% endblock %}
