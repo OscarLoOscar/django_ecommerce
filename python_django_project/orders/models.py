@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from products.models import Product
 # Create your models here.
 class Order(models.Model):
   DELIVERY_CHOICES=(
@@ -21,6 +22,7 @@ class Order(models.Model):
     ('Shipped','Shipped')
   )
   user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT)
+  product = models.ManyToManyField(Product,through='orderitems.OrderItem',related_name='orders')
   total_price=models.DecimalField(max_digits=10,decimal_places=2)
   delivery_method=models.CharField(max_length=20,choices=DELIVERY_CHOICES)
   payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
@@ -38,9 +40,9 @@ class Order(models.Model):
     indexes = [models.Index(fields = ['created_at'])]
 
   def __str__(self):
-      return f"Order {self.id} - {self.user.username}"
+    return f"Order {self.id} - {self.user.username}"
   
   def update_total_price(self):
-      total=sum(item.price * item.quantity for item in self.items.all())
-      self.total_price=total
-      self.save()
+    total=sum(item.price * item.quantity for item in self.items.all())
+    self.total_price=total
+    self.save()

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+<!---->
+{% load humanize %}
+<!---->
+{% load static %}
+<!---->
+{% block title %} | place order {% endblock %}
+<!---->
+{% block content %}
+<div class="card shadow-sm mt-4">
+  <div class="card-header bg-white font-weight-bold">我的購買紀錄</div>
+  <div class="card-body">
+    {% if orders %}
+    <!---->
+    {% for order in orders %}
+    <div class="border rounded p-3 mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="font-weight-bold text-primary">訂單編號: #{{ order.id }}</h6>
+        <span
+          class="badge badge-{% if order.status == 'Pending' %}warning{% else %}success{% endif %}"
+        >
+          {{ order.status }}
+        </span>
+      </div>
+      <p class="small text-muted mb-2">
+        下單時間: {{ order.created_at|date:"Y-m-d H:i" }}
+      </p>
+
+      <ul class="list-unstyled">
+        {% for item in order.items.all %}
+        <li
+          class="small d-flex justify-content-between border-bottom pb-2 mb-2"
+        >
+          <div>
+            <div class="font-weight-bold">
+              {{ item.product.title }} x {{ item.quantity }}
+            </div>
+            <div class="text-muted">
+              <strong>尺寸:</strong>
+              {% if item.size == '0' or item.size == 0 or not item.size %}
+              Standard {% else %} {{ item.size }} {% endif %}
+              <span class="mx-2">|</span>
+              <strong>單價:</strong> HK${{ item.price|intcomma }}
+            </div>
+          </div>
+          <div class="align-self-center font-weight-bold text-danger">
+            HK${{ item.get_subtotal|intcomma }}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <hr />
+      <div class="text-right font-weight-bold">
+        總計: HK${{ order.total_price|intcomma }}
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p class="text-muted">暫時冇任何訂單紀錄。</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -12,7 +12,7 @@ class Cart(models.Model):
     ordering = ['created_at']
     indexes = [models.Index(fields = ['created_at']),models.Index(fields=['session_id'])]
 
-  def __str__(self):
-    if self.user:
-      return F"Cart(User:{self.user.username})"
-    return f"Cart (Session: {self.session_id})"
+def __str__(self):
+  if self.user:
+    return F"Cart(User:{self.user.username})"
+  return f"Cart (Session: {self.session_id})"

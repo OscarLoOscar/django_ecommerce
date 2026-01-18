@@ -75,7 +75,7 @@ def logout(request):
 
 @login_required
 def dashboard(request):
-  orders = Order.objects.filter(user=request.user).order_by('-created_at')
+  orders = Order.objects.filter(user=request.user).order_by('-created_at').prefetch_related('items__product')
   purchase_history = PurchaseHistory.objects.filter(user=request.user).select_related('product')
 
   context = {

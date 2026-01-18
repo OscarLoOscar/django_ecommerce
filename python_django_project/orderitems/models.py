@@ -9,10 +9,14 @@ class OrderItem(models.Model):
   price = models.DecimalField(max_digits=10, decimal_places=2)
   quantity = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
+  size=models.CharField(max_length=20,default="Standard")
 
   class Meta:
     ordering=['-created_at']
     indexes = [models.Index(fields=['created_at'])]
+    
+  def get_subtotal(self):
+      return self.product.price * self.quantity
 
-    def __str__(self):
-      return self.product.title
+  def __str__(self):
+    return self.product.title

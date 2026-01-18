@@ -9,7 +9,7 @@ from orderitems.models import OrderItem
 from users.models import PurchaseHistory
 # Create your views here.
 
-def calculate_total(cart_items):
+def get_subtotal(cart_items):
    return sum(item.product.price * item.quantity for item in cart_items)
 
 # def update_total_price(self):
@@ -36,7 +36,8 @@ def checkout(request):
       if not cart_items.exists():
         messages.error(request,"你的購物車係空的")
         return redirect('products:product_list')
-      total_amount = calculate_total(cart_items)
+      
+      total_amount = get_subtotal(cart_items)
 
       try:
         order = Order.objects.create(
@@ -44,7 +45,7 @@ def checkout(request):
           total_price=total_amount,
           delivery_method=request.POST.get('delivery_method'),
           payment_method=request.POST.get('payment_method'),
-          shipping_location = request.POST.get('sf_location',''),
+          shipping_location = request.POST.get('shipping_location',''),
           sf_region = request.POST.get('sf_region',''),
           sf_address = request.POST.get('sf_address',''),
           status="Pending"
@@ -82,7 +83,7 @@ def checkout(request):
       
     context = {
       'cart_items':cart_items,
-      'total_price': calculate_total(cart_items),
+      'total_price': get_subtotal(cart_items),
     }
     return render(request,'orders/checkout.html', context)
 

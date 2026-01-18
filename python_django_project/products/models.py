@@ -26,10 +26,10 @@ class Product(models.Model):
     if self.category:
       ctype = self.category.category_type
 
-      if ctype == ['手鏈','頸鏈']:
+      if ctype in ['手鏈','頸鏈']:
         if self.size==11 or self.size is None:
           self.size=0
-      elif ctype in '戒指':
+      elif ctype == '戒指':
         if self.size == 11:
           self.size = 11
     super().save(*args,**kwargs)
@@ -58,5 +58,5 @@ class Product(models.Model):
     ordering=['-created_at']
     indexes = [models.Index(fields=['created_at'])]
 
-    def __str__(self):
-      return self.title
+def __str__(self):
+  return self.title
