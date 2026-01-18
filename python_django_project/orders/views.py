@@ -56,13 +56,13 @@ def checkout(request):
               messages.error(request,f"產品{item.product.title} 庫存不足")
               raise Exception(f"產品{item.product.title} 庫存不足")
       
-        OrderItem.objects.create(
-          order=order,
-          product = item.product,
-          price=item.product.price,
-          quantity=item.quantity,
-          size=item.size
-        )
+          OrderItem.objects.create(
+            order=order,
+            product = item.product,
+            price=item.product.price,
+            quantity=item.quantity,
+            size=item.size
+          )
   
         PurchaseHistory.objects.get_or_create(
             user=request.user,

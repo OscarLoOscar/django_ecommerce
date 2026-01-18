@@ -15,8 +15,10 @@ class OrderItem(models.Model):
     ordering=['-created_at']
     indexes = [models.Index(fields=['created_at'])]
     
-  def get_subtotal(self):
-      return self.product.price * self.quantity
 
   def __str__(self):
     return self.product.title
+  
+  # must keep , dashboard can show HK$
+  def get_subtotal(self):
+    return self.product.price * self.quantity

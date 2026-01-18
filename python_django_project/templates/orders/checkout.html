@@ -65,10 +65,10 @@
             </div>
             <!-- 送貨方式-->
             <div class="form-group">
-              <label for="">送貨方式 (運費到付)</label>
+              <label for="delivery_method">送貨方式 (運費到付)</label>
               <select
                 name="delivery_method"
-                id=""
+                id="delivery-method-select"
                 class="form-control"
                 required
               >
@@ -77,83 +77,86 @@
               </select>
             </div>
             <!--配送區域-->
-            <div class="form-group">
-              <label for="region-select">配送區域</label>
-              <select id="region-select" class="form-control" required>
-                <option value="" disabled selected>--- 請選擇區域 ---</option>
-                <option value="kwun-tong">九龍--觀塘區--觀塘</option>
-                <option value="fo-tan">新界--沙田區--火炭</option>
-              </select>
+            <div id="sf-fields-container" style="display: none">
+              <div class="form-group">
+                <label for="region-select">配送區域</label>
+                <select id="region-select" class="form-control" required>
+                  <option value="" disabled selected>--- 請選擇區域 ---</option>
+                  <option value="kwun-tong">九龍--觀塘區--觀塘</option>
+                  <option value="fo-tan">新界--沙田區--火炭</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>順豐地址</label>
+                <select
+                  name="sf_address"
+                  id="address-select"
+                  class="form-control"
+                  required
+                >
+                  <option value="" disabled selected>
+                    --- 請先選擇配送區域 ---
+                  </option>
+                  <option
+                    value="H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃"
+                    data-region="kwun-tong"
+                  >
+                    H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃
+                  </option>
+                  <option
+                    value="H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃"
+                    data-region="kwun-tong"
+                  >
+                    H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine 24)順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine
+                    24)順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃
+                  </option>
+                  <option
+                    value="H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃"
+                    data-region="fo-tan"
+                  >
+                    H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃
+                  </option>
+                </select>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label>順豐地址</label>
-              <select
-                name="sf_address"
-                id="address-select"
-                class="form-control"
-                required
-              >
-                <option value="" disabled selected>
-                  --- 請先選擇配送區域 ---
-                </option>
-                <option
-                  value="H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃"
-                  data-region="kwun-tong"
-                >
-                  H852CB77P-香港九龍觀塘區觀塘祥和苑和悅閣地下順豐自助櫃
-                </option>
-                <option
-                  value="H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃"
-                  data-region="kwun-tong"
-                >
-                  H852CB17P-香港九龍觀塘區觀塘祥和苑和悅閣地下二號順豐自助櫃
-                </option>
-                <option
-                  value="H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F049P-香港新界沙田區火炭樂景街2-18號銀禧花園1座平臺順豐自助櫃
-                </option>
-                <option
-                  value="H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F011P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下11及12號鋪側順豐自助櫃
-                </option>
-                <option
-                  value="H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine 24)順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F013P-香港新界沙田區火炭穗禾路13號穗禾苑商場地下13C鋪(Sunshine
-                  24)順豐自助櫃
-                </option>
-                <option
-                  value="H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F017P-香港新界沙田區火炭樂葵徑2號晉名峰地下停車場順豐自助櫃
-                </option>
-                <option
-                  value="H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F018P-香港新界沙田區火炭山尾街巴士總站(近山尾街公園)順豐自助櫃
-                </option>
-                <option
-                  value="H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F021P-香港新界沙田區火炭㘭背灣街1號星凱•堤岸第五座平臺順豐自助櫃
-                </option>
-                <option
-                  value="H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃"
-                  data-region="fo-tan"
-                >
-                  H852F022P-香港新界沙田區火炭駿景路1號駿景廣場地下33舖一號順豐自助櫃
-                </option>
-              </select>
-            </div>
             <!--付款方式-->
             <div class="form-group">
               <label>付款方式</label>
@@ -183,35 +186,50 @@
   </form>
 </div>
 <script>
-  window.onload = function () {
-    const options = document
-      .getElementById("address-select")
-      .querySelectorAll("option[data-region]");
-    options.forEach((opt) => (opt.style.display = "none"));
-  };
+  const deliverySelect = document.getElementById("delivery-method-select");
+  const sfContainer = document.getElementById("sf-fields-container");
+  const regionSelect = document.getElementById("region-select");
+  const addressSelect = document.getElementById("address-select");
+  const addressOptions = addressSelect.querySelectorAll("option[data-region]");
 
-  document
-    .getElementById("region-select")
-    .addEventListener("change", function () {
-      const selectedRegion = this.value;
-      const addressSelect = document.getElementById("address-select");
-      const options = addressSelect.querySelectorAll("option");
-
+  function toggleSFFields() {
+    if (this.value === "SF") {
+      sfContainer.style.display = "block";
+      regionSelect.required = true;
+      addressSelect.required = true;
+    } else {
+      sfContainer.style.display = "none";
+      regionSelect.required = false;
+      addressSelect.required = false;
+      regionSelect.value = "";
       addressSelect.value = "";
+    }
+  }
 
-      options.forEach((option) => {
-        const region = option.getAttribute("data-region");
-        if (region) {
-          if (region === selectedRegion) {
-            option.style.display = "block";
-            option.disabled = false;
-          } else if (option.getAttribute("data-region")) {
-            option.style.display = "none";
-            option.disabled = true;
-          }
+  deliverySelect.addEventListener("change", toggleSFFields);
+
+  regionSelect.addEventListener("change", function () {
+    const selectedRegion = this.value;
+    addressSelect.value = "";
+
+    addressOptions.forEach((option) => {
+      const region = option.getAttribute("data-region");
+      if (region) {
+        if (region === selectedRegion) {
+          option.style.display = "block";
+          option.disabled = false;
+        } else {
+          option.style.display = "none";
+          option.disabled = true;
         }
-      });
-      options[0].textContent = "--- 請選擇詳細地址 ---";
+      }
     });
+    addressSelect.options[0].textContent = "--- 請選擇詳細地址 ---";
+  });
+
+  window.onload = function () {
+    addressOptions.forEach((opt) => (opt.value.display = "none"));
+    toggleSFFields();
+  };
 </script>
 {% endblock %}

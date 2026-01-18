@@ -21,7 +21,7 @@ class Order(models.Model):
     ('Shipping','Shipping'),
     ('Shipped','Shipped')
   )
-  user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT)
+  user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT, related_name='orders')
   product = models.ManyToManyField(Product,through='orderitems.OrderItem',related_name='orders')
   total_price=models.DecimalField(max_digits=10,decimal_places=2)
   delivery_method=models.CharField(max_length=20,choices=DELIVERY_CHOICES)

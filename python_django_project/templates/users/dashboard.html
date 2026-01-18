@@ -14,17 +14,26 @@
     <!---->
     {% for order in orders %}
     <div class="border rounded p-3 mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="font-weight-bold text-primary">訂單編號: #{{ order.id }}</h6>
-        <span
-          class="badge badge-{% if order.status == 'Pending' %}warning{% else %}success{% endif %}"
-        >
-          {{ order.status }}
-        </span>
+      <div class="d-flex flex-column align-items-end mb-2">
+        <div class="d-flex align-items-center mb-1">
+          <h6 class="font-weight-bold text-primary mb-0 mr-2">
+            訂單編號: #{{ order.id }}
+          </h6>
+
+          <span
+            class="badge badge-{% if order.status == 'Pending' %}warning{% else %}success{% endif %}"
+          >
+            {{ order.status }}
+          </span>
+        </div>
+
+        <div class="text-muted small">
+          <span>提貨方法: {{order.get_delivery_method_display}}</span>
+        </div>
       </div>
-      <p class="small text-muted mb-2">
+      <div class="small text-muted mb-2">
         下單時間: {{ order.created_at|date:"Y-m-d H:i" }}
-      </p>
+      </div>
 
       <ul class="list-unstyled">
         {% for item in order.items.all %}
