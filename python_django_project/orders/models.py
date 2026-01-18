@@ -33,7 +33,14 @@ class Order(models.Model):
   sf_address = models.CharField(max_length=50,blank=True)
 
   created_at = models.DateTimeField(auto_now_add=True)
-  is_email_sent = models.BooleanField(default=False)
+  # 4 fields for send email
+  is_paid_sent = models.BooleanField(default=False)
+  is_shipping_sent = models.BooleanField(default=False)
+  is_shipped_sent = models.BooleanField(default=False)
+  tracking_number = models.CharField(max_length=100,blank=True,null=True)
+
+  payment_receipt = models.ImageField(upload_to='payment_receipt/',blank=True, null=True)
+  payment_receipt_uploaded_at= models.DateTimeField(null=True,blank=True)
 
   class Meta:
     ordering = ['-created_at']

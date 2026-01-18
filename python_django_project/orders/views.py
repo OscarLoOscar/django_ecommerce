@@ -7,6 +7,7 @@ from carts.models import Cart
 from cartitems.models import CartItem
 from orderitems.models import OrderItem
 from users.models import PurchaseHistory
+from django.utils import timezone
 # Create your views here.
 
 def get_subtotal(cart_items):
@@ -87,3 +88,19 @@ def checkout(request):
     }
     return render(request,'orders/checkout.html', context)
 
+@login_required
+def upload_payment_proof(request,order_id):
+    order = get_object_or_404(Order,id=order_id,user=request.user)
+
+    if request.method == "POST" :
+      file = request.FILES.get('payment_proof')
+      if file:
+        print(request.FILES)
+        order.payment_receipt=file
+        order.payment_receipt_uploaded_at = timezone.now()
+        order.save()
+        messages.success(request,'入數證明已成功上傳，我哋會盡快核對！')
+        return redirect('users:dashboard')
+      else:
+        messages.error(request,'上傳失敗，請選擇檔案。')    
+    return redirect('users:dashboard')
