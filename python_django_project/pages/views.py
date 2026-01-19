@@ -18,7 +18,7 @@ def index(request):
     # 'room_type_choices':room_type_choices
 }
 #   # return render(request,'pages/index.html',{'anything' : 'something','numbers': 1234})
-  print(f"DEBUG: Found {all_product.count()} products.")
+  # print(f"DEBUG: Found {all_product.count()} products.")
   return render(request,'pages/index.html',context) # 之後會多database，但煩，難改，方便加model
 
 def about(request):

@@ -3,6 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from .models import Order
+import os
 
 # instance, the saved order in checkout(request,cart_id)
 # created . true = new Order,false = updated order 
@@ -54,16 +55,19 @@ def order_status_notification(sender,instance,created,**kwargs):
 
   if instance.status=="Paid" and not instance.is_paid_sent:
     subject = f"Only_K - 訂單付款確認 #{instance.id}"
+    print(f"DEBUG_Paid: 準備寄信到 {instance.user.email}...")
     body_header = f"我哋已確認收到你嘅付款！我哋會盡快安排發貨。"
     Order.objects.filter(id=instance.id).update(is_paid_sent=True)
 
   elif instance.status == 'Shipping'and not instance.is_shipping_sent:
     subject = f"Only_K - 訂單準備發貨中 #{instance.id}"
+    print(f"DEBUG_Shipping: 準備寄信到 {instance.user.email}...")
     body_header = f"好消息！你嘅訂單正喺度包裝緊，準備交畀快遞公司。"
     Order.objects.filter(id=instance.id).update(is_shipping_sent=True)
 
   elif instance.status == 'Shipped'and not instance.is_shipped_sent:
     subject = f"Only_K - 訂單已經出貨 #{instance.id}"
+    print(f"DEBUG_Shipping_Shipped: 準備寄信到 {instance.user.email}...")
     body_header = f"你嘅訂單已經正式出貨喇！請留意物流電話。"  
     body_header += f"\n順豐單號: {instance.tracking_number}"
     Order.objects.filter(id=instance.id).update(is_shipped_sent=True)
@@ -86,9 +90,10 @@ def order_status_notification(sender,instance,created,**kwargs):
               message,
               'freetousegpt@gmail.com',# From
               # [instance.user.email],
-              ['freetousegpt@gmail.com'],# To, must List
+              ['lokongkitoscar@gmail.com'],# To, must List
               fail_silently=False #deploy env set True , 費事因為Email Server斷線導致 Admin Save 唔到單
           )
+          print(f"DEBUG_ENV: {os.getenv('EMAIL_USER')} / {os.getenv('EMAIL_PASS')}")
           print(f"DEBUG: 成功寄出狀態【{instance.status}】Email 畀 {instance.user.email}")
       except Exception as e:
           print(f"DEBUG: 寄信失敗 - {str(e)}")
