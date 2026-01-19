@@ -41,12 +41,17 @@
               <h4 class="text-primary">{{ product.title | title}}</h4>
               <p>
                 <i class="fas fa-map-marker text-secondary"></i>
-                {{ product.district }}
+                <img
+                  class="card-img-top"
+                  style="height: 380px; width: 100%; object-fit: cover"
+                  src="{{ product.image_00.url }}"
+                  alt=""
+                />
               </p>
             </div>
             <hr />
             <a
-              href="{% url 'products:product' product.id %}"
+              href="{% url 'products:product_detail' product.id %}"
               class="btn btn-primary btn-block"
               >More Info</a
             >
