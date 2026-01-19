@@ -34,6 +34,8 @@
               value="{{user.username }}"
               readonly
             />
+            {% comment %} readonly,等人唔要modifydata同data入name="product"
+            disabled,唔入database,backend會emptyString {% endcomment %}
           </div>
           {% else %}
           <div class="form-group">

@@ -1,266 +1,386 @@
 ```mermaid
 mindmap
-  root((Ecommerce Website))
-    Home_Page["Home Page (主頁)"]
-        Product_Grid["產品網格 (Show All Products)"]
-            Status_Tag["標籤: 有貨 / Sold Out"]
-            Action["加入購物車按鈕"]
-        Cart_Modal["Shopping Cart Window (彈出式)"]
-            List["顯示所有已選產品及單價"]
-            Calculations["總計金額 (Total Price)"]
-            Checkout_Btn["前往結帳按鈕"]
-    Header["Header (頂部欄)"]
-        Top_Bar["Top Bar (公司 Logo)"]
-            Search["Search Product (搜尋)"]
-            Auth["Login / Register (登入註冊)"]
-            Cart_Icon["Shopping Cart (小圖示)"]
-        Navigation_Bar["Navigation Bar (導航)"]
-            Cat1["月份限定"]
-            Cat2["玻璃球系列"]
-            Cat3["韓國飾物 / 代購"]
-            Cat4["Workshop 日期"]
-            Cat5["Pick up & Delivery"]
-            Cat6["條款及細則"]
-    Sub_Page["Sub Page (產品詳情頁)"]
-        Gallery["產品圖片輪播"]
-        Collapsible_Section["可摺疊組件 (Accordion)"]
-            Desc["商品描述 (+/- 按鈕切換)"]
-            Policy["送貨及付款詳情 (+/- 按鈕切換)"]
-        Delivery_Methods["送貨方式"]
-            Self_Pick["下次 Booth 自取"]
-            SF_Express["順豐到付"]
-        Payment_Gateways["付款方式"]
-            Credit_Card["信用卡"]
-            Local_Pay["Payme / 支付寶HK / 微信支付"]
-            Mobile_Pay["Apple Pay"]
-    Side_Bar["Side Bar (側邊欄 / 常用功能)"]
-        Filter["進階篩選 (價錢/顏色)"]
-        Quick_Links["快速連結 (常見問題)"]
-        User_Menu["會員專區 (訂單查詢)"]
-    Footer["Footer (底部)"]
-        Contact["聯絡資訊 (Whatsapp/IG)"]
-        Copyright["版權聲明"]
-        T_C["服務條款簡述"]
+  root((Only_K Ecommerce V2))
+    Home_Page["Home Page (主頁 / Index)"]
+        Showcase["Showcase (Bootstrap Carousel)"]
+            Custom_Arrows["自定義箭頭 (粉紅色 #ffb7b7ff)"]
+            IG_Video["Instagram 影片嵌入 (Embed)"]
+        Product_Listing["產品列表 (product_list)"]
+            Filter_Logic["動態分類篩選 (?category_type=)"]
+            Search_Q["搜尋功能 (Q Object: 標題/描述)"]
+            Paginator["分頁功能 (每頁 3 件)"]
+        Cart_Logic["購物車系統 (Carts/CartItems)"]
+            Session_Support["Session 支援 (未登錄購物)"]
+            Context_Processor["購物車小圖示數量 (全站顯示)"]
+
+    Product_Detail["Product Detail (產品詳情)"]
+        Image_System["多圖系統 (image_00 - 04)"]
+            Pillow_Resize["自動壓縮 (500x500 thumbnail)"]
+        Smart_Size["智能尺寸 (Save Logic)"]
+            Ring_Size["戒指: 預設 11"]
+            Chain_Size["鏈類: 自動歸 0"]
+        Status_Info["商品資訊"]
+            Stock_Count["實時庫存量"]
+            Policy_Info["送貨及條款 (詳情頁顯示)"]
+
+    Checkout_Order["Order System (訂單與結帳)"]
+        Delivery_Methods["送貨 (DELIVERY_CHOICES)"]
+            Booth["下次 Booth 自取"]
+            SF_Express["順豐到付 (SF Region/Address)"]
+        Payment_Gateways["支付 (PAYMENT_CHOICES)"]
+            Local_Pay["Payme / 支付寶HK / 八達通"]
+            Credit_Mobile["信用卡 / Apple Pay"]
+        Proof_Upload["入數紙上傳 (payment_receipt)"]
+            Timestamp["上傳時間紀錄"]
+
+    Backend_Automation["Backend Automation (後端自動化)"]
+        Signals["Django Signals (post_save)"]
+            Status_Monitor["狀態監控: Paid/Shipping/Shipped"]
+            Email_System["Gmail SMTP 自動通知"]
+                Template_A["付款確認信 (is_paid_sent)"]
+                Template_B["包裝中通知 (is_shipping_sent)"]
+                Template_C["出貨通知 + 順豐單號 (is_shipped_sent)"]
+        Admin_Management["Admin 管理"]
+            Status_Control["手動切換狀態觸發 Signal"]
+            Security["Environment Variables (.env 管理)"]
+
+    User_Section["User Section (會員專區)"]
+        Auth["身份驗證"]
+            Standard["Login / Register / Logout"]
+            Social["Google Login (預留接口)"]
+        Dashboard["會員中心"]
+            Order_History["歷史訂單追蹤"]
+            Tracking_Info["順豐單號查詢"]
+
+    Footer_Info["Footer (全站底部)"]
+        Contact["聯絡 (WhatsApp / IG)"]
+        Legal["Legal Pages (Pages App)"]
+            Terms["條款及細則 (T&C)"]
+            Privacy["私隱政策"]
 ```
 
 ---
 
----
+### User Authentication Flow :
 
 ```mermaid
 graph TD
-  V((Visitor)) --- UC01(Visitor popup menu)
+  V((Visitor)) --- UI_Header["Header / Registration Page"]
 
-  subgraph Login_Section [登入流程]
+  subgraph Allauth_Google [Google OAuth 流程 - django-allauth]
       direction LR
-      UC01 ---- UC02("Login using Google ac")
-      UC02 -.-> UC03("Google Login")
-      UC02 -.-> UC04("Return msg from Google")
-
-      UC01 --- UC05("Username login")
-      UC07("Remember Me") --> UC05
-      UC05 -.-> UC14("Login Success / Fail msg")
+      UI_Header ---- UC02("Google Login 按鈕")
+      UC02 -->|URL: /accounts/google/login/| UC03("Google OAuth 驗證")
+      UC03 -.->|Success| UC04("建立 SocialAccount 關聯")
+      UC04 -->|Redirect| UC_RED("/")
   end
 
-  subgraph Password_Section [密碼管理]
-      direction LR
-      UC05 ----- UC08("Forget Password")
-      UC08 -.-> UC09("Confirm Identity")
-      UC08 --- UC10("Reset Password")
-      UC10 -.-> UC11("Success Reset Password")
+  subgraph Local_Auth [本地帳號流程 - users App]
+      direction TB
+      UI_Header --- UC05("Username/Email 登入")
+      UC05 -->|Backend| UC_Backend("EmailOrUsernameModelBackend")
+
+      UI_Header --- UC06("用戶註冊 (Register)")
+      UC06 -->|Validation| UC12("檢查重複 & 密碼強度")
+
+      UC_Backend -.->|Login Success| UC14("Dashboard / Home")
+      UC12 -.->|Success| UC14
   end
 
-  subgraph Register_Section [註冊流程]
-      direction LR
-      UC01 --------- UC06("Register")
-      UC06 -.-> UC12("Verify New User Name")
-      UC06 -.-> UC13("Register Success/Fail Message")
+  subgraph Session_Mgmt [會話管理]
+      UC14 --- UC15("Session Persistence")
+      UC15 --- REM["Remember Me (待實作)"]
+      UC14 --> LOGOUT["Logout (users:logout)"]
   end
+
+  subgraph Password_Security [安全與找回]
+      UC05 --- UC08("Forget Password (待實作)")
+      UC08 -.->|需配置| UC09("Django Auth Views / SMTP")
+  end
+
+  UC14 -->|Context| CP["Cart Context Processor (顯示購物車數量)"]
 ```
 
 ---
 
+### 結帳流程 與 帳戶管理 :
+
 ```mermaid
-graph TB
+graph TD
     M((Member)) --- UC_VC(View <br/>/ Update Shopping Cart)
     M --------- UC_MA(Manage <br/>Account)
 
-    subgraph Checkout_Process [結帳流程]
-    UC_CO --- UC15(Place Order <br/>/ 提交訂單)
-    UC15 --- UC14("Payment: Payme<br/>/Alipay<br/>/ApplePay")
-    UC14 --> UC13("選擇送貨: 自取/順豐")
-    UC20 --> UC16("Delete Item") --> UC20
-    UC13 --Include--> UC17("Change All <br/>Items to "Paid"")
-    end
-    UC17 --Include-->UC18("Make Transfer")
-
-    subgraph Account_Management [帳戶管理]
-    UC_MA ----- UC11(View <br/>Order History)
-    UC_MA --- UC12(Update Profile <br/>/ 修改資料)
-    UC_MA ---- UC_VPW(Verify <br/>/ Reset Password)
+    subgraph Shopping_Cart [購物車邏輯 - carts App]
+    UC_VC --> UC19("有庫存")
+    UC_VC --> UC20("Sold Out / 下架") --> UC_VC
+    UC19 --> UC_CO("Check Out / 前往結帳")
     end
 
-    subgraph Shopping_Cart [Shopping Cart]
-    UC_VC --> UC19("Have Stock")
-    UC_VC --> UC20("Sold Out") --> UC_VC
-    UC19 --> UC_CO("Check Out")
+    subgraph Checkout_Process [結帳與訂單流 - orders App]
+    UC_CO --- UC15("提交訂單 (Place Order)")
+    UC15 --- UC14("選擇支付: Payme/Alipay/Octopus...")
+    UC14 --> UC13("選擇送貨: 自取/順豐到付")
+    UC13 --> UC_UPLOAD("上傳付款憑證 (payment_receipt)")
+
+    UC_UPLOAD -- "Admin 核實後改為 Paid" --> UC_SIGNAL("觸發 Signal: 發送確認 Email")
+    UC_SIGNAL --> UC_STATUS("狀態演變: Paid > Shipping<br> > Shipped")
     end
 
-    M --> UC21("Member <br/>Popup menu")
-    subgraph Member_Popup_menu [Member Popup Menu]
-    UC21 ----> UC22("View payment <br/>Record")
-    UC21 --> UC_23("Logout")
-    UC21 -----> UC24("Change <br/>Member Info")
-    UC24 --Include-->UC25("Show <br/>Success Msg")
-    UC_23 --Include-->UC26("Show <br/>Success Msg")
+    subgraph Account_Management [帳戶管理 - users App]
+    UC_MA ----- UC11("查看歷史訂單 (Dashboard)")
+    UC_MA --- UC12("修改個人資料")
+    UC_MA ---- UC_VPW("忘記密碼 (待實作)")
+    UC11 --> UC_TRACK("查詢物流單號 (tracking_number)")
+    end
+
+    M --> UC21("Member Popup Menu")
+    subgraph Member_Popup_menu [會員快捷選單]
+    UC21 ----> UC22("View Payment Record")
+    UC21 --> UC_23("Logout (登出)")
+    UC21 -----> UC24("Change Member Info")
+    UC24 -.-> UC25("Success Msg")
+    UC_23 -.-> UC26("Success Msg")
     end
 
     style M fill:#bbf,stroke:#333,stroke-width:2px
+    style UC_SIGNAL fill:#f96,stroke:#333,stroke-width:2px
+    style UC_UPLOAD fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
 ---
 
----
+### Admin（管理員）流程圖:
 
 ```mermaid
 graph LR
-    A((Admin)) --- UC13("產品管理 (CRUD, 上架/下架)")
-    UC13 --- UC14("庫存管理 (更新 Stock Count)")
-    A --- UC15("分類管理 (Navbar 項目維護)")
-    UC13 --- UC16("訂單處理 (更改送貨狀態/確認付款)")
-    A --- UC17("用戶管理 (查看/禁用會員)")
-    A --- UC18("更新條款及細則")
-    A --- UC_RPT(查看銷售報表與分析)
+    A((Admin)) --- UC13("產品管理 (CRUD)")
+    subgraph Product_Detail [產品自動化細節]
+        UC13 --- UC13_1("圖片自動縮放 (Pillow 500px)")
+        UC13 --- UC13_2("智能尺寸校正 (save logic)")
+        UC13 --- UC13_3("上架/下架控制 (is_published)")
+    end
+
+    A --- UC15("分類管理 (Navbar)")
+    UC15 --- UC15_1("排序控制 (order 欄位)")
+
+    A --- UC16("訂單與物流處理")
+    subgraph Order_Workflow [訂單核心邏輯]
+        UC16 --- UC16_1("審核入數紙 (payment_receipt)")
+        UC16 --- UC16_2("填寫物流單號 (tracking_number)")
+        UC16 --- UC16_3("變更狀態 (Paid/Shipping/Shipped)")
+        UC16_3 -.->|自動觸發| UC_MAIL("Gmail SMTP 通知用戶")
+    end
+
+    A --- UC17("用戶管理 (User)")
+    A --- UC18("內容維護 (Pages App)")
+    UC18 --- UC18_1("更新條款/私隱政策")
+
+    A --- UC_RPT("數據分析 (Admin Dashboard)")
 
     style A fill:#bfb,stroke:#333,stroke-width:2px
+    style UC_MAIL fill:#f96,stroke:#333,stroke-width:2px
 ```
 
 ---
 
-## Add item in Shopping Cart :
+### FrontEnd User Flow
+
+```mermaid
+graph TD
+    V((訪客)) --> PL["產品列表 (product_list.html)"]
+
+    subgraph PL_Interaction [列表頁交互]
+        PL --> CAT["分類導航 (耳環/戒指/手鏈...)"]
+        PL --> SEARCH["關鍵字搜尋 (Q Object)"]
+        PL --> READ_MORE["JS Toggle: Read More/Close"]
+        PL --> PAGI["分頁切換 (?page=)"]
+    end
+
+    PL --> PD["產品詳情 (product_detail.html)"]
+    PD --> ADD["加入購物車 (AJAX)"]
+
+    subgraph Cart_Interaction [購物車交互 - cart_detail.html]
+        ADD --> CV["查看購物車"]
+        CV --> QTY["數量增減 (+/- Button)"]
+        CV --> RMV["移除項目 (Trash Icon)"]
+        CV --> TOTAL["Subtotal 自動計算 (get_subtotal)"]
+    end
+
+    TOTAL --> CHECKOUT["訂單結帳 (orders:checkout)"]
+```
+
+---
+
+## Add item in Shopping Cart (sequenceDiagram):
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor M as Member (React)
+    actor U as User (Browser)
     participant B as Backend (Django)
-    participant DB as Database
-    participant P as Payment Gateway (e.g. Payme/Stripe)
-    participant E as Email Service
+    participant DB as Database (PostgreSQL)
+    participant E as Email Service (Gmail SMTP)
 
-    Note over M, B: 購物車操作
-    M->>B: 新增 2 樣產品入購物車
-    B->>DB: 更新 CartItem (數量: 2)
-    M->>B: 移除 (Cancel) 其中一件產品
-    B->>DB: 更新 CartItem (數量: 1)
+    Note over U, B: 購物車與 Session 操作
+    U->>B: 新增產品入購物車 (AJAX /api/add/)
+    B->>DB: 建立 CartItem (連動 Session/User)
+    B-->>U: 更新 Navbar 購物車數量 (Context Processor)
 
-    Note over M, B: 結帳流程
-    M->>B: 點擊「確認結帳」
-    B->>DB: 檢查庫存 (Stock Check)
-    B-->>M: 顯示訂單總計 (含送貨方式選擇)
-    M->>B: 選擇送貨及付款方式 (Confirm Order)
-    B->>DB: 建立訂單 (Status: Pending)
+    Note over U, B: 結帳流程 (Checkout)
+    U->>B: 點擊「前往結帳」
+    B->>DB: 建立 Order (Status: Pending)
+    U->>B: 上傳入數紙 (payment_receipt)
+    B->>DB: 儲存圖片並記錄上傳時間
 
-    Note over M, P: 付款與通知
-    M->>P: 進行付款 (導向支付頁面)
-    P-->>B: 付款成功回傳 (Webhook/Callback)
-    B->>DB: 更新訂單狀態 (Status: Paid)
-    B->>E: 觸發寄送通知郵件
+    Note over B, E: Admin 核實與自動通知 (Signals)
+    rect rgb(240, 240, 240)
+        Note right of B: Admin 在後台手動更改 Status 為 'Paid'
+        B->>DB: 更新 Order 狀態
+        B->>B: 觸發 signals.py (post_save)
+        B->>E: 執行 send_mail()
+    end
 
-    E-->>M: 收到確認 Email (訂單詳情)
+    E-->>U: 用戶收到「付款確認」Email
+
+    Note over B, E: 物流階段
+    rect rgb(240, 240, 240)
+        Note right of B: Admin 填寫 tracking_number 並改為 'Shipped'
+        B->>B: 再次觸發 Signal
+        B->>E: 寄出「已出貨」Email (含順豐單號)
+    end
+    E-->>U: 用戶收到「出貨通知」Email
 ```
 
 ---
+
+### Order State Diagram :
 
 ```mermaid
 stateDiagram-v2
-    [*] --> InCart: 加入第 1 件產品
+    [*] --> InCart: 加入產品 (Session/User Cart)
 
     state InCart {
-        [*] --> Adjusting: 增加/減少數量
-        Adjusting --> Adjusting: 修改 Item
-        Adjusting --> [*]: 移除項目至清單為空
+        [*] --> Adjusting: 修改數量/移除
+        Adjusting --> [*]: 購物車清空
     }
 
-    InCart --> Checkout: 點擊「確認結帳」
-
-    state Checkout {
-        [*] --> StockChecking: 系統檢查庫存
-        StockChecking --> InfoEntry: 庫存足夠
-        StockChecking --> InCart: 庫存不足
-        InfoEntry --> OrderCreated: 確認送貨及付款
-    }
+    InCart --> OrderCreated: 點擊 Checkout (建立 Order)
 
     state OrderCreated {
-        [*] --> PendingPayment
+        [*] --> Pending: 狀態預設為 Pending
+        Pending --> AwaitingVerification: 用戶上傳入數紙 (payment_receipt)
     }
 
-    OrderCreated --> PendingPayment: 產生訂單 (Pending)
-
-    state PendingPayment {
-        [*] --> Redirecting: 導向支付頁面
-        Redirecting --> Success: 付款成功
-        Redirecting --> Failed: 付款失敗
-    }
-
-    Failed --> PendingPayment: 重新嘗試
-    Success --> Paid: 更新訂單狀態 (Paid)
+    AwaitingVerification --> Paid: Admin 手動核實付款
 
     state Paid {
-        [*] --> Notification: 觸發 Email 邏輯
+        [*] --> Email_Paid: 觸發 Signal (is_paid_sent)
+        Email_Paid --> Preparing: 賣家準備貨物
     }
 
-    Notification --> [*]: 完成流程
-```
+    Preparing --> Shipping: Admin 改為 Shipping
 
----
+    state Shipping {
+        [*] --> Email_Shipping: 觸發 Signal (is_shipping_sent)
+        Email_Shipping --> Carrier: 交給快遞公司 (SF Express)
+    }
 
----
+    Carrier --> Shipped: Admin 填寫 tracking_number 並改狀態
 
-```python
-STATUS_CHOICES = (
-    ('pending', 'Pending Payment'),
-    ('paid', 'Paid'),
-    ('shipped', 'Shipped'),
-    ('canceled', 'Canceled'),
-)
-status = models.CharField(choices=STATUS_CHOICES, default='pending')
+    state Shipped {
+        [*] --> Email_Shipped: 觸發 Signal (is_shipped_sent)
+        Email_Shipped --> Delivered: 用戶收到貨品
+    }
+
+    Delivered --> [*]: 交易完成
 ```
 
 ---
 
 ```mermaid
 erDiagram
-    USER ||--|| CART : "one-to-one"
+    %% 會員與帳戶系統
     USER ||--o{ ORDER : "places"
-    CATEGORY ||--o{ PRODUCT : "contains"
-    CART ||--|{ CART_ITEM : "has"
-    PRODUCT ||--|{ CART_ITEM : "added_to"
-    ORDER ||--|{ ORDER_ITEM : "includes"
-    PRODUCT ||--o{ ORDER_ITEM : "purchased_as"
+    USER ||--o{ PURCHASE_HISTORY : "has"
+    USER ||--o| CART : "owns"
+
+    %% 產品與分類
+    CATEGORY ||--o{ PRODUCT : "classifies"
+
+    %% 購物車邏輯 (Through Table)
+    CART ||--o{ CART_ITEM : "contains"
+    PRODUCT ||--o{ CART_ITEM : "added_to"
+
+    %% 訂單邏輯 (Through Table)
+    ORDER ||--o{ ORDER_ITEM : "includes"
+    PRODUCT ||--o{ ORDER_ITEM : "ordered_as"
 
     USER {
-        int id
+        int id PK
         string username
         string email
+        string password
+        string phone
+        datetime last_login
     }
-    CATEGORY {
-        int id
-        string name
-        int order
-    }
+
     PRODUCT {
-        int id
+        int id PK
+        int category_id FK
         string title
         decimal price
         int stock_count
-        text description
+        int size
+        image image_00
+        boolean is_published
     }
+
+    CATEGORY {
+        int id PK
+        string name
+        string category_type
+        int order
+    }
+
+    CART {
+        int id PK
+        int user_id FK
+        string session_id
+        datetime created_at
+    }
+
+    CART_ITEM {
+        int id PK
+        int cart_id FK
+        int product_id FK
+        string size
+        int quantity
+    }
+
     ORDER {
-        int id
+        int id PK
+        int user_id FK
+        decimal total_price
         string status
         string delivery_method
-        string payment_method
-        decimal total_price
+        string tracking_number
+        image payment_receipt
+        boolean is_paid_sent
+    }
+
+    ORDER_ITEM {
+        int id PK
+        int order_id FK
+        int product_id FK
+        decimal price
+        int quantity
+        string size
+    }
+
+    PURCHASE_HISTORY {
+        int id PK
+        int user_id FK
+        int product_id FK
+        datetime created_at
     }
 ```
