@@ -25,9 +25,9 @@ def login(request):
       return redirect('users:dashboard')
     else:
       messages.error(request,'Invalid credentials')
-      return redirect('users:login')
+      return redirect('users:register')
   else:
-    return render(request,'users/login.html')
+    return render(request,'users/register.html')
   
 def register(request):
     if request.method == "POST":

@@ -97,7 +97,7 @@
       <!-- Login -->
       <h3 class="text-center">登入</h3>
       <!-- add new action-->
-      <form action="{% url 'users:login' %}" method="POST">
+      <form action="{% url 'users:register' %}" method="POST">
         {% csrf_token %}
         <div class="mb-3 mx-auto" style="width:90%">
             <input

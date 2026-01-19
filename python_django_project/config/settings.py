@@ -22,7 +22,7 @@ load_dotenv(os.path.join(BASE_DIR,'.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG') # == 'False'
 
 ALLOWED_HOSTS = ["localhost","127.0.0.1"]
 
@@ -176,8 +176,9 @@ AUTHENTICATION_BACKENDS =[
 
 # Goole login 
 SITE_ID = 1
-LOGIN_URL= 'users:login'
-LOGIN_REDIRECT_URL='pages/index'
+LOGIN_URL= 'users:register'
+# LOGIN_REDIRECT_URL='pages:register'  ,Django  URL naming
+LOGIN_REDIRECT_URL='/' # from root
 SOCIALACCOUNT_LOGIN_ON_GET=  True
 
 SOCIALACCOUNT_PROVIDERS = {

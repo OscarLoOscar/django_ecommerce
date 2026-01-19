@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from products.models import Product
+from django.contrib import messages
 from django.http import HttpResponse
+from .models import ContactMessage 
 # Create your views here.
 def index(request):
   # products = product.objects.all() # 大階Listing，拎data model，all() -> 同DB溝通，拎晒所有data
@@ -21,8 +23,33 @@ def about(request):
   context = {"is_published":is_published}
   return render(request,'pages/about.html',context)
 
-def contact(request):
+def contact_view(request):
+  if request.method == 'POST':
+    name = request.POST.get('name')
+    email = request.POST.get('email')
+    subject = request.POST.get('subject')
+    message_content = request.POST.get('message')
+
+    if not name or not email or not message_content:
+      messages.error(request,"請填寫所有必填欄位")
+      return render(request,'pages/contact.html')
+    contact_record = ContactMessage(
+      name=name,
+      email=email,
+      subject=subject,
+      message=message_content
+    )
+
+    if request.user.is_authenticated:
+      contact_record.user = request.user
+
+    contact_record.save()
+
+    return redirect('pages:contact_success')
   return render(request,'pages/contact.html')
+
+def contact_success(request):
+  return render(request,'pages/contact_success.html')
 
 def privacypolicy(request):
   return render(request,'pages/privacy_policy.html')
