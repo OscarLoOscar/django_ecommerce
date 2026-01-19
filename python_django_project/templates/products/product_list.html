@@ -17,6 +17,19 @@
     height: 60px;     
     overflow-y: auto;   /* too more words > Scrollbar */
   }
+  .btn-outline-primary {
+  color: #ffb7b7ff;
+  border-color: #ffb7b7ff;
+}
+.btn-outline-primary:hover, .active-cat {
+  background-color: #ffb7b7ff !important;
+  color: white !important;
+  border-color: #ffb7b7ff !important;
+}
+#category-nav .btn {
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
 </style>
     <section id="showcase-inner" class="py-5 text-white">
       <div class="container">
@@ -44,6 +57,22 @@
             <li class="breadcrumb-item active">Browse products</li>
           </ol>
         </nav>
+      </div>
+    </section>
+    <!-- navigation-menu-top-layer -->
+    <section class="mb-4" id="category-nav">
+      <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+          <a href="{% url 'products:index' %}" class="btn m-1 {% if not current_category %}btn-dark{% else %} btn-outline-dark {% endif %}" style="border-radius: 20px; padding: 5px 20px;">全部</a>
+        {% for type in categories_list %}
+        <!--  if 內 ==、!=、not 前後都要有space -->
+          <a href="?category_type={{type}}" 
+            class="btn m-1{% if current_category == type %}btn-primary{% else %}btn-outline-primary{% endif %}" 
+            style="border-radius: 20px; padding: 5px 20px; 
+                {% if current_category == type %}background-color: #ffb7b7ff; border-color: #ffb7b7ff;{% else %}color: #ffb7b7ff; border-color: #ffb7b7ff;{% endif %}">
+          {{type}}</a>
+        {% endfor %}
+        </div>
       </div>
     </section>
     <!-- products -->

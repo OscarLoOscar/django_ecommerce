@@ -6,9 +6,13 @@ from .models import ContactMessage
 # Create your views here.
 def index(request):
   # products = product.objects.all() # 大階Listing，拎data model，all() -> 同DB溝通，拎晒所有data
-  all_product = Product.objects.filter(is_published=True)[:3] # [:3] -> list -> 0,1,2 , .order_by('-list_date')
+  all_product = Product.objects.order_by('-created_at').filter(is_published=True)[:3] # [:3] -> list -> 0,1,2 , .order_by('-list_date')
+  category_type = request.GET.get('category_type')
+  if category_type:
+    questset_list = all_product.filter(category__category_type = category_type)
   context = {
     'all_product' : all_product,
+    'current_category': category_type,
     # 'district_groups_choices': district_groups_choices,
     # 'bedroom_choices':bedroom_choices,
     # 'room_type_choices':room_type_choices

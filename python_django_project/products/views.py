@@ -7,7 +7,10 @@ from django.core.paginator import Paginator
 from carts.views import _get_or_create_cart
 # Create your views here.
 def product_list(request):
-  products_list = Product.objects.filter(is_published=True)
+  categories_list = ['耳環', '戒指', '手鏈', '頸鏈', '媽媽勾織']
+  current_category_name = request.GET.get('category_type')
+
+  products_list = Product.objects.filter(is_published=True).order_by('-created_at')
   categories = Category.objects.all().order_by('order')
 
   query = request.GET.get('q')
@@ -20,6 +23,9 @@ def product_list(request):
   if category_id:
     products_list = products_list.filter(category_id = category_id)
 
+  if current_category_name:
+    products_list = products_list.filter(category__category_type=current_category_name)
+
   # Paginator
   paginator = Paginator(products_list,3)
   page = request.GET.get('page')
@@ -29,6 +35,8 @@ def product_list(request):
   context = {'products': products,
               'categories':categories,
               'query':query,
+              'categories_list':categories_list,
+              'current_category':current_category_name,
             }
   return render(request,'products/product_list.html',context)
 
