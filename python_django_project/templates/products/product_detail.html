@@ -363,12 +363,6 @@
         <form method="POST" action="{% url 'products:search' %}">
           {% csrf_token %}
           <input type="hidden" name="listing_id" value="{{ product.id }}" />
-          <input
-            type="hidden"
-            name="doctor_email"
-            value="{{ product.doctor.email }}"
-          />
-
           {% if user.is_authenticated %}
           <input type="hidden" name="user_id" value="{{ user.id }}" />
           {% else %}
@@ -509,7 +503,9 @@
             name="doctor_email"
             value="{{ product.doctor.email }}"
           />
-          {% endcomment %} {% if user.is_authenticated %}
+          {% endcomment %}
+          <!---->
+          {% if user.is_authenticated %}
           <input type="hidden" name="user_id" value="{{ user.id }}" />
           {% else %}
           <input type="hidden" name="user_id" value="0" />

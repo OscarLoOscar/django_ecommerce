@@ -1,53 +1,87 @@
 <section id="showcase">
   <div class="container text-center">
     <div class="home-search p-5">
-      <div class="overlay p-5">
-        <h1 class="display-4 mb-4">Item Search</h1>
-        <div class="search">
-          <form action="{% url 'products:search' %}">
-            <div class="form-row">
-              <div class="col-md-12 mb-3">
-                <input
-                  type="text"
-                  name="keywords"
-                  class="form-control"
-                  placeholder="Product Name:"
-                  value="{{ values.keywords}}"
-                />
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <select name="category" class="form-control">
-                  <option value="" class="" >All Categories</option>
-                  {% for category in categories%}
-                  <option value="{{category.id}}" {% if category.id == values.category %} selected {% endif %}>
-                    {{category.title}}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-
-            {% comment %} <div class="form-row">
-              <div class="col-md-4 mb-3">
-                <input type="number" name="price" class="form-control" placeholder="Maximum Budget($)" value="{{values.price}}"/>
-              </div>
-            </div> {% endcomment %}
-
-              {% comment %} <div class="col-md-4 mb-3">
-                <input type="number" name="stock_count" class="form-control" placeholder="Minium Stock Count" value="{{values.stock_count}}"/>
-              </div> {% endcomment %}
-
-              {% comment %} <div class="col-md-4 mb-3">
-                <input type="number" name="size" class="form-control" placeholder="Size" value="{{values.size}}"/>
-              </div> {% endcomment %}
-
-            {% comment %} <button class="btn btn-secondary btn-block mt-4" type="submit">
-              Submit form
-            </button> {% endcomment %}
-            </form>
-          </div>
-        </div>
+      <div class="p-5">
+        <h1 class="display-4 mb-4">Welcome to Only K</h1>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+{% comment %}
+<div class="search">
+  <form action="{% url 'products:search' %}">
+    <div class="form-row">
+      <div class="col-md-12 mb-3">
+        <input
+          type="text"
+          name="keywords"
+          class="form-control"
+          placeholder="Product Name:"
+          value="{{ values.keywords}}"
+        />
+      </div>
+      {% endcomment %} {% comment %}
+      <div class="col-md-6 mb-3">
+        <select name="category" class="form-control">
+          <option value="" class="">All Categories</option>
+          {% for category in categories%}
+          <option
+            value="{{category.id}}"
+            {%
+            if
+            category.id=""
+            ="values.category"
+            %}
+            selected
+            {%
+            endif
+            %}
+          >
+            {{category.title}}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endcomment %} {% comment %}
+    </div>
+    {% endcomment %} {% comment %}
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <input
+          type="number"
+          name="price"
+          class="form-control"
+          placeholder="Maximum Budget($)"
+          value="{{values.price}}"
+        />
+      </div>
+    </div>
+    {% endcomment %} {% comment %}
+    <div class="col-md-4 mb-3">
+      <input
+        type="number"
+        name="stock_count"
+        class="form-control"
+        placeholder="Minium Stock Count"
+        value="{{values.stock_count}}"
+      />
+    </div>
+    {% endcomment %} {% comment %}
+    <div class="col-md-4 mb-3">
+      <input
+        type="number"
+        name="size"
+        class="form-control"
+        placeholder="Size"
+        value="{{values.size}}"
+      />
+    </div>
+    {% endcomment %} {% comment %}
+    <button class="btn btn-secondary btn-block mt-4" type="submit">
+      Submit form
+    </button>
+    {% endcomment %} {% comment %}
+  </form>
+</div>
+{% endcomment %}

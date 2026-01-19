@@ -6,14 +6,15 @@ from .models import ContactMessage
 # Create your views here.
 def index(request):
   # products = product.objects.all() # 大階Listing，拎data model，all() -> 同DB溝通，拎晒所有data
-  product_list = Product.objects.filter(is_published=True)[:3] # [:3] -> list -> 0,1,2 , .order_by('-list_date')
+  all_product = Product.objects.filter(is_published=True)[:3] # [:3] -> list -> 0,1,2 , .order_by('-list_date')
   context = {
-    'product_list' : product_list,
+    'all_product' : all_product,
     # 'district_groups_choices': district_groups_choices,
     # 'bedroom_choices':bedroom_choices,
     # 'room_type_choices':room_type_choices
 }
 #   # return render(request,'pages/index.html',{'anything' : 'something','numbers': 1234})
+  print(f"DEBUG: Found {all_product.count()} products.")
   return render(request,'pages/index.html',context) # 之後會多database，但煩，難改，方便加model
 
 def about(request):

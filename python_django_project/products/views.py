@@ -54,25 +54,25 @@ def product_detail(request,product_id):
   }
   return render(request,'products/product_detail.html',context)
 
-def search(request):
-  queryset_list = Product.objects.filter(is_published=True).order_by('-created_at')
-
-  if'keywords' in request.GET:
-    keywords = request.GET['keywords']
-    if keywords:
-      queryset_list = queryset_list.filter(title__icontains=keywords)
+# def search(request):
+  # queryset_list = Product.objects.filter(is_published=True).order_by('-created_at')
   
-  if'category' in request.GET:
-    category_id = request.GET['category']
-    if category_id:
-      queryset_list = queryset_list.filter(category_id=category_id)
+  # if'keywords' in request.GET:
+  #   keywords = request.GET['keywords']
+  #   if keywords:
+  #     queryset_list = queryset_list.filter(title__icontains=keywords)
+  
+  # if'category' in request.GET:
+  #   category_id = request.GET['category']
+  #   if category_id:
+  #     queryset_list = queryset_list.filter(category_id=category_id)
 
-  query_data = request.GET.copy()
-  if query_data.get('category'):
-    try:
-      query_data['category'] = int(query_data['category'])
-    except ValueError:
-      pass
+  # query_data = request.GET.copy()
+  # if query_data.get('category'):
+  #   try:
+  #     query_data['category'] = int(query_data['category'])
+  #   except ValueError:
+  #     pass
     
   # if'price' in request.GET:
   #   price = request.GET['price']
@@ -89,12 +89,31 @@ def search(request):
   #   if size:
   #     queryset_list = queryset_list.filter(size=size)
   
-  categories = Category.objects.all()
+  # categories = Category.objects.all()
 
-  context = {
-    'products': queryset_list,
-    'categories':categories,
-    'values' : query_data
+  # context = {
+  #   'products': queryset_list,
+  #   'categories':categories,
+  #   'values' : query_data
+  # }
+
+  # return render(request,'products/search.html',context)
+
+def search(request):
+  query_list = Product.objects.all()
+
+  query = request.GET.get('q') or request.GET.get('keywords')
+  category_id = request.GET.get('category')
+
+  if query:
+    query_list = query_list.filter(title__icontains=query)
+  
+  if category_id:
+    query_list = query_list.filter(category_id=category_id)
+
+  context={
+    'products':query_list,
+    'values':request.GET,
   }
 
   return render(request,'products/search.html',context)

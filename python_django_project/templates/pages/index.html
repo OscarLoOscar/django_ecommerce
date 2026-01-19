@@ -7,64 +7,59 @@
 <!-- index main content-->
 {% block content %}
 <!-- search_form.html  -->
-{% include 'partials/_search_form.html' %}
-
+{% comment %} {% include 'partials/_search_form.html' %} {% endcomment %}
+<section id="showcase"></section>
 <section id="products" class="py-5">
   <div class="container">
     <h3 class="text-center mb-3">Accessories Store</h3>
     <div class="row">
-      {% if products %} {% for product in product_list %}
+      {% if all_product %}
+      <!---->
+      {% for product in all_product %}
       <div class="col-md-6 col-lg-4 mb-4">
         <div class="card product-preview">
           <img
             class="card-img-top"
-            src="{{ product.photo_main.url }}"
+            src="{{ product.image_00.url }}"
             alt="{{ product.title }}"
           />
-          <div class="card-img-overlay"></div>
+          <div class="card-img-overlay" style="pointer-events: none"></div>
           <div class="card-body">
             <div class="product-heading text-center">
-              <h4 class="text-primary">{{ product.title | title }}</h4>
-              <p>
-                <i class="fas fa-map-marker text-secondary"></i>
-                {{ product.district }}
+              <!-- product title-->
+              <h4 style="color: #1f5b72ff !important">
+                {{ product.title | title }}
+              </h4>
+              <!-- product price-->
+              <p style="color: #ff9e9eff">
+                <i class="fa-solid fa-dollar-sign"></i>
+                {{product.price | title}}
               </p>
             </div>
             <hr />
             <div class="row py-2 text-secondary">
+              <!-- product category-->
               <div class="col-6">
-                <i class="fas fa-th-large"></i>
-                Fee : {{product.service|apnumber| capfirst}}
+                <i class="fa-solid fa-ring"></i>
+                {% if product.category.category_type == '戒指' %}
+                <!---->
+                Size : {{product.size|apnumber | capfirst}}
+                <!---->
+                {% else%}
+                <!---->
+                Not Applicable
+                <!---->
+                {% endif%}
               </div>
               <div class="col-6">
-                {% comment %} <i class="fas fa-dumbbell"></i> {{
-                product.services }} {% endcomment %}
-                <i class="fas fa-dumbbell"></i> {{ product.tag_list }}
+                <i class="fa-regular fa-hand-spock"></i>數量:
+                <!---->
+                {{ product.stock_count }}
               </div>
             </div>
-            <div class="row py-2 text-secondary">
-              <div class="col-6">
-                <i class="fas fa-bed"></i> Room : {{ product.rooms }}
-              </div>
-              <div class="col-6">
-                <i class="fas fa-bath"></i> {{ product.room_type }}
-              </div>
-            </div>
-            <hr />
-            <div class="row py-2 text-secondary">
-              <div class="col-12">
-                <i class="fas fa-user"></i> {{ product.doctor }}
-              </div>
-            </div>
-            <div class="row text-secondary pb-2">
-              <div class="col-12">
-                <i class="fas fa-clock"></i> {{ product.list_date | timesince}}
-              </div>
-            </div>
-            <hr />
             <!-- when click this button : 要加products id 入去-->
             <a
-              href="{% url 'products:product' product.id %}"
+              href="{% url 'products:product_detail' product.id %}"
               class="btn btn-primary btn-block"
             >
               More Info

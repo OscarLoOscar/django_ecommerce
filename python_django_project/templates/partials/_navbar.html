@@ -42,7 +42,9 @@
             type="text" 
             class="hidden-search-input search-text" 
             name="q" 
-            placeholder="找商品..."/>
+            placeholder="找商品..."
+            autocomplete="off"/>
+            <!--delete 呢句：value="{{request.GET.q}}" ，會清走上次search record-->
           </div>
         </form>
       </li>
