@@ -22,6 +22,60 @@
   .outline-btn:active {
     transform: scale(0.95);
   }
+
+/* 隱藏原生 checkbox */
+.checkbox-wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* 建立自定義框框 */
+.checkmark {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+  border-radius: 3px;
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+/* 滑鼠經過變色 */
+.checkbox-wrapper:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* 選中時的背景顏色 */
+.checkbox-wrapper input:checked ~ .checkmark {
+  background-color: #ff8e8eff;
+  border-color: #ff8e8eff;
+}
+
+/* create Tick  (white勾勾) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* show Tick  */
+.checkbox-wrapper input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* present of Tick */
+.checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
 </style>
 {% endblock %}
 <!-- block content -->
@@ -88,7 +142,6 @@
                   margin:0;
                   "/>
           </div>
-
         <div
           class="text-left pt-2 mb-4 mx-auto ml-3"
           style="
@@ -190,6 +243,49 @@
             style="border: none; padding: 10px; background: transparent" required />
           <hr style="border: none; border-top: 2px solid #ffb7b7ff; width: 100%; margin: 0;" />
         </div>
+
+        <div class="mb-4 mx-auto" style="width: 90%">
+          <input name="password2" type="password" class="form-control" placeholder="確定密碼"
+            style="border: none; padding: 10px; background: transparent" required />
+          <hr style="border: none; border-top: 2px solid #ffb7b7ff; width: 100%; margin: 0;" />
+        </div>
+
+        <div class="mb-4 mx-auto" style="width: 90%">
+          <input name="phone" type="tel" class="form-control" placeholder="電話號碼"
+            style="border: none; padding: 10px; background: transparent" required />
+          <hr style="border: none; border-top: 2px solid #ffb7b7ff; width: 100%; margin: 0;" />
+        </div>
+        <!-- add 2 div-->
+        <div class="mb-4 mx-auto text-left" style="width: 90%">
+          <label class="custom-checkbox-container d-flex align-items-start" style="cursor: pointer">
+            <div class=checkbox-wrapper mr-2">
+              <input class="" type="checkbox" name="receive_updates" id="updates" required>
+              <span class="checkmark" ></span>
+              <span class="small text-muted" style="line-height: 1.4;">
+                我願意接收GeTheMall的最新優惠消息及服務推廣相關資訊
+              </span>
+            </div>
+          </label>
+        </div>
+        <div class="mb-3 mx-auto text-left" style="width: 90%">
+          <label class="custom-checkbox-container d-flex align-items-start" style="cursor: pointer">
+            <div class="checkbox-wrapper mr-2">
+              <input class="" type="checkbox" name="agree_terms" id="terms">
+              <span class="checkmark"></span>
+            </div>
+            <span class="small text-muted" style="line-height: 1.4;">
+              我同意網站
+              <a target="_blank" class="" href="{% url 'pages:tandc' %}"
+              >服務條款</a>
+              及
+              <a target="_blank" class="" href="{% url 'pages:privacy_policy' %}">
+                隱私權政策
+              </a>
+              ，且我已滿 18 歲
+            </span>
+          </label> 
+        </div>
+        <!-- add 2 div-->
 
         <button type="submit" class="solid-btn"
           style="cursor: pointer; background-color: #ff8e8eff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">

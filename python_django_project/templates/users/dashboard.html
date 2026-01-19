@@ -9,11 +9,8 @@
 {% block content %}
 <div class="card shadow-sm mt-4">
   <div class="card-header bg-white font-weight-bold">我的購買紀錄</div>
-
   <div class="card-body">
-    {% if orders %}
-    <!---->
-    {% for order in orders %}
+    {% if orders %} {% for order in orders %}
     <div class="border rounded p-3 mb-3">
       <div class="d-flex flex-column align-items-end mb-2">
         <div class="d-flex align-items-center mb-1">
@@ -21,7 +18,7 @@
             訂單編號: #{{ order.id }}
           </h6>
           <span
-            class="badge badge-{% if order.status == 'Pending' %}warning{% else %}success{% endif %}"
+            class="badge.badge-{% if order.status == 'Pending' %}warning{% else %}success {% endif%}"
           >
             {{ order.status }}
           </span>
@@ -29,18 +26,22 @@
         <div class="text-muted small">
           <span>提貨方法: {{ order.get_delivery_method_display }}</span>
         </div>
+        <!-- "Choice Display Methods" :Model 嘅Field define咗 choices ,django會自動幫models 生成一個'隱藏'嘅 Function-->
+        <!-- 用法：get_ + [欄位名稱] + _display-->
+        <!--用 order.delivery_method：-->
+        <!--會係 Database 攞值，顯示出嚟會係：BOOTH。-->
+        <!--用 order.get_delivery_method_display() (或者 Template 嘅 {{ order.get_delivery_method_display }})：-->
+        <!--會對返個 choices 清單，顯示出嚟會係：下次 Booth 自取。-->
       </div>
-
       <div class="small text-muted mb-2">
         下單時間: {{ order.created_at|date:"Y-m-d H:i" }}
       </div>
-
       <ul class="list-unstyled">
         {% for item in order.items.all %}
-        <li
+        <lu
           class="small d-flex justify-content-between border-bottom pb-2 mb-2"
         >
-          <div>
+          <div class="">
             <div class="font-weight-bold">
               {{ item.product.title }} x {{ item.quantity }}
             </div>
@@ -50,38 +51,34 @@
               <!---->
               Standard
               <!---->
-              {% else %}
-              <!---->
-              {{ item.size }}
-              <!---->
-              {% endif %}
+              {% else %}{{ item.size}}{% endif %}
               <span class="mx-2">|</span>
-              <strong>單價:</strong> HK${{ item.price|intcomma }}
+              <strong>單價:</strong>HK${{ item.price|intcomma }}
             </div>
           </div>
           <div class="align-self-center font-weight-bold text-danger">
             HK${{ item.get_subtotal|intcomma }}
           </div>
-        </li>
+        </lu>
         {% endfor %}
       </ul>
-
+      <!-- -->
       <hr />
       <div class="text-right font-weight-bold mb-3">
         總計: HK${{ order.total_price|intcomma }}
       </div>
-
       <div class="mt-3 p-3 bg-light rounded shadow-sm">
         {% if order.payment_receipt %}
         <div class="mb-3">
           <span class="text-success font-weight-bold">
             <i class="fas fa-check-circle"></i>
-            已於 {{ order.payment_receipt_uploaded_at|date:"M d, H:i" }}
+            <!-- picture -->
+            已於 {{ order.payment_receipt_uploaded_at|date:"M d,H:i"}}
             上傳過證明
           </span>
           <br />
           <a
-            href="{{ order.payment_receipt.url }}"
+            href="{{ order.payment_receipt.url}}"
             class="btn btn-link btn-sm p-0 text-info"
             target="_blank"
           >
@@ -89,27 +86,29 @@
           </a>
         </div>
         {% endif %}
-
+        <!-- Payment_receipt Form -->
         <form
           action="{% url 'orders:payment_receipt' order.id %}"
-          class="d-flex align-items-center"
+          class="d-flex align-center"
           method="POST"
           enctype="multipart/form-data"
-          onsubmit="return confirmUpload('{{ order.payment_receipt }}', {{ order.id }})"
+          onSubmit="return confirmUpload('{{order.payment_receipt}}','{{order.id}}')"
         >
           {% csrf_token %}
           <div class="custom-file custom-file-sm mr-2">
             <input
               type="file"
-              name="payment_proof"
               class="custom-file-input"
+              name="payment_proof"
+              type="file"
               id="proof{{order.id}}"
               accept="image/*"
+              style="cursor: pointer"
               required
             />
             <label
-              class="custom-file-label text-truncate"
               for="proof{{order.id}}"
+              class="custom-file-label text-truncate"
             >
               {% if order.payment_receipt %}
               <!---->
@@ -123,18 +122,10 @@
             </label>
           </div>
           <button
+            class="btn btn-sm {% if order.payment_receipt %} btn-outline-secondary {% else %} btn-primary {% endif %}"
             type="submit"
-            class="btn btn-sm {% if order.payment_receipt %}btn-outline-secondary{% else %}btn-primary{% endif %}"
           >
-            {% if order.payment_receipt %}
-            <!---->
-            覆蓋上傳
-            <!---->
-            {% else %}
-            <!---->
-            上傳
-            <!---->
-            {% endif %}
+            {% if order.payment_receipt %}覆蓋上傳{% else %}上傳{% endif %}
           </button>
         </form>
       </div>
@@ -142,13 +133,13 @@
     {% endfor %}
     <!---->
     {% else %}
+    <!---->
     <p class="text-muted">暫時冇任何訂單紀錄。</p>
     {% endif %}
   </div>
 </div>
 
 <script>
-  // 自動顯示選擇的檔名
   document.addEventListener("change", function (e) {
     const input = e.target;
     if (input && input.classList.contains("custom-file-input")) {
@@ -160,7 +151,6 @@
     }
   });
 
-  // 確認覆蓋上傳
   function confirmUpload(hasExisting, orderId) {
     if (hasExisting && hasExisting !== "None" && hasExisting !== "") {
       return confirm("你之前已經上傳過入數證明，確定要用新檔案覆蓋嗎？");

@@ -33,8 +33,8 @@ def register(request):
     if request.method == "POST":
       username = request.POST.get('username')
       password = request.POST.get('password')
-      first_name = request.POST.get('first_name')
-      last_name = request.POST.get('last_name')
+      # first_name = request.POST.get('first_name')
+      # last_name = request.POST.get('last_name')
       email = request.POST.get('email')
       password = request.POST.get('password')
       password2 = request.POST.get('password2')
@@ -53,8 +53,8 @@ def register(request):
               username=username,
               password=password,
               email=email,
-              first_name=first_name,
-              last_name=last_name,
+              # first_name=first_name,
+              # last_name=last_name,
               phone=phone
             )
             messages.success(request,'You are now registered and can login.')
