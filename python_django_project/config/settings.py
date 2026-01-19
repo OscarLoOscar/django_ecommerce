@@ -47,7 +47,13 @@ APPLICATION_APPS = ['pages.apps.PagesConfig',
                     'categories.apps.CategoriesConfig',
                     'users.apps.UsersConfig']
 
-THIRD_PARTY_APPS = ['debug_toolbar']
+THIRD_PARTY_APPS = ['debug_toolbar',
+                    'django.contrib.sites',
+                    'allauth',
+                    'allauth.account',
+                    'allauth.socialaccount',
+                    'allauth.socialaccount.providers.google',
+                    ]
 
 INSTALLED_APPS = DJANGO_APPS + APPLICATION_APPS+THIRD_PARTY_APPS
 
@@ -58,6 +64,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # google allauth
+    'allauth.account.middleware.AccountMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -162,7 +171,35 @@ AUTH_USER_MODEL = "users.User"
 AUTHENTICATION_BACKENDS =[
     'users.backends.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# Goole login 
+SITE_ID = 1
 LOGIN_URL= 'users:login'
 LOGIN_REDIRECT_URL='pages/index'
+SOCIALACCOUNT_LOGIN_ON_GET=  True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+# check Google login 咩error
+SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'loggers': {
+        'allauth': {'handlers': ['console'], 'level': 'DEBUG'},
+    },
+}

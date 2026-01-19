@@ -31,6 +31,8 @@ urlpatterns = [
     path('carts/',include('carts.urls',namespace='carts')),
     path('orders/',include('orders.urls',namespace='orders')),
     path('admin/', admin.site.urls),
+    # google login 
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+ debug_toolbar_urls()
 
 admin.site.site_header = 'OnlyK Administration'

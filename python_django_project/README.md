@@ -86,3 +86,51 @@ ALTER TABLE orders_order ADD COLUMN is_shipping_sent boolean DEFAULT FALSE;
 ALTER TABLE orders_order ADD COLUMN is_shipped_sent boolean DEFAULT FALSE;
 ALTER TABLE orders_order ADD COLUMN tracking_number varchar(100);
 ```
+
+---
+
+```bash
+pip install django-allauth requests PyJWT
+```
+
+settings.py:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google', # Google 提供商
+    ...
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/' # 登入後去邊
+SOCIALACCOUNT_LOGIN_ON_GET = True # 撳掣即跳轉，唔使再確認一次
+```
+
+```
+喺 Admin 後台登記 Google Client ID
+雖然你有 JSON，但 Django 需要喺資料庫紀錄呢組 ID：
+
+執行 python manage.py migrate（建立 allauth 相關 Table）。
+
+入 Django Admin -> Social Applications -> Add Social Application。
+
+Provider: 選 Google。
+
+Name: 求其改（例如 "Google Login"）。
+
+Client id: 填入你 JSON 入面嗰串長 ID。
+
+Secret key: 填入你 JSON 入面嗰串密鑰。
+
+Chosen sites: 將右邊嘅 example.com（或 localhost）搬去左邊。
+```
