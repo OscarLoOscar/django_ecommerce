@@ -10,10 +10,13 @@ User = get_user_model()
 
 # @login_required
 def login(request):
+  if request.user.is_authenticated:
+    return redirect('users:dashboard')
+  
   if request.method == "POST":
     username_input = request.POST.get('username') # username = username / email , username is variable
     password_input = request.POST.get('password')
-
+    
     user = auth.authenticate(request,
                             username=username_input,
                             password=password_input)
@@ -30,6 +33,9 @@ def login(request):
     return render(request,'users/register.html')
   
 def register(request):
+    if request.user.is_authenticated:
+      return redirect('users:dashboard')
+    
     if request.method == "POST":
       username = request.POST.get('username')
       password = request.POST.get('password')
@@ -44,26 +50,29 @@ def register(request):
         if User.objects.filter(username=username).exists():
           messages.error(request,'Username already exists.')
           return redirect('users:register')
-        else: 
-          if User.objects.filter(email=email).exists():
-            messages.error(request,'Email already exists.')
-            return redirect('users:register')
-          else:
-            user=User.objects.create_user(
-              username=username,
-              password=password,
-              email=email,
-              # first_name=first_name,
-              # last_name=last_name,
-              phone=phone
-            )
-            messages.success(request,'You are now registered and can login.')
-            return redirect('users:login')
+        
+        if User.objects.filter(email=email).exists():
+          messages.error(request,'Email already exists.')
+          return redirect('users:register')
+
+        user=User.objects.create_user(
+          username=username,
+          password=password,
+          email=email,
+          # first_name=first_name,
+          # last_name=last_name,
+          phone=phone
+          )
+        
+        messages.success(request,'You are now registered and can login.')
+        return redirect('pages:index')
+      
       else:
         messages.error(request,'Password do not match.')
         return redirect('users:register')
     else:
       return render(request,'users/register.html')
+      # return redirect('pages:index')
 
 @login_required
 def logout(request):

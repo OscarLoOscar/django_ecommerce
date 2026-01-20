@@ -28,9 +28,9 @@ class Order(models.Model):
   payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
   status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')#Pending,Paid,Shipping,Shipped
 
-  shipping_location = models.CharField(max_length=50,blank=True)
-  sf_region = models.CharField(max_length=50,blank=True)
-  sf_address = models.CharField(max_length=50,blank=True)
+  shipping_location = models.CharField(max_length=255,blank=True)
+  sf_region = models.CharField(max_length=255,blank=True)
+  sf_address = models.CharField(max_length=255,blank=True)
 
   created_at = models.DateTimeField(auto_now_add=True)
   # 4 fields for send email

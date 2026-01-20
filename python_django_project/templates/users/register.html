@@ -97,7 +97,7 @@
       <!-- Login -->
       <h3 class="text-center">登入</h3>
       <!-- add new action-->
-      <form action="{% url 'users:register' %}" method="POST">
+      <form action="{% url 'users:signin' %}" method="POST">
         {% csrf_token %}
         <div class="mb-3 mx-auto" style="width:90%">
             <input
@@ -261,8 +261,8 @@
         <!-- add 2 div-->
         <div class="mb-4 mx-auto text-left" style="width: 90%">
           <label class="custom-checkbox-container d-flex align-items-start" style="cursor: pointer">
-            <div class=checkbox-wrapper mr-2">
-              <input class="" type="checkbox" name="receive_updates" id="updates" required>
+            <div class="checkbox-wrapper mr-2">
+              <input class="" type="checkbox" name="receive_updates" id="updates">
               <span class="checkmark" ></span>
               <span class="small text-muted" style="line-height: 1.4;">
                 我願意接收GeTheMall的最新優惠消息及服務推廣相關資訊
@@ -273,7 +273,7 @@
         <div class="mb-3 mx-auto text-left" style="width: 90%">
           <label class="custom-checkbox-container d-flex align-items-start" style="cursor: pointer">
             <div class="checkbox-wrapper mr-2">
-              <input class="" type="checkbox" name="agree_terms" id="terms">
+              <input class="" type="checkbox" name="agree_terms" id="terms" required>
               <span class="checkmark"></span>
             </div>
             <span class="small text-muted" style="line-height: 1.4;">
@@ -289,11 +289,13 @@
           </label> 
         </div>
         <!-- add 2 div-->
-
-        <button type="submit" class="solid-btn"
-          style="cursor: pointer; background-color: #ff8e8eff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">
-          提交註冊
-        </button>
+        <form action="{% url 'users:register' %}" method="POST" onSubmit="return validateRegister()">
+          <input type="checkbox" name="agree_terms" id="terms" class="" required/>
+          <button type="submit" class="solid-btn"
+            style="cursor: pointer; background-color: #ff8e8eff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">
+            提交註冊
+          </button>
+        </form>
       </form>
       
       <!-- add -->
@@ -336,19 +338,28 @@
 </div>
 
 <script>
-  function showRegister(){
-    document.getElementById('login-section').style.display ='none';
-    document.getElementById('register-section').style.display = 'block';
-  }
+function showRegister(){
+  document.getElementById('login-section').style.display ='none';
+  document.getElementById('register-section').style.display = 'block';
+}
 
-  function showLogin(){
-    document.getElementById('register-section').style.display = 'none';
-    document.getElementById('login-section').style.display ='block';
+function showLogin(){
+  document.getElementById('register-section').style.display = 'none';
+  document.getElementById('login-section').style.display ='block';
+}
+window.onload = function(){
+  if(window.location.pathname.includes('register')){
+    showRegister();
   }
-  window.onload = function(){
-    if(window.location.pathname.includes('register')){
-      showRegister();
-    }
+}
+
+function validateRegister(){
+  const terms = document.getElementById('terms');
+  if(!terms.checked){
+    alert("請勾選「同意網站服務條款及隱私權政策」後再提交註冊！");
+    return false;
   }
+  return true;
+}
 </script>
 {% endblock %}

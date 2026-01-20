@@ -3,7 +3,7 @@
   <div class="container">
     <!-- <a class="navbar-brand" href="index.html"> -->
     <a class="navbar-brand" href={% url 'pages:index' %}>
-    <img src={% static 'img/logo.png' %} class="logo" alt="" />
+    <img src={% static 'img/logo.png' %} class="logo" alt="OnlyK Logo" />
   </a>
 
   <button
@@ -32,9 +32,9 @@
     </ul>
     <ul class="navbar-nav ml-auto align-items-lg-center">
       <!--search function -->
-      <li class="nav-item">
+      <li class="nav-item mr-3">
         <form class="form-inline " action="{% url 'products:search' %}" method="GET">
-          <div class="search-hover-container">
+          <div class="search-hover-container d-flex align-items-center">
             <button type="submit" style="background:none;border:none;padding:0;">
               <i class="fas fa-search"></i>
             </button>
@@ -49,47 +49,50 @@
         </form>
       </li>
       <!-- message function-->
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <div
           data-toggle="modal"
-                  class="message-trigger-container" 
-
+          class="message-trigger-container" 
           data-target="#contactModal"
           >
-          <button type="button" class="message-btn" style="background:none;border:none;padding:0;">
+          <button type="button" class="message-btn" 
+                  style="background:none;border:none;padding:0;">
             <i class="fa-regular fa-message"
             style="color: #2e626b;cursor: pointer;"></i>
           </button>
         </div>
+      </li> {% endcomment %}
+      <li class="nav-item mr-2">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">
+          <i class="fa-regular fa-message" style="color: #2e626b; font-size: 1.1rem;"></i>
+        </a>
       </li>
 
       <!-- login -->
       {% if user.is_authenticated %}
-      <li class="nav-item mr-3 {% if 'dashboard' in request.path %}active{% endif %}">
+      <li class="nav-item mr-2 {% if 'dashboard' in request.path %}active{% endif %}">
         <a class="nav-link" href="{% url 'users:dashboard' %}">
-        <i class="fas fa-user"></i> Welcome {{ user.username }}
+        <i class="fas fa-user"></i> Welcome {{ request.user.username }}
         </a>
       </li>
       <!-- logout-->
-      <li class="nav-item mr-3">
-        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
-          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>logout
-        </a>
-
-        <form action="{% url 'users:logout' %}" method="POST" id="logout">
+      <li class="nav-item mr-2">
+        <form action="{% url 'users:logout' %}" method="POST" id="logout" style="display:inline;">
         {% csrf_token %}
-          <input type="hidden"/> 
+        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>Logout
+        </a>
         </form>
       </li>
         {% else %}
-      <li {% if 'register' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}> 
+      <li {% if 'register' in request.path %} class="nav-item active nav-item mr-2 " {% else %} class="nav-item nav-item mr-2 " {% endif %}> 
         <a class="nav-link" href="{% url 'users:register' %}">
           <i class="fa-solid fa-user"></i>
         </a>
       </li>
         {% endif %}
         <!-- shopping cart-->
-      <li class="shoppingCartLeft"> 
+      <li class="shoppingCartLeft nav-item mr-3 "> 
         {% comment %} Must Change URL {% endcomment %}
         <a class="nav-link" href="#" data-toggle="modal" data-target="#navCartModal">
           <i class="fa fa-cart-shopping"></i>
