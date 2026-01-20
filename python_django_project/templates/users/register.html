@@ -227,7 +227,8 @@
 
     <div id="register-section" style="display: none">
       <h2 class="mb-4 text-left ml-4">註冊會員</h2>
-      <form action="{% url 'users:register' %}" method="POST">
+      <!-- 係form 加js function-->
+      <form id="registerForm" action="{% url 'users:register' %}" method="POST" onSubmit="return validateRegister()">
         {% csrf_token %}
         <div class="mb-3 mx-auto" style="width: 90%">
           <input name="username" class="form-control" placeholder="使用者名稱"
@@ -270,11 +271,12 @@
             </div>
           </label>
         </div>
+
         <div class="mb-3 mx-auto text-left" style="width: 90%">
           <label class="custom-checkbox-container d-flex align-items-start" style="cursor: pointer">
             <div class="checkbox-wrapper mr-2">
-              <input class="" type="checkbox" name="agree_terms" id="terms" required>
-              <span class="checkmark"></span>
+              <input type="checkbox" name="agree_terms" id="terms">
+              <span class="checkmark"></span> 
             </div>
             <span class="small text-muted" style="line-height: 1.4;">
               我同意網站
@@ -289,13 +291,10 @@
           </label> 
         </div>
         <!-- add 2 div-->
-        <form action="{% url 'users:register' %}" method="POST" onSubmit="return validateRegister()">
-          <input type="checkbox" name="agree_terms" id="terms" class="" required/>
           <button type="submit" class="solid-btn"
             style="cursor: pointer; background-color: #ff8e8eff; color: #fff; border: none; border-radius: 8px; padding: 10px; width: 90%;">
             提交註冊
           </button>
-        </form>
       </form>
       
       <!-- add -->
@@ -354,8 +353,8 @@ window.onload = function(){
 }
 
 function validateRegister(){
-  const terms = document.getElementById('terms');
-  if(!terms.checked){
+  const termsCheckBox = document.getElementById('terms');
+  if(!termsCheckBox.checked){
     alert("請勾選「同意網站服務條款及隱私權政策」後再提交註冊！");
     return false;
   }
