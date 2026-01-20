@@ -7,37 +7,41 @@ from django.core.paginator import Paginator
 from carts.views import _get_or_create_cart
 # Create your views here.
 def product_list(request):
-  categories_list = ['耳環', '戒指', '手鏈', '頸鏈', '媽媽勾織']
-  current_category_name = request.GET.get('category_type')
-
   products_list = Product.objects.filter(is_published=True).order_by('-created_at')
   categories = Category.objects.all().order_by('order')
 
-  query = request.GET.get('q')
+  query = request.GET.get('q','').strip()
+  selected_category = request.GET.get('category')
+  current_category_type = request.GET.get('category_type')
+
+  category_choices = [choice[0] for choice in Category.TYPE_CHOICE]
+
   if query:
     products_list = products_list.filter(
       Q(title__icontains=query) |Q(description__icontains=query)
     )
 
-  category_id = request.GET.get('category')
-  if category_id:
-    products_list = products_list.filter(category_id = category_id)
+  if selected_category and selected_category!='全部':
+    products_list = products_list.filter(category__name = selected_category)
 
-  if current_category_name:
-    products_list = products_list.filter(category__category_type=current_category_name)
+  if current_category_type:
+    products_list = products_list.filter(category__category_type=current_category_type)
 
   # Paginator
   paginator = Paginator(products_list,3)
-  page = request.GET.get('page')
-  products = paginator.get_page(page) # direct use for template
+  page_number = request.GET.get('page')
+  products = paginator.get_page(page_number) # direct use for template
 
   # django html
   context = {'products': products,
               'categories':categories,
               'query':query,
-              'categories_list':categories_list,
-              'current_category':current_category_name,
+              'category_choices':category_choices,
+              'category_name':selected_category,
+              'current_category':current_category_type,
             }
+  # has_next 寫 {% if category_name %}，but views.py , selected_category 的變數名確實是 category_name
+  # 但如果 URL 是 category_type，你應該判斷的是 current_category。
   return render(request,'products/product_list.html',context)
 
   # data = [{

@@ -225,7 +225,7 @@
       </div>
     </div>
 
-    <div id="register-section" style="display: none">
+    <div  id="register-section" style="display: none">
       <h2 class="mb-4 text-left ml-4">註冊會員</h2>
       <!-- 係form 加js function-->
       <form id="registerForm" action="{% url 'users:register' %}" method="POST" onSubmit="return validateRegister()">
@@ -297,7 +297,7 @@
           </button>
       </form>
       
-      <!-- add -->
+      <!-- Google Register -->
       <div class="d-flex align-items-center mb-4 mx-auto" style="width:90%">
         <div style="flex:1;border-bottom:1px solid #dee2e6;"></div>
           <div
@@ -359,6 +359,6 @@ function validateRegister(){
     return false;
   }
   return true;
-}
+};
 </script>
 {% endblock %}

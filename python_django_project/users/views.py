@@ -25,9 +25,9 @@ def login(request):
       auth.login(request,user)
       messages.success(request,'You are now logged in.')
       # react change
-      return redirect('users:dashboard')
+      return redirect('pages:index')
     else:
-      messages.error(request,'Invalid credentials')
+      messages.error(request,'Invalid credentials,Check your login name or password')
       return redirect('users:register')
   else:
     return render(request,'users/register.html')

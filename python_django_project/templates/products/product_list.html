@@ -8,6 +8,9 @@
 {% block title %} | Browser products {% endblock %}
 <!--load static -->
 {% block content %}
+<!-- load query_transform -->
+{% load query_transform %}
+
 <style>
   .product-preview .card-body{
     min-height: 350px;
@@ -67,7 +70,7 @@
               class="btn m-1 {% if not current_category %}btn-dark{% else %} btn-outline-dark {% endif %}" 
               style="border-radius: 20px; padding: 5px 20px;">
               全部</a>
-        {% for type in categories_list %}
+        {% for type in category_choices %}
         <!--  if 內 ==、!=、not 前後都要有space -->
           <a href="?category_type={{type}}" 
             class="btn m-1 {% if current_category == type %}btn-primary{% else %}btn-outline-primary{% endif %}" 
@@ -180,7 +183,8 @@
         <ul class="pagination">
           {% if products.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a>
+              {% comment %} <a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a> {% endcomment %}
+              <a class="page-link" href="?{% url_replace request 'page' products.previous_page_number %}">&laquo;</a>
             </li>
           {% else %}
             <li class="page-item disabled">
@@ -195,14 +199,26 @@
               </li>
             {% else %}
               <li class="page-item">
-                <a class="page-link" href="?page={{i}}{% if query %}&q={{query}}{% endif %}">{{i}}</a>
+                <a class="page-link" href="?{% url_replace request 'page' i %}">{{i}}</a>
               </li>
             {% endif %}
           {% endfor %}
 
+              <!-- Wrong version 1-->
+              {% comment %} <a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a> {% endcomment %}
+              <!-- Version 2-->
+              {% comment %} <a class="page-link" href="?page={{ products.next_page_number }}
+              {% if request.GET.category %}
+              &category=
+              {{ request.GET.category }}
+              {% endif %}"></a> {% endcomment %}
+              <!-- Version 3-->
+              <!-- if has 'q' :-->
+              {% comment %} href="?page={{products.next_page_number}}&category={{ request.GET.category }}&q={{ request.GET.q }}" {% endcomment %}
+              <!-- Version 4-->
           {% if products.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a>
+              <a class="page-link" href="?{% url_replace request 'page' products.next_page_number %}">&raquo;</a>
             </li>
           {% else %}
             <li class="page-item disabled">
