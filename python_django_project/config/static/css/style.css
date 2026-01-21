@@ -21,8 +21,8 @@ img {
 
 #showcase {
   min-height: 70vh;
-  background: url(../img/showcase.jpg) no-repeat center/cover;
-  background-size:cover;
+  background: url(../img/showcase.jpg) no-repeat center center / cover;
+  background-size: cover;
   position: relative;
   color: #fff;
   padding-top: 6rem;

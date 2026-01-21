@@ -1,119 +1,112 @@
-### Only_K E-commerce Platform (2026 Version)
+# django_ecommerce
 
-Only_K is a sophisticated, semi-automated e-commerce solution built with Django 6.0. It is designed for boutique handmade jewelry businesses, featuring a robust product management system, session-based shopping carts, and an automated email notification system triggered by order status changes.
+整埋 HTML 版嘅 Email（即係有粗體、有色、甚至有圖嗰種）
 
-#### 🚀 Technical Stack
+將 register 改成「JSON 格式」嘅 Response（即係唔再 redirect，而係 return 一個狀態碼），等 React 第時可以直接接收？
 
-- Backend: Python 3.12+ / Django 6.0
-
-- Database: PostgreSQL (Production-ready)
-
-- Image Processing: Pillow (Automated resizing & aspect ratio maintenance)
-
-- Authentication: Django-allauth (Google OAuth2 Integration)
-
-- Environment: Python-dotenv for secure credential management
-
-- Frontend: Bootstrap 4, FontAwesome, Custom JavaScript
+寫埋 React 銜接最需要的 JsonResponse 版本嗎？（即係唔再用 render 網頁，而係回傳 { "status": "success", "order_id": 123 } 這種格式
 
 ---
 
-#### 🛠️ Core Features
+users/views.py
 
-**1. Smart Product Management**
+```python
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-- Automated Image Optimization: Custom save() method using Pillow to resize all product images to a maximum of 500x500px while maintaining the aspect ratio.
+@csrf_exempt # 喺開發 React 測試時常用，正式版建議用 Token
+def api_login(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = auth.authenticate(request, username=username, password=password)
 
-- Category-Driven Logic: Automatic ring size defaults (Size 11 for rings, 0 for chains) based on category type selection.
+        if user is not None:
+            auth.login(request, user)
+            return JsonResponse({"status": "success", "message": "Logged in", "user": user.username})
+        return JsonResponse({"status": "error", "message": "Invalid credentials"}, status=401)
 
-**2. Advanced Order & Notification System**
+@login_required
+def api_user_profile(request):
+    """呢個就是你之前想做嘅 Dashboard 資料來源"""
+    user = request.user
+    # 攞返購買歷史
+    history = PurchaseHistory.objects.filter(user=user)
+    history_data = [{"product": h.product.title, "date": h.purchased_at} for h in history]
 
-- Status-Driven Signals: Uses Django Signals to monitor Order status changes.
-
-- Automated Gmail SMTP: Automatically sends branded emails to customers when an order is marked as Paid, Shipping, or Shipped.
-
-- Tracking Integration: Supports SF Express tracking numbers and manual payment receipt (bank transfer) verification.
-
-**3. User Experience**
-
-- Hybrid Shopping Cart: Supports both authenticated users and anonymous sessions.
-
-- Multi-Auth: Custom backend allowing users to sign in via either Username or Email.
-
-- Responsive UI: Dynamic "Read More" descriptions and categorized navigation.
-
----
-
-#### 📊 Documentation & Architecture
-
-The following diagrams represent the internal logic and architecture of the system:
-
-**1. Entity Relationship Diagram (ERD)**
-
-- **What it represents**: The "Skeleton" of the database. It defines how Users, Orders, and Products interact.
-
-- **Key Logic**: Shows the `through` table relationships for `CartItems` and `OrderItems`, ensuring that product data (like price at the time of purchase) is preserved even if the original product is updated.
-
-**2. System Mind Map**
-
-- **What it represents**: The "Functional Scope." It categorizes the project into four pillars: Data Layer, Logic Layer, User Journey, and Tech Stack.
-
-- **Key Logic**: It highlights the automation of Pillow and the Signal-based email system as core technical advantages.
-
-**3. User Authentication Flow**
-
-- **What it represents**: The "Security Logic." It maps out the path for both local registration and Google OAuth2 via `django-allauth`.
-
-- **Key Logic**: Defines the redirect patterns and the fallback to custom `EmailOrUsernameModelBackend`.
-
-**4. Order State Diagram**
-
-- **What it represents**: The "Life Cycle" of a transaction.
-
-- **Key Logic**: Visualizes the transition from `Pending` → `Paid` → `Shipping` → `Shipped`, mapping each state to a specific Email Signal trigger.
-
-**5. Sequence Diagram**
-
-- **What it represents**: The "Communication Flow." It shows the real-time interaction between the User's Browser, the Django Server, and the SMTP Email Server.
-
-- **Key Logic**: Clearly identifies the `post_save` trigger point where the backend decides to fire an email based on database updates.
-
----
-
-#### 🔧 Installation & Setup
-
-1. **Clone the repository**:
-
-```Bash
-git clone <your-repo-url>
+    return JsonResponse({
+        "username": user.username,
+        "email": user.email,
+        "phone": user.phone,
+        "purchase_history": history_data
+    })
 ```
 
-2. **Install Dependencies**:
+carts/views.py
 
-```Bash
-pip install -r requirements.txt
+```python
+# carts/views.py
+@login_required
+def api_get_cart(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    items = CartItem.objects.filter(cart=cart)
+
+    cart_data = []
+    for item in items:
+        cart_data.append({
+            "id": item.id,
+            "product_id": item.product.id,
+            "product_name": item.product.title,
+            "price": str(item.product.price),
+            "quantity": item.quantity,
+            "image": item.product.image.url if item.product.image else ""
+        })
+
+    return JsonResponse({"items": cart_data, "total": sum(float(i['price']) * i['quantity'] for i in cart_data)})
 ```
-
-3. **Environment Variables**: Create a `.env` file in the root directory:
 
 ```bash
-DEBUG=True
-SECRET_KEY=your_secret_key
-DB_NAME=your_db
-DB_USER=your_user
-DB_PASSWORD=your_password
-EMAIL_USER=your_gmail@gmail.com
-EMAIL_PASS=your_app_password
+my_project/
+├── users/          <-- 處理登入、註冊、Profile、PurchaseHistory
+├── products/       <-- 產品列表、搜尋、詳情
+├── categories/     <-- 分類清單
+├── carts/          <-- 購物車邏輯
+├── cartitems/      <-- 購物車細項
+├── orders/         <-- 結賬、Order、Email Signals
+├── orderitems/     <-- 訂單細項
+└── manage.py
 ```
 
-4. **Database Migration**:
+---
 
-```Bash
-python manage.py migrate
+```bash
+CORS：因為 React (Port 3000) 同 Django (Port 8000) 唔同 Port，你需要裝 django-cors-headers。
 ```
 
-5. Run Server:
+---
 
-```Bash
-python manage.py runserver
+```bash
+真實 Project 仲差咩功能？ (功能補全)
+作為一個真實嘅 E-commerce，你目前只有「睇產品」同「結賬」，仲差以下呢幾舊大嘢：
+
+購物車管理 (Cart Management)：加嘢入車、減數量、刪除項目。
+
+產品搜尋與進階篩選 (Search & Filter)：按名字搵嘢。
+
+用戶中心數據 (User Dashboard Data)：React 需要攞到當前用家的訂單紀錄。
+
+支付狀態更新 (Payment Trigger)：你的 Signal 寫咗 status=="Paid" 先寄信，但目前冇地方會將 Order 轉做 Paid。
+```
+
+---
+
+```
+五、 最後的專業建議
+CORS Setup: React 同 Django 唔同 Port，你一定要裝 django-cors-headers 並且喺 settings.py 嘅 MIDDLEWARE 最頂加埋佢，否則 React fetch 唔到嘢。
+
+CSRF: React 傳 POST 畀 Django 會遇到 CSRF 問題。開發時可以喺 View 加 @csrf_exempt，但正式環境建議用 JWT (JSON Web Token)。
+
+Image URL: 確保 settings.py 有設定 MEDIA_URL 同 MEDIA_ROOT，React 先可以透過網址睇到產品圖。
 ```
