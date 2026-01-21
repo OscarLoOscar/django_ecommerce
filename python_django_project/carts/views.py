@@ -1,16 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from .models import Cart
 from cartitems.models import CartItem
 from products.models import Product
-from django.contrib import messages
-from django.db import transaction
-from orders.models import Order
-from carts.models import Cart
-from cartitems.models import CartItem
-from orderitems.models import OrderItem
-from users.models import PurchaseHistory
 
 # Create your views here.
 def calculate_total(cart_items):
@@ -27,7 +18,6 @@ def _get_or_create_cart(request):
     cart,_=Cart.objects.get_or_create(session_id=session_id,user=None)
   return cart
 
-# @login_required
 def api_add_to_cart(request,product_id):
   if request.method == "POST":
     product = get_object_or_404(Product,id=product_id)
@@ -52,7 +42,6 @@ def api_add_to_cart(request,product_id):
   # return redirect('products:index')
   return redirect('carts:view_cart')
 
-# @login_required
 def api_update_cart_item(request,product_id):
   cart = _get_or_create_cart(request)
 
@@ -68,7 +57,6 @@ def api_update_cart_item(request,product_id):
   # return JsonResponse({'status':'success', 'new_quantity' : item.quantity})
   return redirect('carts:view_cart')
 
-# @login_required
 def remove_from_cart(request,product_id):
   cart = _get_or_create_cart(request)
   cart_item = get_object_or_404(CartItem,id=product_id,cart=cart)
@@ -76,7 +64,6 @@ def remove_from_cart(request,product_id):
   cart_item.delete()
   return redirect('carts:view_cart')
   
-# @login_required
 def view_cart(request):
   cart= _get_or_create_cart(request)
   cart_items = CartItem.objects.filter(cart=cart)
@@ -93,7 +80,6 @@ def view_cart(request):
 # def checkout(request):
 #   return render(request,'carts/checkout.html')
 
-# @login_required
 # @transaction.atomic # Prevent Rollback
 # def checkout(request):
 #     cart_items = CartItem.objects.filter(cart__user=request.user)

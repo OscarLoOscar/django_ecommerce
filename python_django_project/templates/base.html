@@ -62,6 +62,17 @@
     <!--  navbar -->
     {% include 'partials/_navbar.html' %}
     <div class="container mt-2">{% include 'partials/_alert.html'%}</div>
+    <!-- Message -->
+    {% comment %} {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %} {% endcomment %}
     <!--  content -->
     <main class="flex-shrink-0">{% block content %} {% endblock %}</main>
     <!--  footer -->
@@ -137,5 +148,35 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/lightbox.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+      $(document).ready(function(){
+        $('#sendBtn').click(function(e){
+          e.preventDefault();
+    
+          const formData = {
+          'name':$('#modal_name').val(),
+          'email':$('#modal_email').val(),
+          'subject':$('#modal_subject').val(),
+          'phone':$('#modal_phone').val(),
+          'message':$('#modal_message').val(),
+          'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+          };
+
+          $.ajax({
+          type:'POST',
+          url:"{% url 'pages:contact' %}",
+          data:formData,
+          success:function(response){
+            alert('訊息已成功送出！');
+            $('#contactModal').modal('hide');
+            $('#ajaxContactForm')[0].reset();
+          },
+          error: function(response){
+            alert('發送失敗，請稍後再試。');
+      }
+    });
+  });
+});
+  </script>
   </body>
 </html>

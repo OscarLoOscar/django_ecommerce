@@ -90,7 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # add this line @ 16/01/2026
-                'carts.context_processors.cart_renderer',
+                'carts.context_processors.cart_render',
             ],
         },
     },
@@ -175,7 +175,20 @@ AUTHENTICATION_BACKENDS =[
 ]
 
 # Goole login 
-SITE_ID = 1
+SITE_ID = 3
+# 找出正確的 SITE_ID : 
+# 1. python manage.py shell
+# 2. from django.contrib.sites.models import Site
+# for site in Site.objects.all():
+#     print(f'ID: {site.id}, Domain: {site.domain}')
+
+#  http://127.0.0.1:8000/admin/ 
+#  go to Social applications
+#  google setting
+#  你會發現 Sites is empty（since ID=1 was delete)
+#  make the left hand side : 127.0.0.1:8000 (ID: 3) move to right hand side 
+#  Save。
+
 LOGIN_URL= 'users:register'
 # LOGIN_REDIRECT_URL='pages:register'  ,Django  URL naming
 LOGIN_REDIRECT_URL='/' # from root
@@ -218,3 +231,6 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+
+# close browser or 無痕 will auto logout
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

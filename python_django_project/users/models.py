@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from products.models import Product
 # Create your models here.
 class User(AbstractUser):
-  phone = models.CharField(max_length = 15,blank=True)
+  phone = models.CharField(max_length = 15,blank=True,null=True)
   def __str__(self):
     return self.username
   # AbstractUser : username, email, first_name, last_name, password

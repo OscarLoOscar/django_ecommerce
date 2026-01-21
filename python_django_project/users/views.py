@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from orders.models import Order
 from users.models import PurchaseHistory
-from django.http import JsonResponse
 # Create your views here.
 User = get_user_model()
 

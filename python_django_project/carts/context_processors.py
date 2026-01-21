@@ -1,7 +1,7 @@
 from .views import _get_or_create_cart
 from cartitems.models import CartItem
 
-def cart_renderer(request):
+def cart_render(request):
   try:
     cart = _get_or_create_cart(request)
     cart_items = CartItem.objects.filter(cart=cart).select_related('product')

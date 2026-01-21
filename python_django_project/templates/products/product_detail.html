@@ -360,7 +360,8 @@
       </div>
       <div class="modal-body">
         <!-- modify url -->
-        <form method="POST" action="{% url 'products:search' %}">
+        {% comment %} <form method="POST" action="{% url 'products:search' %}"> {% endcomment %}
+        <form method="POST" action="{% url 'pages:contact' %}">
           {% csrf_token %}
           <input type="hidden" name="listing_id" value="{{ product.id }}" />
           {% if user.is_authenticated %}
@@ -465,7 +466,7 @@
           </div>
           <div class="form-group">
             <label>Message:</label>
-            <textarea name="message" class="form-control" rows="3"></textarea>
+            <textarea name="message" class="form-control" rows="3" placeholder="請輸入您的問題..."required></textarea>
           </div>
           <input
             type="submit"

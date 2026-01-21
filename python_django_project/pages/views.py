@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from products.models import Product
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .models import ContactMessage 
 # Create your views here.
 def index(request):
@@ -34,22 +34,29 @@ def contact_view(request):
     email = request.POST.get('email')
     subject = request.POST.get('subject')
     message_content = request.POST.get('message')
+    phone = request.POST.get('phone')
 
     if not name or not email or not message_content:
+      if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'status':'error','msg':'欄位未填全'},statue=400)
       messages.error(request,"請填寫所有必填欄位")
       return render(request,'pages/contact.html')
-    contact_record = ContactMessage(
+    
+    contact_record = ContactMessage.objects.create(
       name=name,
       email=email,
       subject=subject,
-      message=message_content
+      message=message_content,
+      phone=phone
     )
 
     if request.user.is_authenticated:
       contact_record.user = request.user
+      contact_record.save()
 
-    contact_record.save()
-
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+      return JsonResponse({'status':'error','msg':'已收到您的訊息'})
+    
     return redirect('pages:contact_success')
   return render(request,'pages/contact.html')
 

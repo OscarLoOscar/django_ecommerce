@@ -10,10 +10,7 @@
     <div class="col-md-6">
       <div class="card p-6 shadow-sm">
         <h1 class="text-center mb-4">Edit Message</h1>
-        <form
-          action="{% url 'contacts:edit_contact' contact.id %}"
-          method="POST"
-        >
+        <form action="{% url 's:edit_' .id %}" method="POST">
           {% csrf_token %}
           <div class="mb-3">
             {% comment %} expression : {% endcomment %} {{form.message |
