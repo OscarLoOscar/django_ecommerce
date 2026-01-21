@@ -28,37 +28,80 @@ def about(request):
   context = {"is_published":is_published}
   return render(request,'pages/about.html',context)
 
+# def contact_view(request):
+#   if request.method == 'POST':
+#     name = request.POST.get('name')
+#     email = request.POST.get('email')
+#     subject = request.POST.get('subject') or "一般查詢"
+#     message_content = request.POST.get('message')
+#     phone = request.POST.get('phone')
+
+#     if not all([name,email,message_content]):
+#       # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#       #   return JsonResponse({'status':'error','msg':'欄位未填全'},statue=400)
+#         messages.error(request,"請填寫所有必填欄位")
+#       # return render(request,'pages/contact.html')
+#         return redirect(request.META.get('HTTP_REFERER','pages:contact'))
+    
+#     try:
+#       contact_record = ContactMessage.objects.create(
+#         name=name,
+#         email=email,
+#         subject=subject,
+#         message=message_content,
+#         phone=phone
+#       )
+
+#       if request.user.is_authenticated:
+#         contact_record.user = request.user
+      
+#       contact_record.save()
+
+#     # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#     #   return JsonResponse({'status':'error','msg':'已收到您的訊息'})
+    
+#       return redirect('pages:contact_success')
+#     except Exception as e:
+#       print(f"Database Save Error:{e}")
+#       messages.error(request, "資料儲存失敗，請稍後再試。")
+#       return redirect(request.META.get('HTTP_REFERER', 'pages:contact'))
+    
+#   return render(request,'pages/contact.html')
+
 def contact_view(request):
-  if request.method == 'POST':
-    name = request.POST.get('name')
-    email = request.POST.get('email')
-    subject = request.POST.get('subject')
-    message_content = request.POST.get('message')
-    phone = request.POST.get('phone')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject') or "一般查詢"
+        message_content = request.POST.get('message')
+        phone = request.POST.get('phone')
 
-    if not name or not email or not message_content:
-      if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'status':'error','msg':'欄位未填全'},statue=400)
-      messages.error(request,"請填寫所有必填欄位")
-      return render(request,'pages/contact.html')
-    
-    contact_record = ContactMessage.objects.create(
-      name=name,
-      email=email,
-      subject=subject,
-      message=message_content,
-      phone=phone
-    )
+        if not all([name, email, message_content]):
+            messages.error(request, "請填寫所有必填欄位")
+            return redirect(request.META.get('HTTP_REFERER', 'pages:contact'))
+        
+        try:
+            contact_record = ContactMessage(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message_content,
+                phone=phone
+            )
 
-    if request.user.is_authenticated:
-      contact_record.user = request.user
-      contact_record.save()
+            if request.user.is_authenticated:
+                contact_record.user = request.user
+            
+            contact_record.save() 
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-      return JsonResponse({'status':'error','msg':'已收到您的訊息'})
-    
-    return redirect('pages:contact_success')
-  return render(request,'pages/contact.html')
+            return redirect('pages:contact_success')
+            
+        except Exception as e:
+            print(f"Database Save Error: {e}")
+            messages.error(request, "資料儲存失敗，請稍後再試。")
+            return redirect(request.META.get('HTTP_REFERER', 'pages:contact'))
+
+    return render(request, 'pages/contact.html')
 
 def contact_success(request):
   return render(request,'pages/contact_success.html')

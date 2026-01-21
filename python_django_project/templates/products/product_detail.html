@@ -374,86 +374,58 @@
             <label>Accessories :</label>
             <input
               type="text"
-              name="product"
+              name="subject"
               class="form-control"
               value="{{ product.title }}"
               readonly
             />
           </div>
-          {% if user.is_authenticated %}
-          <div class="form-group">
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              class="form-control"
-              {%
-              if
-              user.is_authenticated
-              %}
-              value="{{ user.get_full_name }}"
-              readonly
-              {%
-              endif
-              %}
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              class="form-control"
-              {%
-              if
-              user.is_authenticated
-              %}
-              value="{{ user.email }}"
-              readonly
-              {%
-              endif
-              %}
-              required
-            />
-          </div>
-          {% else %}
-          <div class="form-group">
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              class="form-control"
-              {%
-              if
-              user.is_authenticated
-              %}
-              placeholder="Input your name"
-              {%
-              endif
-              %}
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              class="form-control"
-              {%
-              if
-              user.is_authenticated
-              %}
-              placeholder="Input your email"
-              {%
-              endif
-              %}
-              required
-            />
-          </div>
 
-          {% endif %}
+{% if user.is_authenticated %}
+  <div class="form-group">
+    <label>Name:</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      value="{{ user.get_full_name|default:user.username }}"
+      readonly
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label>Email:</label>
+    <input
+      type="email"
+      name="email"
+      class="form-control"
+      value="{{ user.email }}"
+      readonly
+      required
+    />
+  </div>
+{% else %}
+  <div class="form-group">
+    <label>Name:</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      placeholder="Input your name"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label>Email:</label>
+    <input
+      type="email"
+      name="email"
+      class="form-control"
+      placeholder="Input your email"
+      required
+    />
+  </div>
+{% endif %}
           <div class="form-group">
             <label>Phone:</label>
             <input
@@ -516,7 +488,7 @@
             <label>Product Name :</label>
             <input
               type="text"
-              name="product"
+              name="subject"
               class="form-control"
               value="{{ product.title }}"
               readonly
