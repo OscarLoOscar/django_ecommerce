@@ -19,13 +19,13 @@
   {% comment %} add mr-auto {% endcomment %}
     <ul class="navbar-nav mr-auto">
       <li class="nav-item mr-3 {% if request.path == '/' %}active{% endif %}">
-        <a class="nav-link" href={% url 'pages:index' %}>Home</a>
+        <a class="nav-link ml-1" href={% url 'pages:index' %}>Home</a>
       </li>
       <li class="nav-item mr-3 {% if '/about' in request.path %}active{% endif %}">
-        <a class="nav-link" href={% url 'pages:about' %}>About</a>
+        <a class="nav-link ml-1" href={% url 'pages:about' %}>About</a>
       </li>
       <li class="nav-item mr-3 {% if 'products' in request.path %}active{% endif %}">
-        <a class="nav-link" href={% url 'products:index' %}>
+        <a class="nav-link ml-1" href={% url 'products:index' %}>
           Inpatient Accessories</a>
       </li>
       {% comment %} end of ul @ 13/01/2026 {% endcomment %}
@@ -34,7 +34,7 @@
       <!--search function -->
       <li class="nav-item mr-3">
         <form class="form-inline " action="{% url 'products:search' %}" method="GET">
-          <div class="search-hover-container d-flex align-items-center">
+          <div class="search-hover-container d-flex align-items-center mb-2">
             <button type="submit" style="background:none;border:none;padding:0;">
               <i class="fas fa-search"></i>
             </button>
@@ -64,7 +64,8 @@
       </li> {% endcomment %}
       <li class="nav-item mr-2">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">
-          <i class="fa-regular fa-message" style="color: #2e626b; font-size: 1.1rem;"></i>
+          <i class="fa-regular fa-message pl-1" style="color: #2e626b; font-size: 1.1rem;"></i>
+            <span class="d-lg-none">Message</span>
         </a>
       </li>
 
@@ -80,14 +81,15 @@
         <form action="{% url 'users:logout' %}" method="POST" id="logout" style="display:inline;">
         {% csrf_token %}
         <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><!-- javascript expression , Django can use -->
-          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>Logout
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
         </a>
         </form>
       </li>
         {% else %}
       <li {% if 'register' in request.path %} class="nav-item active nav-item mr-2 " {% else %} class="nav-item nav-item mr-2 " {% endif %}> 
-        <a class="nav-link" href="{% url 'users:register' %}">
-          <i class="fa-solid fa-user"></i>
+        <a class="nav-link " href="{% url 'users:register' %}">
+          <i class="fa-solid fa-user pl-1"></i> 
+            <span class="d-lg-none">Register</span>
         </a>
       </li>
         {% endif %}
@@ -96,6 +98,7 @@
         {% comment %} Must Change URL {% endcomment %}
         <a class="nav-link" href="#" data-toggle="modal" data-target="#navCartModal">
           <i class="fa fa-cart-shopping"></i>
+            <span class="d-lg-none">Shopping Cart</span>
           {% if global_cart_count > 0%}
           <span class="badge badge-danger" style="font-size: 0.6rem; vertical-align: top;">{{global_cart_count}}</span>
           {% endif %}
