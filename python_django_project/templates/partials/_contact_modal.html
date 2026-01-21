@@ -23,7 +23,7 @@
           </p>
         </div>
         {% comment %} <form action="{% url 'pages:contact' %}" method="POST" id="messageForm"> {% endcomment %}
-        <form id="ajaxContactForm">
+        <form id="ajaxContactForm" action="{% url 'pages:contact' %}" method="POST">
           {% csrf_token %}
           <!---->
           {% if user.is_authenticated %}
@@ -71,6 +71,9 @@
             />
           </div>
           {% endif %}
+          <div class="form-group">
+            <input class="form-control" type="text" name="phone" placeholder="您的電話 (選填)" />
+          </div>
           <div class="form-group">
             <input
               class="form-control"
