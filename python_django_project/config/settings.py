@@ -241,3 +241,5 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',  
     messages.SUCCESS: 'success',
 }
+
+PASSWORD_RESET_TIMEOUT = 1500
