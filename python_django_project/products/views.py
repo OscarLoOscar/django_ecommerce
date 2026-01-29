@@ -1,4 +1,6 @@
 from django.shortcuts import render ,get_object_or_404
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 from .models import Product
 from cartitems.models import CartItem
 from categories.models import Category
@@ -40,6 +42,11 @@ def product_list(request):
               'category_name':selected_category,
               'current_category':current_category_type,
             }
+  # add ajax
+  if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    html = render_to_string('products/includes/partial_product_list.html',context,request=request)
+    return JsonResponse({'html':html})
+    
   # has_next 寫 {% if category_name %}，but views.py , selected_category 的變數名確實是 category_name
   # 但如果 URL 是 category_type，你應該判斷的是 current_category。
   return render(request,'products/product_list.html',context)

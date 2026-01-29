@@ -83,154 +83,13 @@
     </section>
     <!-- products -->
     <section id="products" class="py-4">
-  <div class="container">
-    <div class="row">
-      {% if products %}
-        {% for product in products %}
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card product-preview">
-              <img 
-                class="card-img-top" 
-                style="height:380px ; width:100% ; object-fit:cover;" 
-                src="{{ product.image_00.url }}" 
-                alt="" />
-              <!-- 暫時多餘 ,add style="pointer-events:none;"@15/01/2026-->
-              <div class="card-img-overlay" style="pointer-events:none;"></div>
-              <div class="card-body" >
-                <div class="product-heading text-center" >
-                  <h4 style="color: #1f5b72ff !important;">{{ product.title | title }}</h4>
-                  <p style="color: #ff9e9eff;">
-                    <i class="fa-solid fa-dollar-sign"></i>
-                    {{product.price | title}}
-                  </p>
-                </div>
-                <div style="color: #37515bff;">
-                <!-- rings ,if else-->
-                <div class="row py-2">
-                  <div class="col-12">
-                    <i class="fa-solid fa-ring"></i>
-                    {% if product.category.category_type == '戒指' %}
-                    Size : {{product.size|apnumber | capfirst}}
-                    {% else%}
-                    Not Applicable
-                    {% endif%}
-                  </div>
-                  {% comment %} <div class="col-6"><i class="fas fa-dumbbell"></i> Test</div> {% endcomment %}
-                </div>
-                <!-- Description-->
-                <div class="row py-2">
-                  <div class="col-12">
-                    <i class="fa-regular fa-comments"></i> <!-- Description : {{product.description}} --> 
-                    {% comment %} b tag and description-text add @ 16/01/2026 {% endcomment %}
-                    <b>Description : </b>
-                    <div class="description-text mt-2" style="min-height:60px">
-                      {% if product.description|length > 10 %}
-                      <span id="dots-{{product.id}}">{{product.description| truncatechars:15}}</span>
-                      <span id="more-{{product.id}}" style="display:none">{{product.description}}</span>
-                      <button onClick="toggleDescription('{{product.id}}')"
-                              id="btn-{{product.id}}"
-                              class="btn btn-link p-0"
-                              style=" font-size: 0.8rem;
-                                      color: #9072d6ff;
-                                      vertical-align:baseline;"
-
-                      >
-                      Read More
-                      </button>
-                    {% else %}
-                      <span>{{ product.description}}</span>
-                    {% endif %}
-                    </div>
-                    <!-- add js @ 15/01/2026 , '|'前後不能有space，但'>' 要有space-->
-                    {% comment %} {{product.description}} {% endcomment %}
-                  </div>
-                </div>
-                  {% comment %} <div class="col-6"><i class="fas fa-bath"></i> Description</div> {% endcomment %}
-                <!--category_type-->
-                <div class="row py-2">
-                  <div class="col-12">
-                    <i class="fa-regular fa-font-awesome"></i> 
-                    {{product.category.category_type}}
-                  </div>
-                </div>
-                {% comment %} <div class="row text-secondary pb-2">
-                  <div class="col-12">
-                    <i class="fas fa-clock"></i> {{product.list_date | timesince}}
-                  </div>
-                </div> {% endcomment %}
-
-                <!-- More Info -->
-                <a 
-                  href="{% url 'products:product_detail' product.id%}"
-                  aria-hidden="true" 
-                  focusable="false"
-                  class="btn btn-outline-light border mb-4 bg-success" 
-                  style="cursor:pointer;border: none;width:100%;background-color:#ffb7b7ff;color:#fff" >
-                  More Info
-                </a>
-                </div>
-              </div>
-            </div>
-          </div> 
-        {% endfor %} 
-        {% endif %}
-    </div> 
-    
-    <!-- control pages -->
-    <div class="row">
-      <div class="col-md-12">
-        {% if products.has_other_pages %}
-        <ul class="pagination">
-          {% if products.has_previous %}
-            <li class="page-item">
-              {% comment %} <a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a> {% endcomment %}
-              <a class="page-link" href="?{% url_replace request 'page' products.previous_page_number %}">&laquo;</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link">&laquo;</a>
-            </li>
-          {% endif %}
-
-          {% for i in products.paginator.page_range %}
-            {% if products.number == i %}
-              <li class="page-item active">
-                <a class="page-link">{{i}}</a>
-              </li>
-            {% else %}
-              <li class="page-item">
-                <a class="page-link" href="?{% url_replace request 'page' i %}">{{i}}</a>
-              </li>
-            {% endif %}
-          {% endfor %}
-
-              <!-- Wrong version 1-->
-              {% comment %} <a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a> {% endcomment %}
-              <!-- Version 2-->
-              {% comment %} <a class="page-link" href="?page={{ products.next_page_number }}
-              {% if request.GET.category %}
-              &category=
-              {{ request.GET.category }}
-              {% endif %}"></a> {% endcomment %}
-              <!-- Version 3-->
-              <!-- if has 'q' :-->
-              {% comment %} href="?page={{products.next_page_number}}&category={{ request.GET.category }}&q={{ request.GET.q }}" {% endcomment %}
-              <!-- Version 4-->
-          {% if products.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?{% url_replace request 'page' products.next_page_number %}">&raquo;</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link">&raquo;</a>
-            </li>
-          {% endif %}
-        </ul>
-        {% endif %}
-      </div>
-    </div>
-    
-  </div> </section>
+      <div class="container"> 
+      <!-- control pages -->
+      <div id="product-container">
+        {% include 'products/includes/partial_product_list.html' %}
+      </div>    
+      </div> 
+    </section>
 <script>
   function toggleDescription(productId){
     const dots = document.getElementById("dots-" + productId)
@@ -247,6 +106,32 @@
       moreText.style.display = "inline"
     }
   }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('ajax-page-link')) {
+        e.preventDefault(); 
+        
+        const url = e.target.getAttribute('href');
+        
+        document.getElementById('product-container').style.opacity = '0.5';
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('product-container').innerHTML = data.html;
+            document.getElementById('product-container').style.opacity = '1';
+            
+            window.history.pushState({}, "", url);
+            
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
 </script>
 
 {% endblock %}
